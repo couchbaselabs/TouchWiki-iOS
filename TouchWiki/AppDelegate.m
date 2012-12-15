@@ -7,59 +7,62 @@
 //
 
 #import "AppDelegate.h"
+#import "PageListController.h"
+#import "PageController.h"
+#import "Wiki.h"
+#import <TouchDB/TouchDB.h>
 
-#import "MasterViewController.h"
-
-#import "DetailViewController.h"
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (BOOL)application:(UIApplication *)application
+        didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
 
-    MasterViewController *masterViewController = [[MasterViewController alloc] initWithNibName:@"MasterViewController" bundle:nil];
-    UINavigationController *masterNavigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
+    // Initialize TouchDB:
+    NSError* error;
+    TDDatabase* database = [[TDDatabaseManager sharedInstance] createDatabaseNamed: @"wiki"
+                                                                             error: &error];
+    if (!database)
+        [self showAlert: @"Couldn't open database" error: error fatal: YES];
+    _wiki = [[Wiki alloc] initWithDatabase: database];
 
-    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
-    UINavigationController *detailNavigationController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
+    PageListController *pageListController = [[PageListController alloc] initWithNibName:@"PageListController" bundle:nil];
+    pageListController.wiki = _wiki;
+    UINavigationController *pageListNavController = [[UINavigationController alloc] initWithRootViewController:pageListController];
 
-    masterViewController.detailViewController = detailViewController;
+    PageController *pageController = [[PageController alloc] initWithNibName:@"PageController" bundle:nil];
+    UINavigationController *pageNavController = [[UINavigationController alloc] initWithRootViewController:pageController];
+
+    pageListController.pageController = pageController;
 
     self.splitViewController = [[UISplitViewController alloc] init];
-    self.splitViewController.delegate = detailViewController;
-    self.splitViewController.viewControllers = @[masterNavigationController, detailNavigationController];
+    self.splitViewController.delegate = pageController;
+    self.splitViewController.viewControllers = @[pageListNavController, pageNavController];
     self.window.rootViewController = self.splitViewController;
     [self.window makeKeyAndVisible];
     return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+
+// Display an error alert, without blocking.
+// If 'fatal' is true, the app will quit when it's pressed.
+- (void)showAlert: (NSString*)message error: (NSError*)error fatal: (BOOL)fatal {
+    if (error) {
+        message = [NSString stringWithFormat: @"%@\n\n%@", message, error.localizedDescription];
+    }
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle: (fatal ? @"Fatal Error" : @"Error")
+                                                    message: message
+                                                   delegate: (fatal ? self : nil)
+                                          cancelButtonTitle: (fatal ? @"Quit" : @"Sorry")
+                                          otherButtonTitles: nil];
+    [alert show];
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    exit(0);
 }
 
 @end

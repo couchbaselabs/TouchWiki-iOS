@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+@class Wiki;
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property (readonly) Wiki* wiki;
 
+@property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UISplitViewController *splitViewController;
 
 @end

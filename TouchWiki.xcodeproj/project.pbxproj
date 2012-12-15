@@ -16,10 +16,18 @@
 		274EF86F167BE8E300A66172 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EF86E167BE8E300A66172 /* Default.png */; };
 		274EF871167BE8E300A66172 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EF870167BE8E300A66172 /* Default@2x.png */; };
 		274EF873167BE8E300A66172 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EF872167BE8E300A66172 /* Default-568h@2x.png */; };
-		274EF876167BE8E300A66172 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF875167BE8E300A66172 /* MasterViewController.m */; };
-		274EF879167BE8E300A66172 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF878167BE8E300A66172 /* DetailViewController.m */; };
-		274EF87C167BE8E300A66172 /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274EF87A167BE8E300A66172 /* MasterViewController.xib */; };
-		274EF87F167BE8E300A66172 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274EF87D167BE8E300A66172 /* DetailViewController.xib */; };
+		274EF876167BE8E300A66172 /* PageListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF875167BE8E300A66172 /* PageListController.m */; };
+		274EF879167BE8E300A66172 /* PageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF878167BE8E300A66172 /* PageController.m */; };
+		274EF87C167BE8E300A66172 /* PageListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274EF87A167BE8E300A66172 /* PageListController.xib */; };
+		274EF87F167BE8E300A66172 /* PageController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274EF87D167BE8E300A66172 /* PageController.xib */; };
+		274EF88D167BE9AF00A66172 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF88C167BE9AF00A66172 /* TouchDB.framework */; };
+		274EF890167BEB4A00A66172 /* Wiki.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF88F167BEB4A00A66172 /* Wiki.m */; };
+		274EF892167BEC4A00A66172 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF891167BEC4A00A66172 /* CFNetwork.framework */; };
+		274EF894167BEC5000A66172 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF893167BEC5000A66172 /* SystemConfiguration.framework */; };
+		274EF896167BEC5600A66172 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF895167BEC5600A66172 /* libsqlite3.dylib */; };
+		274EF898167BEC6400A66172 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF897167BEC6400A66172 /* Security.framework */; };
+		274EF89C167BEC9800A66172 /* WikiPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF89B167BEC9800A66172 /* WikiPage.m */; };
+		274EF8A7167C011E00A66172 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF8A6167C011E00A66172 /* libz.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,12 +44,22 @@
 		274EF86E167BE8E300A66172 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		274EF870167BE8E300A66172 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		274EF872167BE8E300A66172 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		274EF874167BE8E300A66172 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
-		274EF875167BE8E300A66172 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
-		274EF877167BE8E300A66172 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		274EF878167BE8E300A66172 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		274EF87B167BE8E300A66172 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MasterViewController.xib; sourceTree = "<group>"; };
-		274EF87E167BE8E300A66172 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DetailViewController.xib; sourceTree = "<group>"; };
+		274EF874167BE8E300A66172 /* PageListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageListController.h; sourceTree = "<group>"; };
+		274EF875167BE8E300A66172 /* PageListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PageListController.m; sourceTree = "<group>"; };
+		274EF877167BE8E300A66172 /* PageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageController.h; sourceTree = "<group>"; };
+		274EF878167BE8E300A66172 /* PageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PageController.m; sourceTree = "<group>"; };
+		274EF87B167BE8E300A66172 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PageListController.xib; sourceTree = "<group>"; };
+		274EF87E167BE8E300A66172 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PageController.xib; sourceTree = "<group>"; };
+		274EF88C167BE9AF00A66172 /* TouchDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TouchDB.framework; path = Frameworks/TouchDB.framework; sourceTree = "<group>"; };
+		274EF88E167BEB4A00A66172 /* Wiki.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wiki.h; sourceTree = "<group>"; };
+		274EF88F167BEB4A00A66172 /* Wiki.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Wiki.m; sourceTree = "<group>"; };
+		274EF891167BEC4A00A66172 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		274EF893167BEC5000A66172 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		274EF895167BEC5600A66172 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		274EF897167BEC6400A66172 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		274EF89A167BEC9800A66172 /* WikiPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikiPage.h; sourceTree = "<group>"; };
+		274EF89B167BEC9800A66172 /* WikiPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiPage.m; sourceTree = "<group>"; };
+		274EF8A6167C011E00A66172 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,9 +67,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				274EF8A7167C011E00A66172 /* libz.dylib in Frameworks */,
+				274EF898167BEC6400A66172 /* Security.framework in Frameworks */,
+				274EF896167BEC5600A66172 /* libsqlite3.dylib in Frameworks */,
+				274EF894167BEC5000A66172 /* SystemConfiguration.framework in Frameworks */,
+				274EF892167BEC4A00A66172 /* CFNetwork.framework in Frameworks */,
 				274EF85D167BE8E300A66172 /* UIKit.framework in Frameworks */,
 				274EF85F167BE8E300A66172 /* Foundation.framework in Frameworks */,
 				274EF861167BE8E300A66172 /* CoreGraphics.framework in Frameworks */,
+				274EF88D167BE9AF00A66172 /* TouchDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				274EF862167BE8E300A66172 /* TouchWiki */,
+				274EF899167BEC7700A66172 /* Model */,
 				274EF85B167BE8E300A66172 /* Frameworks */,
 				274EF859167BE8E300A66172 /* Products */,
 			);
@@ -78,9 +103,15 @@
 		274EF85B167BE8E300A66172 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				274EF88C167BE9AF00A66172 /* TouchDB.framework */,
 				274EF85C167BE8E300A66172 /* UIKit.framework */,
 				274EF85E167BE8E300A66172 /* Foundation.framework */,
 				274EF860167BE8E300A66172 /* CoreGraphics.framework */,
+				274EF897167BEC6400A66172 /* Security.framework */,
+				274EF895167BEC5600A66172 /* libsqlite3.dylib */,
+				274EF8A6167C011E00A66172 /* libz.dylib */,
+				274EF893167BEC5000A66172 /* SystemConfiguration.framework */,
+				274EF891167BEC4A00A66172 /* CFNetwork.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -90,12 +121,12 @@
 			children = (
 				274EF86B167BE8E300A66172 /* AppDelegate.h */,
 				274EF86C167BE8E300A66172 /* AppDelegate.m */,
-				274EF874167BE8E300A66172 /* MasterViewController.h */,
-				274EF875167BE8E300A66172 /* MasterViewController.m */,
-				274EF877167BE8E300A66172 /* DetailViewController.h */,
-				274EF878167BE8E300A66172 /* DetailViewController.m */,
-				274EF87A167BE8E300A66172 /* MasterViewController.xib */,
-				274EF87D167BE8E300A66172 /* DetailViewController.xib */,
+				274EF874167BE8E300A66172 /* PageListController.h */,
+				274EF875167BE8E300A66172 /* PageListController.m */,
+				274EF877167BE8E300A66172 /* PageController.h */,
+				274EF878167BE8E300A66172 /* PageController.m */,
+				274EF87A167BE8E300A66172 /* PageListController.xib */,
+				274EF87D167BE8E300A66172 /* PageController.xib */,
 				274EF863167BE8E300A66172 /* Supporting Files */,
 			);
 			path = TouchWiki;
@@ -113,6 +144,18 @@
 				274EF872167BE8E300A66172 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		274EF899167BEC7700A66172 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				274EF88E167BEB4A00A66172 /* Wiki.h */,
+				274EF88F167BEB4A00A66172 /* Wiki.m */,
+				274EF89A167BEC9800A66172 /* WikiPage.h */,
+				274EF89B167BEC9800A66172 /* WikiPage.m */,
+			);
+			name = Model;
+			path = TouchWiki;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,8 +213,8 @@
 				274EF86F167BE8E300A66172 /* Default.png in Resources */,
 				274EF871167BE8E300A66172 /* Default@2x.png in Resources */,
 				274EF873167BE8E300A66172 /* Default-568h@2x.png in Resources */,
-				274EF87C167BE8E300A66172 /* MasterViewController.xib in Resources */,
-				274EF87F167BE8E300A66172 /* DetailViewController.xib in Resources */,
+				274EF87C167BE8E300A66172 /* PageListController.xib in Resources */,
+				274EF87F167BE8E300A66172 /* PageController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,8 +227,10 @@
 			files = (
 				274EF869167BE8E300A66172 /* main.m in Sources */,
 				274EF86D167BE8E300A66172 /* AppDelegate.m in Sources */,
-				274EF876167BE8E300A66172 /* MasterViewController.m in Sources */,
-				274EF879167BE8E300A66172 /* DetailViewController.m in Sources */,
+				274EF876167BE8E300A66172 /* PageListController.m in Sources */,
+				274EF879167BE8E300A66172 /* PageController.m in Sources */,
+				274EF890167BEB4A00A66172 /* Wiki.m in Sources */,
+				274EF89C167BEC9800A66172 /* WikiPage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,20 +245,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		274EF87A167BE8E300A66172 /* MasterViewController.xib */ = {
+		274EF87A167BE8E300A66172 /* PageListController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				274EF87B167BE8E300A66172 /* en */,
 			);
-			name = MasterViewController.xib;
+			name = PageListController.xib;
 			sourceTree = "<group>";
 		};
-		274EF87D167BE8E300A66172 /* DetailViewController.xib */ = {
+		274EF87D167BE8E300A66172 /* PageController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				274EF87E167BE8E300A66172 /* en */,
 			);
-			name = DetailViewController.xib;
+			name = PageController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -238,6 +283,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -260,6 +306,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -274,9 +321,14 @@
 		274EF883167BE8E300A66172 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TouchWiki/TouchWiki-Prefix.pch";
 				INFOPLIST_FILE = "TouchWiki/TouchWiki-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -285,9 +337,14 @@
 		274EF884167BE8E300A66172 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TouchWiki/TouchWiki-Prefix.pch";
 				INFOPLIST_FILE = "TouchWiki/TouchWiki-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
