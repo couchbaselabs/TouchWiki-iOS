@@ -1,68 +1,165 @@
 //
-//  DetailViewController.m
+//  PageController.m
 //  TouchWiki
 //
-//  Created by Jens Alfke on 12/14/12.
+//  Created by Jens Alfke on 12/15/12.
 //  Copyright (c) 2012 Couchbase. All rights reserved.
 //
 
 #import "PageController.h"
+#import "PageEditController.h"
 #import "WikiPage.h"
+#import "GHMarkdownParser.h"
 
 
-@interface PageController ()
-{
-    IBOutlet UILabel* _titleLabel;
-    IBOutlet UITextView* _textView;
-}
-
-@property (strong, nonatomic) UIPopoverController *masterPopoverController;
-- (void)configureView;
-@end
+static NSString *sHTMLPrefix, *sHTMLSuffix;
 
 
 @implementation PageController
+{
+    IBOutlet UITextField* _titleView;
+    IBOutlet UIWebView* _webView;
+    IBOutlet UIBarButtonItem* _editButton;
+    IBOutlet UIBarButtonItem* _previewButton;
+    IBOutlet UIBarButtonItem* _saveButton;
+    
+    PageEditController* _editController;
+    UIPopoverController *_masterPopoverController;
+}
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+
++ (void) initialize {
+    if (!sHTMLPrefix) {
+        NSURL* url = [[NSBundle bundleForClass: self] URLForResource: @"PageTemplate" withExtension: @"html"];
+        NSString* html = [NSString stringWithContentsOfURL: url encoding: NSUTF8StringEncoding error: nil];
+        NSArray* parts = [html componentsSeparatedByString: @"{{BODY}}"];
+        NSAssert(parts.count == 2, @"PageTemplate.html does not contain {{BODY}}");
+        sHTMLPrefix = parts[0];
+        sHTMLSuffix = parts[1];
+    }
+}
+
+
+- (id)init {
+    self = [super initWithNibName:@"PageController" bundle:nil];
     if (self) {
-        self.title = NSLocalizedString(@"Page", @"Page");
     }
     return self;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.rightBarButtonItem = _editButton;
     [self configureView];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 
 - (void)setPage:(id)newPage {
     if (_page != newPage) {
+        [self hideEditor: self];
         _page = newPage;
         [self configureView];
     }
 
-    if (self.masterPopoverController != nil) {
-        [self.masterPopoverController dismissPopoverAnimated:YES];
-    }        
+    [_masterPopoverController dismissPopoverAnimated:YES];
 }
 
 
 // Display the page in the UI.
 - (void)configureView {
-    _titleLabel.text = _page.title;
-    _textView.text = _page.markdown;
+    [self loadContent];
+    [self configureButtons];
 }
 
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) configureButtons {
+    NSArray* buttons = @[_editButton];
+    NSString* editTitle = @"Edit";
+    BOOL editEnabled = YES;
+    if (!_page) {
+        // No page at all:
+        editEnabled = NO;
+    } else if (_editController) {
+        // Edit mode:
+        buttons = @[_previewButton, _saveButton];
+    } else if (_page.editing) {
+        // Preview mode:
+        editTitle = @"Editing";
+    } else {
+        // Regular mode:
+    }
+
+    _editButton.enabled = editEnabled;
+    _editButton.title = editTitle;
+    [self.navigationItem setRightBarButtonItems: buttons animated: YES];
 }
 
-							
+
+- (void) loadContent {
+    self.title = _page ? _page.displayTitle : NSLocalizedString(@"No Page", @"No Page");
+    _titleView.text = _page.title;
+
+    NSString* str = _page.markdown;
+    NSString* html = @"";
+    if (str.length > 0)
+        html = [GHMarkdownParser flavoredHTMLStringFromMarkdownString: str];
+    html = [NSString stringWithFormat: @"%@%@%@", sHTMLPrefix, html, sHTMLSuffix];
+    [_webView loadHTMLString: html baseURL: nil];
+    NSLog(@"HTML = %@", html);//TEMP
+}
+
+
+- (IBAction) showEditor: (id)sender {
+    if (_editController)
+        return;
+    // Start editing:
+    if (!_page.editing) {
+        NSLog(@"*** EDITING '%@'", _page.title);
+        _page.editing = YES;
+    }
+    
+    _editController = [[PageEditController alloc] init];
+    _editController.page = _page;
+    [_editController willMoveToParentViewController: self];
+    [self addChildViewController: _editController];
+
+    [self.view addSubview: _editController.view];
+
+    [self configureButtons];
+}
+
+
+- (IBAction) hideEditor: (id)sender {
+    if (!_editController)
+        return;
+    
+    if (_page.needsSave)
+        [self loadContent];
+    else
+        _page.editing = NO;
+    
+    [_editController willMoveToParentViewController: nil];
+    [_editController removeFromParentViewController];
+    [_editController.view removeFromSuperview];
+    _editController = nil;
+
+    [self configureButtons];
+}
+
+
+- (IBAction) saveChanges: (id)sender {
+    [_editController saveEditing];
+    [self loadContent];
+    [self hideEditor: nil];
+}
+
+
 #pragma mark - SPLIT VIEW
 
 
@@ -73,7 +170,7 @@
 {
     barButtonItem.title = NSLocalizedString(@"Pages", @"Pages");
     [self.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-    self.masterPopoverController = popoverController;
+    _masterPopoverController = popoverController;
 }
 
 - (void)splitViewController:(UISplitViewController *)splitController
@@ -82,7 +179,8 @@
 {
     // Called when the view is shown again in the split view, invalidating the button and popover controller.
     [self.navigationItem setLeftBarButtonItem:nil animated:YES];
-    self.masterPopoverController = nil;
+    _masterPopoverController = nil;
 }
+
 
 @end

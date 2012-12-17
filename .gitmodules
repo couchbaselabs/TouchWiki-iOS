@@ -1,0 +1,3 @@
+[submodule "vendor/GHMarkdownParser"]
+	path = vendor/GHMarkdownParser
+	url = git://github.com/OliverLetterer/GHMarkdownParser.git

@@ -1,5 +1,5 @@
 //
-//  MasterViewController.m
+//  PageListController.m
 //  TouchWiki
 //
 //  Created by Jens Alfke on 12/14/12.
@@ -19,8 +19,8 @@
 }
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)init {
+    self = [super initWithNibName:@"PageListController" bundle:nil];
     if (self) {
         self.title = NSLocalizedString(@"Pages", @"Pages");
         self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
@@ -32,12 +32,12 @@
     [super viewDidLoad];
 
     _dataSource.query = _wiki.allPagesQuery;
-    _dataSource.labelProperty = @"title";
     _dataSource.deletionAllowed = YES;
     
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newPage:)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc]
+                                        initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                             target:self
+                                                             action:@selector(newPage:)];
     self.navigationItem.rightBarButtonItem = addButton;
 }
 
@@ -51,17 +51,30 @@
 
 - (IBAction) newPage: (id)sender {
     WikiPage* page = [_wiki newPage];
-    page.title = @"untitled";
-    page.markdown = @"Write something here!";
     page.updated_at = [NSDate date];
     
     NSError* error;
     BOOL ok = [page save: &error];
     NSAssert(ok, @"Couldn't save new page: %@", error);
+
+    self.pageController.page = page;
 }
 
 
 #pragma mark - TABLE DELEGATE:
+
+
+- (WikiPage*) pageForRow: (TDQueryRow*)row {
+    return [WikiPage modelForDocument: row.document];
+}
+
+
+- (void)couchTableSource:(TDUITableSource*)source
+             willUseCell:(UITableViewCell*)cell
+                  forRow:(TDQueryRow*)row
+{
+    cell.textLabel.text = [self pageForRow: row].displayTitle;
+}
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

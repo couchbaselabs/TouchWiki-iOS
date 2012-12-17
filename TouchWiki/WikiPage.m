@@ -12,4 +12,12 @@
 
 @dynamic title, markdown, updated_at, tags, members;
 
+- (bool) untitled {
+    return self.title.length == 0;
+}
+
+- (NSString*) displayTitle {
+    return self.untitled ? NSLocalizedString(@"untitled", @"untitled") : self.title;
+}
+
 @end

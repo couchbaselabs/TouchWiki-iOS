@@ -29,11 +29,11 @@
         [self showAlert: @"Couldn't open database" error: error fatal: YES];
     _wiki = [[Wiki alloc] initWithDatabase: database];
 
-    PageListController *pageListController = [[PageListController alloc] initWithNibName:@"PageListController" bundle:nil];
+    PageListController *pageListController = [[PageListController alloc] init];
     pageListController.wiki = _wiki;
     UINavigationController *pageListNavController = [[UINavigationController alloc] initWithRootViewController:pageListController];
 
-    PageController *pageController = [[PageController alloc] initWithNibName:@"PageController" bundle:nil];
+    PageController *pageController = [[PageController alloc] init];
     UINavigationController *pageNavController = [[UINavigationController alloc] initWithRootViewController:pageController];
 
     pageListController.pageController = pageController;

@@ -1,5 +1,5 @@
 //
-//  MasterViewController.h
+//  PageListController.h
 //  TouchWiki
 //
 //  Created by Jens Alfke on 12/14/12.

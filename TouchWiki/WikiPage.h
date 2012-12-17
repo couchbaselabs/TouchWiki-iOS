@@ -15,7 +15,12 @@
 @property (copy) NSString* markdown;
 @property (strong) NSDate* updated_at;
 
+@property (readonly) bool untitled;
+@property (readonly) NSString* displayTitle;
+
 @property (copy) NSArray* tags;
 @property (copy) NSArray* members;
+
+@property bool editing;
 
 @end

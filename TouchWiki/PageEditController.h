@@ -1,17 +1,18 @@
 //
-//  PageController.h
+//  PageEditController.h
 //  TouchWiki
 //
-//  Created by Jens Alfke on 12/15/12.
+//  Created by Jens Alfke on 12/14/12.
 //  Copyright (c) 2012 Couchbase. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 @class WikiPage;
 
-
-@interface PageController : UIViewController <UISplitViewControllerDelegate>
+@interface PageEditController : UIViewController <UITextViewDelegate>
 
 @property (strong, nonatomic) WikiPage* page;
+
+- (void) saveEditing;
 
 @end
