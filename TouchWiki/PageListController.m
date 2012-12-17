@@ -24,6 +24,7 @@
     if (self) {
         self.title = NSLocalizedString(@"Pages", @"Pages");
         self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+        self.restorationIdentifier = @"PageListController";
     }
     return self;
 }
@@ -39,10 +40,29 @@
                                                              target:self
                                                              action:@selector(newPage:)];
     self.navigationItem.rightBarButtonItem = addButton;
+
+    // Restore the current page:
+    NSString* curPageID = [[NSUserDefaults standardUserDefaults] stringForKey: @"CurrentPageID"];
+    if (curPageID) {
+        WikiPage* page = [_wiki pageWithID: curPageID];
+        NSIndexPath* path = [_dataSource indexPathForDocument: page.document];
+        NSLog(@"Restoring selected page ID '%@' as %@", curPageID, path);//TEMP
+        if (path) {
+            [_dataSource.tableView selectRowAtIndexPath: path animated: NO scrollPosition:UITableViewScrollPositionNone];
+            [self tableView: _dataSource.tableView
+                  didSelectRowAtIndexPath: path];
+        }
+    }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear: animated];
+
+    NSIndexPath* path = _dataSource.tableView.indexPathForSelectedRow;
+    NSString* docID = path ? [_dataSource documentAtIndexPath: path].documentID : nil;
+    [[NSUserDefaults standardUserDefaults] setObject: docID forKey: @"CurrentPageID"];
+    NSLog(@"Saved selected page ID '%@'", docID);//TEMP
 }
 
 

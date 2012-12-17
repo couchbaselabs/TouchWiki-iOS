@@ -3,12 +3,26 @@
     <head>
         <style>
             body {
-                font: 24px Baskerville, serif;
+                font: 16px Georgia, serif;
                 background-color: #fef7eb;
+            }
+            h1 {
+                text-align: center;
+            }
+            h1, h2, h3, h4, h5, h6, h7 {
+                font-family: "Helvetica Neue", sans-serif;
+            }
+            #container {
+                margin: 0px 12px;
+            }
+            code {
+                font-size: 100%; /* Courier sets slightly larger than the body text */
             }
         </style>
     </head>
     <body>
-        {{BODY}}
+        <div id="container">
+            {{BODY}}
+        </div>
     </body>
 </html>

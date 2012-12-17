@@ -11,6 +11,10 @@
 #import "WikiPage.h"
 #import "GHMarkdownParser.h"
 
+#define kFlipDuration 0.4
+#define kFlipToEditAnimation UIViewAnimationOptionTransitionFlipFromLeft
+#define kFlipToPreviewAnimation UIViewAnimationOptionTransitionFlipFromRight
+
 
 static NSString *sHTMLPrefix, *sHTMLSuffix;
 
@@ -47,16 +51,11 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = _editButton;
     [self configureView];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -79,6 +78,7 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
 
 
 - (void) configureButtons {
+    (void)self.view;
     NSArray* buttons = @[_editButton];
     NSString* editTitle = @"Edit";
     BOOL editEnabled = YES;
@@ -111,7 +111,7 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
         html = [GHMarkdownParser flavoredHTMLStringFromMarkdownString: str];
     html = [NSString stringWithFormat: @"%@%@%@", sHTMLPrefix, html, sHTMLSuffix];
     [_webView loadHTMLString: html baseURL: nil];
-    NSLog(@"HTML = %@", html);//TEMP
+    //NSLog(@"HTML = %@", html);
 }
 
 
@@ -124,14 +124,17 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
         _page.editing = YES;
     }
     
-    _editController = [[PageEditController alloc] init];
-    _editController.page = _page;
+    _editController = [[PageEditController alloc] initWithPage: _page];
     [_editController willMoveToParentViewController: self];
     [self addChildViewController: _editController];
 
-    [self.view addSubview: _editController.view];
-
     [self configureButtons];
+
+    [UIView transitionWithView: self.view
+                      duration: kFlipDuration
+                       options: kFlipToEditAnimation
+                    animations: ^{ [self.view addSubview: _editController.view]; }
+                    completion: nil];
 }
 
 
@@ -146,9 +149,14 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
     
     [_editController willMoveToParentViewController: nil];
     [_editController removeFromParentViewController];
-    [_editController.view removeFromSuperview];
-    _editController = nil;
 
+    [UIView transitionWithView: self.view
+                      duration: kFlipDuration
+                       options: kFlipToPreviewAnimation
+                    animations: ^{ [_editController.view removeFromSuperview]; }
+                    completion: nil];
+
+    _editController = nil;
     [self configureButtons];
 }
 

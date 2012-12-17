@@ -22,5 +22,6 @@
 @property (copy) NSArray* members;
 
 @property bool editing;
+@property NSRange selectedRange;
 
 @end

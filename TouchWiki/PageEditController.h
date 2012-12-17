@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 @class WikiPage;
 
+
 @interface PageEditController : UIViewController <UITextViewDelegate>
 
-@property (strong, nonatomic) WikiPage* page;
+- (id) initWithPage: (WikiPage*)page;
+
+@property (readonly, nonatomic) WikiPage* page;
 
 - (void) saveEditing;
 

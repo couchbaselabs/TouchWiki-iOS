@@ -17,10 +17,11 @@
 }
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id) initWithPage: (WikiPage*)page {
+    NSParameterAssert(page != nil);
+    self = [super init];
     if (self) {
-        self.title = NSLocalizedString(@"Page", @"Page");
+        _page = page;
     }
     return self;
 }
@@ -28,31 +29,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self configureView];
-}
-
-
-- (void)setPage:(id)newPage {
-    if (_page != newPage) {
-        _page = newPage;
-        [self configureView];
-    }
-}
-
-
-// Display the page in the UI.
-- (void)configureView {
     _titleView.text = _page.title;
     _textView.text = _page.markdown;
+    _textView.selectedRange = _page.selectedRange;
+    [_textView scrollRangeToVisible: _textView.selectedRange];
     self.title = _page.displayTitle;
     UIView* toEditFirst = _page.untitled ? _titleView : _textView;
     [toEditFirst becomeFirstResponder];
 }
 
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [self storeText];
+    [super viewWillDisappear: animated];
+}
+
+
 - (void) storeText {
     _page.title = _titleView.text;
     _page.markdown = _textView.text;
+    _page.selectedRange = _textView.selectedRange;
     NSLog(@"Stored text; changed = %d", _page.needsSave);
 }
 
@@ -70,7 +66,6 @@
 
 
 - (IBAction) titleChanged: (id)sender {
-    NSLog(@"Title changed");//TEMP
     _page.title = _titleView.text;
 }
 
@@ -81,13 +76,7 @@
 }
 
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    return YES;
-}
-
-
 - (void)textViewDidChange:(UITextView *)textView {
-    NSLog(@"Text changed");//TEMP
     _page.markdown = _textView.text;
 }
 
