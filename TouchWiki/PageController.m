@@ -8,6 +8,8 @@
 
 #import "PageController.h"
 #import "PageEditController.h"
+#import "PageListController.h"
+#import "Wiki.h"
 #import "WikiPage.h"
 #import "GHMarkdownParser.h"
 
@@ -17,18 +19,23 @@
 
 
 static NSString *sHTMLPrefix, *sHTMLSuffix;
+static NSRegularExpression* sWikiWordRegex;
 
 
 @implementation PageController
 {
     IBOutlet UITextField* _titleView;
     IBOutlet UIWebView* _webView;
+    IBOutlet UIBarButtonItem* _backButton;
+    IBOutlet UIBarButtonItem* _fwdButton;
     IBOutlet UIBarButtonItem* _editButton;
     IBOutlet UIBarButtonItem* _previewButton;
     IBOutlet UIBarButtonItem* _saveButton;
     
     PageEditController* _editController;
     UIPopoverController *_masterPopoverController;
+    NSString* _pendingTitle;
+    NSURL* _pendingURL;
 }
 
 
@@ -40,6 +47,11 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
         NSAssert(parts.count == 2, @"PageTemplate.html does not contain {{BODY}}");
         sHTMLPrefix = parts[0];
         sHTMLSuffix = parts[1];
+
+        sWikiWordRegex = [NSRegularExpression regularExpressionWithPattern: @"\\[\\[([\\w ]+)\\]\\]"
+                                                                   options: 0
+                                                                     error: nil];
+        NSAssert(sWikiWordRegex != nil, @"Bad regex");
     }
 }
 
@@ -55,6 +67,7 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = _editButton;
+    [self.navigationItem setLeftBarButtonItems: @[_backButton, _fwdButton]];
     [self configureView];
 }
 
@@ -105,13 +118,17 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
     self.title = _page ? _page.displayTitle : NSLocalizedString(@"No Page", @"No Page");
     _titleView.text = _page.title;
 
-    NSString* str = _page.markdown;
+    NSMutableString* str = _page.markdown.mutableCopy;
     NSString* html = @"";
-    if (str.length > 0)
+    if (str.length > 0) {
+        // Markdown parsing:
+        [sWikiWordRegex replaceMatchesInString: str options: 0 range: NSMakeRange(0,str.length)
+                                  withTemplate: @"[$1](wiki:$1)"];
         html = [GHMarkdownParser flavoredHTMLStringFromMarkdownString: str];
+    }
     html = [NSString stringWithFormat: @"%@%@%@", sHTMLPrefix, html, sHTMLSuffix];
     [_webView loadHTMLString: html baseURL: nil];
-    //NSLog(@"HTML = %@", html);
+    NSLog(@"HTML = %@", html);
 }
 
 
@@ -168,6 +185,69 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
 }
 
 
+- (void) goToPageNamed: (NSString*)title {
+    WikiPage* page = [_pageListController.wiki pageWithTitle: title];
+    if (page)
+        [_pageListController selectPage: page];
+    else {
+        _pendingTitle = title;
+        NSString* message = [NSString stringWithFormat: @"There is no page named “%@”. "
+                                                         "Do you want to create it?", title];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle: @"Create Page?"
+                                                        message: message
+                                                           delegate: self
+                                                  cancelButtonTitle: @"Cancel"
+                                                  otherButtonTitles: @"Create", nil];
+        [alert show];
+    }
+}
+
+- (void) goToExternalURL: (NSURL*)url {
+    _pendingURL = url;
+    NSString* message = @"This URL will open in another app. Do you want to open it?";
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle: @"Open external URL?"
+                                                    message: message
+                                                   delegate: self
+                                          cancelButtonTitle: @"Cancel"
+                                          otherButtonTitles: @"Open", nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex <= 0)
+        return;
+    if (_pendingURL) {
+        [[UIApplication sharedApplication] openURL: _pendingURL];
+    } else {
+        [_pageListController createPageWithTitle: _pendingTitle];
+    }
+    _pendingTitle = nil;
+    _pendingURL = nil;
+}
+
+
+#pragma mark - WEB VIEW
+
+
+- (BOOL)webView:(UIWebView *)webView
+        shouldStartLoadWithRequest:(NSURLRequest *)request
+        navigationType:(UIWebViewNavigationType)navigationType
+{
+    if (navigationType != UIWebViewNavigationTypeLinkClicked)
+        return YES;
+    NSURL* url = request.URL;
+    if ([url.scheme isEqualToString: @"wiki"]) {
+        NSString* title = [url.resourceSpecifier stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+        NSLog(@"Link to '%@'", title);
+        [self performSelector: @selector(goToPageNamed:) withObject: title afterDelay: 0.0];
+    } else if ([[UIApplication sharedApplication] canOpenURL: url]) {
+        [self performSelector: @selector(goToExternalURL:) withObject: url afterDelay: 0.0];
+    }
+    return NO;
+}
+
+
+
 #pragma mark - SPLIT VIEW
 
 
@@ -177,7 +257,7 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
        forPopoverController:(UIPopoverController *)popoverController
 {
     barButtonItem.title = NSLocalizedString(@"Pages", @"Pages");
-    [self.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
+    self.navigationItem.leftBarButtonItems = @[barButtonItem, _backButton, _fwdButton];
     _masterPopoverController = popoverController;
 }
 
@@ -186,7 +266,7 @@ static NSString *sHTMLPrefix, *sHTMLSuffix;
   invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
     // Called when the view is shown again in the split view, invalidating the button and popover controller.
-    [self.navigationItem setLeftBarButtonItem:nil animated:YES];
+    self.navigationItem.leftBarButtonItems = @[_backButton, _fwdButton];
     _masterPopoverController = nil;
 }
 

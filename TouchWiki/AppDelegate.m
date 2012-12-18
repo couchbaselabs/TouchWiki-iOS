@@ -37,6 +37,7 @@
     UINavigationController *pageNavController = [[UINavigationController alloc] initWithRootViewController:pageController];
 
     pageListController.pageController = pageController;
+    pageController.pageListController = pageListController;
 
     self.splitViewController = [[UISplitViewController alloc] init];
     self.splitViewController.delegate = pageController;

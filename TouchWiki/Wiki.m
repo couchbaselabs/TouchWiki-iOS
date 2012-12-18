@@ -36,6 +36,16 @@
 }
 
 
+- (WikiPage*) pageWithTitle: (NSString*)title {
+    for (TDQueryRow* row in _allPagesQuery.rows) {
+        if ([title isEqualToString: row.key]) {
+            return [WikiPage modelForDocument: row.document];
+        }
+    }
+    return nil;
+}
+
+
 - (WikiPage*) newPage {
     return [[WikiPage alloc] initWithNewDocumentInDatabase: _database];
 }

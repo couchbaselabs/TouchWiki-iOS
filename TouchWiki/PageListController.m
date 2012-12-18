@@ -49,8 +49,7 @@
         NSLog(@"Restoring selected page ID '%@' as %@", curPageID, path);//TEMP
         if (path) {
             [_dataSource.tableView selectRowAtIndexPath: path animated: NO scrollPosition:UITableViewScrollPositionNone];
-            [self tableView: _dataSource.tableView
-                  didSelectRowAtIndexPath: path];
+            self.pageController.page = page;
         }
     }
 }
@@ -69,15 +68,34 @@
 #pragma mark - ACTIONS:
 
 
-- (IBAction) newPage: (id)sender {
+- (void) createPageWithTitle: (NSString*)title {
     WikiPage* page = [_wiki newPage];
     page.updated_at = [NSDate date];
+    if (title)
+        page.title = title;
     
     NSError* error;
     BOOL ok = [page save: &error];
     NSAssert(ok, @"Couldn't save new page: %@", error);
 
     self.pageController.page = page;
+}
+
+    
+- (IBAction) newPage: (id)sender {
+    [self createPageWithTitle: nil];
+}
+
+
+- (bool) selectPage: (WikiPage*)page {
+    NSIndexPath* path = page ? [_dataSource indexPathForDocument: page.document] : nil;
+    if (!path)
+        return false;
+    [_dataSource.tableView selectRowAtIndexPath: path
+                                       animated: NO
+                                 scrollPosition: UITableViewScrollPositionMiddle];
+    self.pageController.page = page;
+    return true;
 }
 
 

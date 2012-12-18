@@ -20,6 +20,7 @@
 @property (readonly) TDLiveQuery* allPagesQuery;
 
 - (WikiPage*) pageWithID: (NSString*)pageID;
+- (WikiPage*) pageWithTitle: (NSString*)pageTitle;
 - (WikiPage*) newPage;
 
 @end
