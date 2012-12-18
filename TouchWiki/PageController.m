@@ -125,7 +125,7 @@ static NSRegularExpression* sWikiWordRegex;
 
 
 - (void) loadContent {
-    self.title = _page ? _page.displayTitle : NSLocalizedString(@"No Page", @"No Page");
+    self.title = _page ? _page.title : NSLocalizedString(@"No Page", @"No Page");
     _titleView.text = _page.title;
 
     NSMutableString* html = [sHTMLPrefix mutableCopy];

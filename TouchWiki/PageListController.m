@@ -52,11 +52,7 @@
 
 
 - (void) createPageWithTitle: (NSString*)title {
-    WikiPage* page = [_wiki newPage];
-    page.updated_at = [NSDate date];
-    if (title)
-        page.title = title;
-    
+    WikiPage* page = [_wiki newPageWithTitle: title];
     NSError* error;
     if (![page save: &error]) {
         [gAppDelegate showAlert: @"Couldn't create page" error: error fatal: NO];
@@ -68,7 +64,26 @@
 
     
 - (IBAction) newPage: (id)sender {
-    [self createPageWithTitle: nil];
+    //FIX: This is an awful UI.
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle: @"Create Page"
+                                                    message: @"What's the title of the new page?"
+                                                   delegate: self
+                                          cancelButtonTitle: @"Cancel"
+                                          otherButtonTitles: @"Create", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert show];
+}
+
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alert {
+    return [alert textFieldAtIndex: 0].text.length > 0;
+}
+
+- (void)alertView:(UIAlertView *)alert didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex > 0) {
+        NSString* title = [alert textFieldAtIndex: 0].text;
+        if (title.length > 0)
+            [self createPageWithTitle: title];
+    }
 }
 
 
@@ -106,7 +121,7 @@
              willUseCell:(UITableViewCell*)cell
                   forRow:(TDQueryRow*)row
 {
-    cell.textLabel.text = [self pageForRow: row].displayTitle;
+    cell.textLabel.text = [self pageForRow: row].title;
 }
 
 

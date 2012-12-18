@@ -39,13 +39,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _titleView.text = _page.title;
+    _titleView.enabled = NO;
     _textView.inputAccessoryView = _keypadView;
     _textView.text = _page.markdown;
     _textView.selectedRange = _page.selectedRange;
     [_textView scrollRangeToVisible: _textView.selectedRange];
-    self.title = _page.displayTitle;
-    UIView* toEditFirst = _page.untitled ? _titleView : _textView;
-    [toEditFirst becomeFirstResponder];
+    self.title = _page.title;
+    [_textView becomeFirstResponder];
 }
 
 
@@ -67,18 +67,36 @@
 
 
 - (void) storeText {
-    _page.title = _titleView.text;
     _page.markdown = _textView.text;
     _page.selectedRange = _textView.selectedRange;
     NSLog(@"Stored text; changed = %d", _page.needsSave);
 }
 
 
-#pragma mark - TEXT DELEGATE:
+#pragma mark - TEXT EDITING:
 
 
-- (IBAction) titleChanged: (id)sender {
-    _page.title = _titleView.text;
+#define kOpenDelimiterChars  @"_*`[[<"
+#define kCloseDelimiterChars @"_*`]]>"
+
+- (IBAction) specialKey:(id)sender {
+    NSString* key = ((UIButton*)sender).titleLabel.text;
+    UITextRange *sel = _textView.selectedTextRange;
+    NSRange r = [kOpenDelimiterChars rangeOfString: key];
+    if (r.length == 0 || sel.isEmpty) {
+        [_textView insertText: key];
+    } else {
+        NSString* endingKey = [kCloseDelimiterChars substringWithRange: r];
+        UITextPosition* start = sel.start;
+        UITextPosition* end = sel.end;
+        [_textView replaceRange: [_textView textRangeFromPosition: end toPosition: end]
+                       withText: endingKey];
+        [_textView replaceRange: [_textView textRangeFromPosition: start toPosition: start]
+                       withText: key];
+        start = [_textView positionFromPosition: start offset: key.length];
+        end = [_textView positionFromPosition: end offset: key.length];
+        _textView.selectedTextRange = [_textView textRangeFromPosition: start toPosition: end];
+    }
 }
 
 

@@ -10,6 +10,7 @@
 #import "PageListController.h"
 #import "PageController.h"
 #import "Wiki.h"
+#import "WikiStore.h"
 #import <TouchDB/TouchDB.h>
 
 
@@ -29,7 +30,8 @@
         [self showAlert: @"Couldn't open database" error: error fatal: YES];
 
     // Initialize data model:
-    _wiki = [[Wiki alloc] initWithDatabase: database];
+    _wikiStore = [[WikiStore alloc] initWithDatabase: database];
+    _wiki = [[Wiki alloc] initWithStore: _wikiStore ID: @"wiki"];
 
     // Create the UI:
     PageListController *pageListController = [[PageListController alloc] initWithWiki: _wiki];

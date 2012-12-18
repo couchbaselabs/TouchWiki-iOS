@@ -7,21 +7,25 @@
 //
 
 #import "Wiki.h"
+#import "WikiStore.h"
 #import "WikiPage.h"
+#import <TouchDB/TDModelFactory.h>
 
 
 @implementation Wiki
 
-
-- (id) initWithDatabase: (TDDatabase*)database {
+- (id) initWithStore: (WikiStore*)store ID: (NSString*)wikiID {
     self = [super init];
     if (self) {
-        _database = database;
+        _store = store;
 
-        [[_database viewNamed: @"pagesByTitle"] setMapBlock: MAPBLOCK({
-            id title = [doc objectForKey: @"title"];
-            if (title) emit(title, nil);
-        }) reduceBlock: nil version: @"1"];
+        [[_store.database viewNamed: @"pagesByTitle"] setMapBlock: MAPBLOCK({
+            if ([doc[@"type"] isEqualToString: @"page"]) {
+                NSString* title = [WikiPage titleFromDocID: doc[@"_id"]];
+                if (title)
+                    emit(title, nil);
+            }
+        }) reduceBlock: nil version: @"2"];
         _allPagesQuery = [[[_database viewNamed: @"pagesByTitle"] query] asLiveQuery];
     }
     return self;
@@ -29,7 +33,7 @@
 
 
 - (WikiPage*) pageWithID: (NSString*)pageID {
-    TDDocument* doc = [_database documentWithID: pageID];
+    TDDocument* doc = [_store.database documentWithID: pageID];
     if (!doc.currentRevisionID)
         return nil;
     return [WikiPage modelForDocument: doc];
@@ -37,17 +41,12 @@
 
 
 - (WikiPage*) pageWithTitle: (NSString*)title {
-    for (TDQueryRow* row in _allPagesQuery.rows) {
-        if ([title isEqualToString: row.key]) {
-            return [WikiPage modelForDocument: row.document];
-        }
-    }
-    return nil;
+    return [self pageWithID: [WikiPage docIDForTitle: title]];
 }
 
 
-- (WikiPage*) newPage {
-    return [[WikiPage alloc] initWithNewDocumentInDatabase: _database];
+- (WikiPage*) newPageWithTitle: (NSString*)pageTitle {
+    return [[WikiPage alloc] initWithTitle: pageTitle inDatabase: _database];
 }
 
 

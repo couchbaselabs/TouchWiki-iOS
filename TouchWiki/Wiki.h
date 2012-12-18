@@ -8,19 +8,21 @@
 
 #import <Foundation/Foundation.h>
 #import <TouchDB/TouchDB.h>
-@class WikiPage;
+@class WikiStore, WikiPage;
 
 
+/** One wiki in the database. */
 @interface Wiki : NSObject
 
-- (id) initWithDatabase: (TDDatabase*)database;
+- (id) initWithStore: (WikiStore*)store ID: (NSString*)wikiID;
 
+@property (readonly) WikiStore* store;
 @property (readonly) TDDatabase* database;
 
 @property (readonly) TDLiveQuery* allPagesQuery;
 
 - (WikiPage*) pageWithID: (NSString*)pageID;
 - (WikiPage*) pageWithTitle: (NSString*)pageTitle;
-- (WikiPage*) newPage;
+- (WikiPage*) newPageWithTitle: (NSString*)pageTitle;
 
 @end

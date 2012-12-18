@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-@class Wiki;
+@class WikiStore, Wiki;
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+@property (readonly) WikiStore* wikiStore;
 @property (readonly) Wiki* wiki;
 
 @property (strong, nonatomic) UIWindow *window;
