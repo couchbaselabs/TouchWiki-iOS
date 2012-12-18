@@ -17,4 +17,8 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UISplitViewController *splitViewController;
 
+- (void)showAlert: (NSString*)message error: (NSError*)error fatal: (BOOL)fatal;
+
 @end
+
+AppDelegate* gAppDelegate;

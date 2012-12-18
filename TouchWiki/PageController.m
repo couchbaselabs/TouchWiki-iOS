@@ -9,6 +9,7 @@
 #import "PageController.h"
 #import "PageEditController.h"
 #import "PageListController.h"
+#import "AppDelegate.h"
 #import "Wiki.h"
 #import "WikiPage.h"
 #import "GHMarkdownParser.h"
@@ -31,7 +32,8 @@ static NSRegularExpression* sWikiWordRegex;
     IBOutlet UIBarButtonItem* _editButton;
     IBOutlet UIBarButtonItem* _previewButton;
     IBOutlet UIBarButtonItem* _saveButton;
-    
+
+    Wiki* _wiki;
     PageEditController* _editController;
     UIPopoverController *_masterPopoverController;
     NSString* _pendingTitle;
@@ -56,9 +58,10 @@ static NSRegularExpression* sWikiWordRegex;
 }
 
 
-- (id)init {
+- (id)initWithWiki: (Wiki*)wiki {
     self = [super initWithNibName:@"PageController" bundle:nil];
     if (self) {
+        _wiki = wiki;
     }
     return self;
 }
@@ -69,16 +72,28 @@ static NSRegularExpression* sWikiWordRegex;
     self.navigationItem.rightBarButtonItem = _editButton;
     [self.navigationItem setLeftBarButtonItems: @[_backButton, _fwdButton]];
     [self configureView];
+
+    // Restore the current page:
+    NSString* curPageID = [[NSUserDefaults standardUserDefaults] stringForKey: @"CurrentPageID"];
+    if (curPageID) {
+        self.page = [_wiki pageWithID: curPageID];
+    }
 }
 
 
-- (void)setPage:(id)newPage {
+- (void) setPage: (WikiPage*)newPage {
+    NSLog(@"setPage: %@", newPage);
     if (_page != newPage) {
         [self hideEditor: self];
-        _page = newPage;
-        [self configureView];
-    }
 
+        [_page removeObserver: self forKeyPath: @"needsSave"];
+        _page = newPage;
+        [_page addObserver: self forKeyPath: @"needsSave" options: 0 context: NULL];
+        [self configureView];
+
+        [[NSUserDefaults standardUserDefaults] setObject: _page.document.documentID
+                                                  forKey: @"CurrentPageID"];
+    }
     [_masterPopoverController dismissPopoverAnimated:YES];
 }
 
@@ -91,25 +106,20 @@ static NSRegularExpression* sWikiWordRegex;
 
 
 - (void) configureButtons {
-    (void)self.view;
-    NSArray* buttons = @[_editButton];
-    NSString* editTitle = @"Edit";
-    BOOL editEnabled = YES;
-    if (!_page) {
-        // No page at all:
-        editEnabled = NO;
-    } else if (_editController) {
-        // Edit mode:
-        buttons = @[_previewButton, _saveButton];
-    } else if (_page.editing) {
-        // Preview mode:
-        editTitle = @"Editing";
+    (void)self.view; // make sure nib is loaded
+    
+    NSMutableArray* buttons = [NSMutableArray array];
+    
+    if (_editController) {
+        [buttons addObject: _previewButton];
+        _previewButton.title = _page.needsSave ? @"Preview" : @"Done";
     } else {
-        // Regular mode:
+        [buttons addObject: _editButton];
     }
+    
+    if (_page.editing && _page.needsSave)
+        [buttons addObject: _saveButton];
 
-    _editButton.enabled = editEnabled;
-    _editButton.title = editTitle;
     [self.navigationItem setRightBarButtonItems: buttons animated: YES];
 }
 
@@ -118,17 +128,23 @@ static NSRegularExpression* sWikiWordRegex;
     self.title = _page ? _page.displayTitle : NSLocalizedString(@"No Page", @"No Page");
     _titleView.text = _page.title;
 
-    NSMutableString* str = _page.markdown.mutableCopy;
-    NSString* html = @"";
-    if (str.length > 0) {
-        // Markdown parsing:
-        [sWikiWordRegex replaceMatchesInString: str options: 0 range: NSMakeRange(0,str.length)
-                                  withTemplate: @"[$1](wiki:$1)"];
-        html = [GHMarkdownParser flavoredHTMLStringFromMarkdownString: str];
+    NSMutableString* html = [sHTMLPrefix mutableCopy];
+
+    if (_page.needsSave) {
+        [html appendString: @"<div id='banner'>PREVIEW</div>\n"];
     }
-    html = [NSString stringWithFormat: @"%@%@%@", sHTMLPrefix, html, sHTMLSuffix];
+
+    NSMutableString* markdown = _page.markdown.mutableCopy;
+    if (markdown.length > 0) {
+        // Markdown parsing:
+        [sWikiWordRegex replaceMatchesInString: markdown options: 0
+                                         range: NSMakeRange(0,markdown.length)
+                                  withTemplate: @"[$1](wiki:$1)"];
+        [html appendString: [GHMarkdownParser flavoredHTMLStringFromMarkdownString: markdown]];
+    }
+    [html appendString: sHTMLSuffix];
     [_webView loadHTMLString: html baseURL: nil];
-    NSLog(@"HTML = %@", html);
+    //NSLog(@"HTML = %@", html);
 }
 
 
@@ -179,10 +195,28 @@ static NSRegularExpression* sWikiWordRegex;
 
 
 - (IBAction) saveChanges: (id)sender {
-    [_editController saveEditing];
+    [_editController storeText];
+
+    NSError* error;
+    NSLog(@"Saving...");
+    if (![_page save: &error]) {
+        [gAppDelegate showAlert: @"Couldn't save page" error: error fatal: NO];
+        return;
+    }
+    
     [self loadContent];
     [self hideEditor: nil];
 }
+
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == _page) {
+        [self configureButtons];
+    }
+}
+
+
+#pragma mark - WEB VIEW
 
 
 - (void) goToPageNamed: (NSString*)title {
@@ -226,9 +260,6 @@ static NSRegularExpression* sWikiWordRegex;
 }
 
 
-#pragma mark - WEB VIEW
-
-
 - (BOOL)webView:(UIWebView *)webView
         shouldStartLoadWithRequest:(NSURLRequest *)request
         navigationType:(UIWebViewNavigationType)navigationType
@@ -256,6 +287,7 @@ static NSRegularExpression* sWikiWordRegex;
           withBarButtonItem:(UIBarButtonItem *)barButtonItem
        forPopoverController:(UIPopoverController *)popoverController
 {
+    (void)self.view; // ensure nib is loaded
     barButtonItem.title = NSLocalizedString(@"Pages", @"Pages");
     self.navigationItem.leftBarButtonItems = @[barButtonItem, _backButton, _fwdButton];
     _masterPopoverController = popoverController;
@@ -266,6 +298,7 @@ static NSRegularExpression* sWikiWordRegex;
   invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
     // Called when the view is shown again in the split view, invalidating the button and popover controller.
+    (void)self.view; // ensure nib is loaded
     self.navigationItem.leftBarButtonItems = @[_backButton, _fwdButton];
     _masterPopoverController = nil;
 }

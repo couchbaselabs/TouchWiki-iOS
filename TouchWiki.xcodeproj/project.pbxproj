@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		273607C11680EE0E0018043D /* iPad icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 273607C01680EE0E0018043D /* iPad icon.png */; };
+		273607C31680EE110018043D /* iPad icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273607C21680EE100018043D /* iPad icon@2x.png */; };
 		2736709E167D0D2800BAEE8D /* libGHMarkdownParser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2736709A167D0C9300BAEE8D /* libGHMarkdownParser.a */; };
 		273670A1167D42EA00BAEE8D /* PageController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2736709F167D42EA00BAEE8D /* PageController.xib */; };
 		273670A4167D46AB00BAEE8D /* PageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 273670A3167D46AB00BAEE8D /* PageController.m */; };
@@ -52,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		273607C01680EE0E0018043D /* iPad icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad icon.png"; path = "../iPad icon.png"; sourceTree = "<group>"; };
+		273607C21680EE100018043D /* iPad icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad icon@2x.png"; path = "../iPad icon@2x.png"; sourceTree = "<group>"; };
 		27367092167D0C9300BAEE8D /* GHMarkdownParser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GHMarkdownParser.xcodeproj; path = vendor/GHMarkdownParser/GHMarkdownParser/GHMarkdownParser.xcodeproj; sourceTree = "<group>"; };
 		273670A0167D42EA00BAEE8D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PageController.xib; sourceTree = "<group>"; };
 		273670A2167D46AB00BAEE8D /* PageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageController.h; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 				274EF865167BE8E300A66172 /* InfoPlist.strings */,
 				274EF868167BE8E300A66172 /* main.m */,
 				274EF86A167BE8E300A66172 /* TouchWiki-Prefix.pch */,
+				273607C21680EE100018043D /* iPad icon@2x.png */,
+				273607C01680EE0E0018043D /* iPad icon.png */,
 				274EF86E167BE8E300A66172 /* Default.png */,
 				274EF870167BE8E300A66172 /* Default@2x.png */,
 				274EF872167BE8E300A66172 /* Default-568h@2x.png */,
@@ -274,6 +280,8 @@
 				274EF87F167BE8E300A66172 /* PageEditController.xib in Resources */,
 				273670A1167D42EA00BAEE8D /* PageController.xib in Resources */,
 				274FB33F167FB72000D1DDA8 /* PageTemplate.html in Resources */,
+				273607C11680EE0E0018043D /* iPad icon.png in Resources */,
+				273607C31680EE110018043D /* iPad icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

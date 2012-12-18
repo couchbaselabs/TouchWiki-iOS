@@ -13,9 +13,11 @@
 
 @interface PageListController : UIViewController <TouchUITableDelegate>
 
+- (id)initWithWiki: (Wiki*)wiki;
+
 @property (strong, nonatomic) PageController *pageController;
 
-@property (strong, nonatomic) Wiki* wiki;
+@property (readonly, nonatomic) Wiki* wiki;
 
 - (bool) selectPage: (WikiPage*)page;
 

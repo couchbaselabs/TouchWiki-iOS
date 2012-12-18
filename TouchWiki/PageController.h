@@ -7,12 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-@class PageListController, WikiPage;
+@class PageListController, Wiki, WikiPage;
 
 
 @interface PageController : UIViewController <UISplitViewControllerDelegate>
 
+- (id)initWithWiki: (Wiki*)wiki;
+
 @property (strong) PageListController* pageListController;
 @property (strong, nonatomic) WikiPage* page;
+
+- (IBAction) showEditor: (id)sender;
+- (IBAction) hideEditor: (id)sender;
+- (IBAction) saveChanges: (id)sender;
 
 @end

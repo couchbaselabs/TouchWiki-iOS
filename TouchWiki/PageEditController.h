@@ -16,6 +16,6 @@
 
 @property (readonly, nonatomic) WikiPage* page;
 
-- (void) saveEditing;
+- (void) storeText;
 
 @end

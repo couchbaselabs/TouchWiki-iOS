@@ -8,6 +8,7 @@
 
 #import "PageListController.h"
 #import "PageController.h"
+#import "AppDelegate.h"
 #import "Wiki.h"
 #import "WikiPage.h"
 #import <TouchDB/TouchDB.h>
@@ -19,9 +20,10 @@
 }
 
 
-- (id)init {
+- (id)initWithWiki: (Wiki*)wiki {
     self = [super initWithNibName:@"PageListController" bundle:nil];
     if (self) {
+        _wiki = wiki;
         self.title = NSLocalizedString(@"Pages", @"Pages");
         self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
         self.restorationIdentifier = @"PageListController";
@@ -41,27 +43,8 @@
                                                              action:@selector(newPage:)];
     self.navigationItem.rightBarButtonItem = addButton;
 
-    // Restore the current page:
-    NSString* curPageID = [[NSUserDefaults standardUserDefaults] stringForKey: @"CurrentPageID"];
-    if (curPageID) {
-        WikiPage* page = [_wiki pageWithID: curPageID];
-        NSIndexPath* path = [_dataSource indexPathForDocument: page.document];
-        NSLog(@"Restoring selected page ID '%@' as %@", curPageID, path);//TEMP
-        if (path) {
-            [_dataSource.tableView selectRowAtIndexPath: path animated: NO scrollPosition:UITableViewScrollPositionNone];
-            self.pageController.page = page;
-        }
-    }
-}
-
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear: animated];
-
-    NSIndexPath* path = _dataSource.tableView.indexPathForSelectedRow;
-    NSString* docID = path ? [_dataSource documentAtIndexPath: path].documentID : nil;
-    [[NSUserDefaults standardUserDefaults] setObject: docID forKey: @"CurrentPageID"];
-    NSLog(@"Saved selected page ID '%@'", docID);//TEMP
+    [_pageController addObserver: self forKeyPath: @"page" options: 0 context: NULL];
+    [self selectPage: _pageController.page];
 }
 
 
@@ -75,10 +58,12 @@
         page.title = title;
     
     NSError* error;
-    BOOL ok = [page save: &error];
-    NSAssert(ok, @"Couldn't save new page: %@", error);
+    if (![page save: &error]) {
+        [gAppDelegate showAlert: @"Couldn't create page" error: error fatal: NO];
+    }
 
-    self.pageController.page = page;
+    _pageController.page = page;
+    [_pageController showEditor: self];
 }
 
     
@@ -94,8 +79,18 @@
     [_dataSource.tableView selectRowAtIndexPath: path
                                        animated: NO
                                  scrollPosition: UITableViewScrollPositionMiddle];
-    self.pageController.page = page;
+    if (page != _pageController.page) {
+        _pageController.page = page;
+    }
     return true;
+}
+
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                         change:(NSDictionary *)change context:(void *)context
+{
+    if (object == _pageController && [keyPath isEqualToString: @"page"])
+        [self selectPage: _pageController.page];
 }
 
 

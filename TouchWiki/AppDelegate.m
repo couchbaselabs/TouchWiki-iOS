@@ -18,8 +18,8 @@
 - (BOOL)application:(UIApplication *)application
         didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    gAppDelegate = self;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
 
     // Initialize TouchDB:
     NSError* error;
@@ -27,13 +27,15 @@
                                                                              error: &error];
     if (!database)
         [self showAlert: @"Couldn't open database" error: error fatal: YES];
+
+    // Initialize data model:
     _wiki = [[Wiki alloc] initWithDatabase: database];
 
-    PageListController *pageListController = [[PageListController alloc] init];
-    pageListController.wiki = _wiki;
+    // Create the UI:
+    PageListController *pageListController = [[PageListController alloc] initWithWiki: _wiki];
     UINavigationController *pageListNavController = [[UINavigationController alloc] initWithRootViewController:pageListController];
 
-    PageController *pageController = [[PageController alloc] init];
+    PageController *pageController = [[PageController alloc] initWithWiki: _wiki];
     UINavigationController *pageNavController = [[UINavigationController alloc] initWithRootViewController:pageController];
 
     pageListController.pageController = pageController;
@@ -46,6 +48,9 @@
     [self.window makeKeyAndVisible];
     return YES;
 }
+
+
+#pragma mark - ALERT:
 
 
 // Display an error alert, without blocking.
