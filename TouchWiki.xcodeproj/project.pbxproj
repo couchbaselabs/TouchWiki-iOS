@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		270B93B21682715B005ED1CE /* WikiListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 270B93B01682715B005ED1CE /* WikiListController.xib */; };
+		270B93B516827195005ED1CE /* WikiListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 270B93B416827195005ED1CE /* WikiListController.m */; };
+		270B93B816827888005ED1CE /* PageIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93B616827888005ED1CE /* PageIcon.png */; };
+		270B93B916827888005ED1CE /* PageIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93B716827888005ED1CE /* PageIcon@2x.png */; };
+		270B93BC1682789D005ED1CE /* WikiIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93BA1682789D005ED1CE /* WikiIcon.png */; };
+		270B93BD1682789D005ED1CE /* WikiIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93BB1682789D005ED1CE /* WikiIcon@2x.png */; };
 		273607C11680EE0E0018043D /* iPad icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 273607C01680EE0E0018043D /* iPad icon.png */; };
 		273607C31680EE110018043D /* iPad icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273607C21680EE100018043D /* iPad icon@2x.png */; };
 		273607C9168121E30018043D /* WikiStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 273607C8168121E30018043D /* WikiStore.m */; };
@@ -56,6 +62,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		270B93B11682715B005ED1CE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WikiListController.xib; sourceTree = "<group>"; };
+		270B93B316827195005ED1CE /* WikiListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikiListController.h; sourceTree = "<group>"; };
+		270B93B416827195005ED1CE /* WikiListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiListController.m; sourceTree = "<group>"; };
+		270B93B616827888005ED1CE /* PageIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PageIcon.png; sourceTree = "<group>"; };
+		270B93B716827888005ED1CE /* PageIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PageIcon@2x.png"; sourceTree = "<group>"; };
+		270B93BA1682789D005ED1CE /* WikiIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WikiIcon.png; sourceTree = "<group>"; };
+		270B93BB1682789D005ED1CE /* WikiIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WikiIcon@2x.png"; sourceTree = "<group>"; };
 		273607C01680EE0E0018043D /* iPad icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad icon.png"; path = "../iPad icon.png"; sourceTree = "<group>"; };
 		273607C21680EE100018043D /* iPad icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad icon@2x.png"; path = "../iPad icon@2x.png"; sourceTree = "<group>"; };
 		273607C7168121E30018043D /* WikiStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikiStore.h; sourceTree = "<group>"; };
@@ -167,6 +180,9 @@
 			children = (
 				274EF86B167BE8E300A66172 /* AppDelegate.h */,
 				274EF86C167BE8E300A66172 /* AppDelegate.m */,
+				270B93B316827195005ED1CE /* WikiListController.h */,
+				270B93B416827195005ED1CE /* WikiListController.m */,
+				270B93B01682715B005ED1CE /* WikiListController.xib */,
 				274EF874167BE8E300A66172 /* PageListController.h */,
 				274EF875167BE8E300A66172 /* PageListController.m */,
 				274EF87A167BE8E300A66172 /* PageListController.xib */,
@@ -185,6 +201,10 @@
 		274EF863167BE8E300A66172 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				270B93B616827888005ED1CE /* PageIcon.png */,
+				270B93B716827888005ED1CE /* PageIcon@2x.png */,
+				270B93BA1682789D005ED1CE /* WikiIcon.png */,
+				270B93BB1682789D005ED1CE /* WikiIcon@2x.png */,
 				274EF864167BE8E300A66172 /* TouchWiki-Info.plist */,
 				274EF865167BE8E300A66172 /* InfoPlist.strings */,
 				274EF868167BE8E300A66172 /* main.m */,
@@ -292,6 +312,11 @@
 				274FB33F167FB72000D1DDA8 /* PageTemplate.html in Resources */,
 				273607C11680EE0E0018043D /* iPad icon.png in Resources */,
 				273607C31680EE110018043D /* iPad icon@2x.png in Resources */,
+				270B93B21682715B005ED1CE /* WikiListController.xib in Resources */,
+				270B93B816827888005ED1CE /* PageIcon.png in Resources */,
+				270B93B916827888005ED1CE /* PageIcon@2x.png in Resources */,
+				270B93BC1682789D005ED1CE /* WikiIcon.png in Resources */,
+				270B93BD1682789D005ED1CE /* WikiIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +336,7 @@
 				273670A4167D46AB00BAEE8D /* PageController.m in Sources */,
 				273607C9168121E30018043D /* WikiStore.m in Sources */,
 				273607CC168152510018043D /* WikiItem.m in Sources */,
+				270B93B516827195005ED1CE /* WikiListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +351,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		270B93B01682715B005ED1CE /* WikiListController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				270B93B11682715B005ED1CE /* en */,
+			);
+			name = WikiListController.xib;
+			sourceTree = "<group>";
+		};
 		2736709F167D42EA00BAEE8D /* PageController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

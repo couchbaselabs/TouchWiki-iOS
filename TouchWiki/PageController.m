@@ -63,6 +63,12 @@ static NSRegularExpression* sWikiWordRegex;
     self = [super initWithNibName:@"PageController" bundle:nil];
     if (self) {
         _wikiStore = wikiStore;
+
+        // Restore the current page:
+        NSString* curPageID = [[NSUserDefaults standardUserDefaults] stringForKey: @"CurrentPageID"];
+        if (curPageID) {
+            self.page = [_wikiStore pageWithID: curPageID];
+        }
     }
     return self;
 }
@@ -73,12 +79,6 @@ static NSRegularExpression* sWikiWordRegex;
     self.navigationItem.rightBarButtonItem = _editButton;
     [self.navigationItem setLeftBarButtonItems: @[_backButton, _fwdButton]];
     [self configureView];
-
-    // Restore the current page:
-    NSString* curPageID = [[NSUserDefaults standardUserDefaults] stringForKey: @"CurrentPageID"];
-    if (curPageID) {
-        self.page = [_wikiStore pageWithID: curPageID];
-    }
 }
 
 
@@ -126,8 +126,10 @@ static NSRegularExpression* sWikiWordRegex;
 
 
 - (void) loadContent {
-    self.title = _page ? _page.title : NSLocalizedString(@"No Page", @"No Page");
-    _titleView.text = _page.title;
+    if (_page)
+        self.title = [NSString stringWithFormat: @"%@ » %@", _page.wiki.title, _page.title];
+    else
+        self.title = NSLocalizedString(@"No Page", @"No Page");
 
     NSMutableString* html = [sHTMLPrefix mutableCopy];
 

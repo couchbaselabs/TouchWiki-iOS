@@ -18,6 +18,7 @@
 @property (strong, nonatomic) PageController *pageController;
 
 @property (readonly, nonatomic) WikiStore* wikiStore;
+@property (strong, nonatomic) Wiki* wiki;
 
 - (bool) selectPage: (WikiPage*)page;
 

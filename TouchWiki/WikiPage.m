@@ -41,6 +41,11 @@
 }
 
 
+- (NSString*) description {
+    return [NSString stringWithFormat: @"%@[%@ / '%@'", self.class, self.wiki.title, self.title];
+}
+
+
 + (bool) parseDocID: (NSString*)docID
          intoWikiID: (NSString**)outWikiID
            andTitle: (NSString**)outTitle

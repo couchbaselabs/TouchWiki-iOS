@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "wikiListController.h"
 #import "PageListController.h"
 #import "PageController.h"
 #import "Wiki.h"
@@ -33,18 +34,22 @@
     _wikiStore = [[WikiStore alloc] initWithDatabase: database];
 
     // Create the UI:
-    PageListController *pageListController = [[PageListController alloc] initWithWikiStore: _wikiStore];
-    UINavigationController *pageListNavController = [[UINavigationController alloc] initWithRootViewController:pageListController];
+    WikiListController *wikiListController = [[WikiListController alloc]
+                                                                initWithWikiStore: _wikiStore];
+    PageListController *pageListController = [[PageListController alloc]
+                                                                initWithWikiStore: _wikiStore];
+    UINavigationController *tableNavController = [[UINavigationController alloc] initWithRootViewController:wikiListController];
 
     PageController *pageController = [[PageController alloc] initWithWikiStore: _wikiStore];
     UINavigationController *pageNavController = [[UINavigationController alloc] initWithRootViewController:pageController];
 
+    wikiListController.pageListController = pageListController;
     pageListController.pageController = pageController;
     pageController.pageListController = pageListController;
 
     self.splitViewController = [[UISplitViewController alloc] init];
     self.splitViewController.delegate = pageController;
-    self.splitViewController.viewControllers = @[pageListNavController, pageNavController];
+    self.splitViewController.viewControllers = @[tableNavController, pageNavController];
     self.window.rootViewController = self.splitViewController;
     [self.window makeKeyAndVisible];
     return YES;
