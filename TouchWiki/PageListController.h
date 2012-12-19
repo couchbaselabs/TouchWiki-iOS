@@ -8,16 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import <TouchDB/TDUITableSource.h>
-@class PageController, Wiki, WikiPage;
+@class PageController, WikiStore, Wiki, WikiPage;
 
 
 @interface PageListController : UIViewController <TouchUITableDelegate>
 
-- (id)initWithWiki: (Wiki*)wiki;
+- (id)initWithWikiStore: (WikiStore*)wikiStore;
 
 @property (strong, nonatomic) PageController *pageController;
 
-@property (readonly, nonatomic) Wiki* wiki;
+@property (readonly, nonatomic) WikiStore* wikiStore;
 
 - (bool) selectPage: (WikiPage*)page;
 

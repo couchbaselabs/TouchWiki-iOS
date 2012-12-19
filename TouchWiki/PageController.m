@@ -10,6 +10,7 @@
 #import "PageEditController.h"
 #import "PageListController.h"
 #import "AppDelegate.h"
+#import "WikiStore.h"
 #import "Wiki.h"
 #import "WikiPage.h"
 #import "GHMarkdownParser.h"
@@ -33,7 +34,7 @@ static NSRegularExpression* sWikiWordRegex;
     IBOutlet UIBarButtonItem* _previewButton;
     IBOutlet UIBarButtonItem* _saveButton;
 
-    Wiki* _wiki;
+    WikiStore* _wikiStore;
     PageEditController* _editController;
     UIPopoverController *_masterPopoverController;
     NSString* _pendingTitle;
@@ -58,10 +59,10 @@ static NSRegularExpression* sWikiWordRegex;
 }
 
 
-- (id)initWithWiki: (Wiki*)wiki {
+- (id)initWithWikiStore: (WikiStore*)wikiStore {
     self = [super initWithNibName:@"PageController" bundle:nil];
     if (self) {
-        _wiki = wiki;
+        _wikiStore = wikiStore;
     }
     return self;
 }
@@ -76,7 +77,7 @@ static NSRegularExpression* sWikiWordRegex;
     // Restore the current page:
     NSString* curPageID = [[NSUserDefaults standardUserDefaults] stringForKey: @"CurrentPageID"];
     if (curPageID) {
-        self.page = [_wiki pageWithID: curPageID];
+        self.page = [_wikiStore pageWithID: curPageID];
     }
 }
 
@@ -220,7 +221,7 @@ static NSRegularExpression* sWikiWordRegex;
 
 
 - (void) goToPageNamed: (NSString*)title {
-    WikiPage* page = [_pageListController.wiki pageWithTitle: title];
+    WikiPage* page = [_page.wiki pageWithTitle: title];
     if (page)
         [_pageListController selectPage: page];
     else {
@@ -273,6 +274,9 @@ static NSRegularExpression* sWikiWordRegex;
         [self performSelector: @selector(goToPageNamed:) withObject: title afterDelay: 0.0];
     } else if ([[UIApplication sharedApplication] canOpenURL: url]) {
         [self performSelector: @selector(goToExternalURL:) withObject: url afterDelay: 0.0];
+    } else {
+        NSString* message = [NSString stringWithFormat: @"Couldn't open URL <%@>", url.absoluteString];
+        [gAppDelegate showAlert: message error: nil fatal: NO];
     }
     return NO;
 }

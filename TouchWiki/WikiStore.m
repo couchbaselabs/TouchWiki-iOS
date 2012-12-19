@@ -9,7 +9,7 @@
 #import "WikiStore.h"
 #import "Wiki.h"
 #import "WikiPage.h"
-#import <TOuchDB/TDModelFactory.h>
+#import <TouchDB/TDModelFactory.h>
 
 
 @implementation WikiStore
@@ -21,8 +21,60 @@
         _database = database;
         [_database.modelFactory registerClass: [Wiki class] forDocumentType: @"wiki"];
         [_database.modelFactory registerClass: [WikiPage class] forDocumentType: @"page"];
+
+        TDView* view = [_database viewNamed: @"wikisByTitle"];
+        [view setMapBlock: MAPBLOCK({
+            if ([doc[@"type"] isEqualToString: @"wiki"]) {
+                NSString* title = doc[@"title"];
+                if (title)
+                    emit(title, nil);
+            }
+        }) reduceBlock: nil version: @"1"];
+        _allWikisQuery = [[view query] asLiveQuery];
+
+        [[_database viewNamed: @"pagesByTitle"] setMapBlock: MAPBLOCK({
+            NSLog(@"DOC = %@", doc);
+            if ([doc[@"type"] isEqualToString: @"page"]) {
+                NSString *wikiID;
+                NSString *title;
+                if ([WikiPage parseDocID: (doc[@"_id"]) intoWikiID: &wikiID andTitle: &title]) {
+                    emit(@[wikiID, title], nil);
+                    NSLog(@"EMITTED %@, %@", wikiID, title);
+                }
+            }
+        }) reduceBlock: nil version: @"4"];
     }
     return self;
+}
+
+
+- (TDQuery*) queryPagesOfWiki: (Wiki*)wiki {
+    TDQuery* query = [[_database viewNamed: @"pagesByTitle"] query];
+    query.startKey = @[wiki.wikiID];
+    query.endKey = @[wiki.wikiID, @{}];
+    return query;
+}
+
+
+- (Wiki*) wikiWithTitle: (NSString*)title {
+    for (TDQueryRow* row in _allWikisQuery.rows) {
+        if ([row.key isEqualToString: title])
+            return [Wiki modelForDocument: row.document];
+    }
+    return nil;
+}
+
+
+- (Wiki*) newWikiWithTitle: (NSString*)title {
+    return [[Wiki alloc] initNewWithTitle: title inDatabase: self.database];
+}
+
+
+- (WikiPage*) pageWithID: (NSString*)pageID {
+    TDDocument* doc = [self.database documentWithID: pageID];
+    if (!doc.currentRevisionID)
+        return nil;
+    return [WikiPage modelForDocument: doc];
 }
 
 

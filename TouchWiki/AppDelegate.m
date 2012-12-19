@@ -24,20 +24,19 @@
 
     // Initialize TouchDB:
     NSError* error;
-    TDDatabase* database = [[TDDatabaseManager sharedInstance] createDatabaseNamed: @"wiki"
+    TDDatabase* database = [[TDDatabaseManager sharedInstance] createDatabaseNamed: @"wiki2"
                                                                              error: &error];
     if (!database)
         [self showAlert: @"Couldn't open database" error: error fatal: YES];
 
     // Initialize data model:
     _wikiStore = [[WikiStore alloc] initWithDatabase: database];
-    _wiki = [[Wiki alloc] initWithStore: _wikiStore ID: @"wiki"];
 
     // Create the UI:
-    PageListController *pageListController = [[PageListController alloc] initWithWiki: _wiki];
+    PageListController *pageListController = [[PageListController alloc] initWithWikiStore: _wikiStore];
     UINavigationController *pageListNavController = [[UINavigationController alloc] initWithRootViewController:pageListController];
 
-    PageController *pageController = [[PageController alloc] initWithWiki: _wiki];
+    PageController *pageController = [[PageController alloc] initWithWikiStore: _wikiStore];
     UINavigationController *pageNavController = [[UINavigationController alloc] initWithRootViewController:pageController];
 
     pageListController.pageController = pageController;

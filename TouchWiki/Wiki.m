@@ -13,40 +13,56 @@
 
 
 @implementation Wiki
+{
+    TDLiveQuery* _allPagesQuery;
+}
 
-- (id) initWithStore: (WikiStore*)store ID: (NSString*)wikiID {
-    self = [super init];
+@dynamic title, markdown, created_at, updated_at;
+
+
+- (id) initNewWithTitle: (NSString*)title inDatabase: (TDDatabase*)db {
+    self = [super initWithNewDocumentInDatabase: db];
     if (self) {
-        _store = store;
-
-        [[_store.database viewNamed: @"pagesByTitle"] setMapBlock: MAPBLOCK({
-            if ([doc[@"type"] isEqualToString: @"page"]) {
-                NSString* title = [WikiPage titleFromDocID: doc[@"_id"]];
-                if (title)
-                    emit(title, nil);
-            }
-        }) reduceBlock: nil version: @"2"];
-        _allPagesQuery = [[[_database viewNamed: @"pagesByTitle"] query] asLiveQuery];
+        [self setValue: @"wiki" ofProperty: @"type"];
+        self.title = title;
+        self.created_at = self.updated_at = [NSDate date];
     }
     return self;
 }
 
 
-- (WikiPage*) pageWithID: (NSString*)pageID {
-    TDDocument* doc = [_store.database documentWithID: pageID];
+- (NSString*) wikiID {
+    return self.document.documentID;
+}
+
+
+- (NSString*) docIDForPageWithTitle: (NSString*)title {
+    return [NSString stringWithFormat: @"%@:%@", self.wikiID, title];
+}
+
+
+- (WikiPage*) pageWithTitle: (NSString*)title {
+    NSString* pageID = [self docIDForPageWithTitle: title];
+    TDDocument* doc = [self.database documentWithID: pageID];
     if (!doc.currentRevisionID)
         return nil;
     return [WikiPage modelForDocument: doc];
 }
 
 
-- (WikiPage*) pageWithTitle: (NSString*)title {
-    return [self pageWithID: [WikiPage docIDForTitle: title]];
+- (WikiPage*) newPageWithTitle: (NSString*)pageTitle {
+    return [[WikiPage alloc] initNewWithTitle: pageTitle inWiki: self];
 }
 
 
-- (WikiPage*) newPageWithTitle: (NSString*)pageTitle {
-    return [[WikiPage alloc] initWithTitle: pageTitle inDatabase: _database];
+- (TDLiveQuery*) allPagesQuery {
+    if (!_allPagesQuery) {
+        TDQuery* query = [[self.database viewNamed: @"pagesByTitle"] query];
+        query.startKey = @[self.wikiID];
+        query.endKey = @[self.wikiID, @{}];
+        _allPagesQuery = [query asLiveQuery];
+    }
+    return _allPagesQuery;
 }
 
 

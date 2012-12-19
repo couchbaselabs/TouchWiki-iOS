@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-@class PageListController, Wiki, WikiPage;
+@class PageListController, WikiStore, WikiPage;
 
 
 @interface PageController : UIViewController <UISplitViewControllerDelegate>
 
-- (id)initWithWiki: (Wiki*)wiki;
+- (id)initWithWikiStore: (WikiStore*)wikiStore;
 
 @property (strong) PageListController* pageListController;
 @property (strong, nonatomic) WikiPage* page;

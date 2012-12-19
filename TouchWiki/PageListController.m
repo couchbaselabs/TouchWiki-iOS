@@ -9,6 +9,7 @@
 #import "PageListController.h"
 #import "PageController.h"
 #import "AppDelegate.h"
+#import "WikiStore.h"
 #import "Wiki.h"
 #import "WikiPage.h"
 #import <TouchDB/TouchDB.h>
@@ -17,14 +18,26 @@
 @implementation PageListController
 {
     IBOutlet TDUITableSource* _dataSource;
+    Wiki* _wiki;
 }
 
 
-- (id)initWithWiki: (Wiki*)wiki {
+- (id)initWithWikiStore: (WikiStore*)wikiStore {
     self = [super initWithNibName:@"PageListController" bundle:nil];
     if (self) {
-        _wiki = wiki;
-        self.title = NSLocalizedString(@"Pages", @"Pages");
+        _wikiStore = wikiStore;
+
+        //TEMP: Until I build a two-level table
+        NSString* defaultWikiTitle = @"Wiki";
+        _wiki = [wikiStore wikiWithTitle: defaultWikiTitle];
+        if (!_wiki) {
+            _wiki = [wikiStore newWikiWithTitle: defaultWikiTitle];
+            NSError* error;
+            if (![_wiki save: &error])
+                [gAppDelegate showAlert: @"Couldn't create wiki" error: error fatal: YES];
+        }
+
+        self.title = _wiki.title;
         self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
         self.restorationIdentifier = @"PageListController";
     }
@@ -65,12 +78,16 @@
     
 - (IBAction) newPage: (id)sender {
     //FIX: This is an awful UI.
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle: @"Create Page"
+    NSString* title = [NSString stringWithFormat: @"New Page In “%@”", _wiki.title];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle: title
                                                     message: @"What's the title of the new page?"
                                                    delegate: self
                                           cancelButtonTitle: @"Cancel"
                                           otherButtonTitles: @"Create", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField* titleField = [alert textFieldAtIndex: 0];
+    titleField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    titleField.returnKeyType = UIReturnKeyDone;
     [alert show];
 }
 

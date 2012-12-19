@@ -6,30 +6,24 @@
 //  Copyright (c) 2012 Couchbase. All rights reserved.
 //
 
-#import <TouchDB/TouchDB.h>
+#import "WikiItem.h"
+@class Wiki;
 
 
 /** A wiki page. */
-@interface WikiPage : TDModel
+@interface WikiPage : WikiItem
 
-- (id) initWithTitle: (NSString*)title
-          inDatabase: (TDDatabase*)db;
+- (id) initNewWithTitle: (NSString*)title inWiki: (Wiki*)wiki;
 
-@property (readonly) NSString* title;
-
-@property (copy) NSString* markdown;
-@property (strong) NSDate* created_at;
-@property (strong) NSDate* updated_at;
-
-@property (copy) NSArray* tags;
-@property (copy) NSArray* members;
+@property (readonly) Wiki* wiki;
 
 // Ephemeral properties:
 @property bool editing;
 @property NSRange selectedRange;
 
-+ (NSString*) docIDForTitle: (NSString*)title;
-+ (NSString*) titleFromDocID: (NSString*)docID;
++ (bool) parseDocID: (NSString*)docID
+         intoWikiID: (NSString**)outWikiID
+           andTitle: (NSString**)outTitle;
 
 @end
 
