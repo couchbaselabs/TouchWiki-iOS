@@ -43,8 +43,23 @@
                 }
             }
         }) reduceBlock: nil version: @"4"];
+
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(applicationWillTerminate:)
+                                                     name: UIApplicationWillTerminateNotification
+                                                   object: nil];
     }
     return self;
+}
+
+
+- (void) applicationWillTerminate: (NSNotification*)n {
+    if (_database.unsavedModels.count) {
+        NSLog(@"*** Saving unsaved models...");
+        NSError* error;
+        if (![_database saveAllModels: &error])
+            NSLog(@"WARNING: Failed to save pages: %@", error);
+    }
 }
 
 

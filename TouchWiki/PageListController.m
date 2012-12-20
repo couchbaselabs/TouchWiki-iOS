@@ -17,6 +17,7 @@
 
 @implementation PageListController
 {
+    IBOutlet UITableView* _table;
     IBOutlet TDUITableSource* _dataSource;
     Wiki* _wiki;
 }
@@ -47,6 +48,12 @@
     [self showWiki];
 
     [self selectPage: _pageController.page];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    //FIX: This isn't good enough in landscape mode, where the view is always visible.
+    [self updateCells];
 }
 
 
@@ -147,21 +154,49 @@
     return [WikiPage modelForDocument: row.document];
 }
 
+- (WikiPage*) pageForPath: (NSIndexPath*)indexPath {
+    TDDocument* doc = [_dataSource documentAtIndexPath: indexPath];
+    return [WikiPage modelForDocument: doc];
+}
+
+
 
 - (void)couchTableSource:(TDUITableSource*)source
              willUseCell:(UITableViewCell*)cell
                   forRow:(TDQueryRow*)row
 {
-    cell.textLabel.text = [self pageForRow: row].title;
+    WikiPage* page = [self pageForRow: row];
+    cell.textLabel.text = page.title;
     cell.imageView.image = [UIImage imageNamed: @"PageIcon"];
     [cell.imageView sizeToFit];
+    [self updateCell: cell forPage: page];
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    TDDocument* doc = [_dataSource documentAtIndexPath: indexPath];
-    WikiPage* page = [WikiPage modelForDocument: doc];
-    self.pageController.page = page;
+    self.pageController.page = [self pageForPath: indexPath];
 }
+
+
+- (void) updateCells {
+    for (UITableViewCell* cell in _table.visibleCells) {
+        WikiPage* page = [self pageForPath: [_table indexPathForCell: cell]];
+        [self updateCell: cell forPage: page];
+    }
+}
+
+
+- (void) updateCell: (UITableViewCell*)cell forPage: (WikiPage*)page {
+    UIImageView* accessory = (UIImageView*)cell.accessoryView;
+    if (!page.needsSave) {
+        accessory.image = nil;
+    } else if (!accessory) {
+        UIImage* editedImage = [UIImage imageNamed: @"EditedIcon"];
+        cell.accessoryView = accessory = [[UIImageView alloc] initWithImage: editedImage];
+    } else {
+        accessory.image = [UIImage imageNamed: @"EditedIcon"];
+    }
+}
+
 
 @end

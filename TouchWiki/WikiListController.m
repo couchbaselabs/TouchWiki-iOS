@@ -16,12 +16,13 @@
 
 @implementation WikiListController
 {
+    IBOutlet UITableView* _table;
     IBOutlet TDUITableSource* _dataSource;
 }
 
 
 - (id)initWithWikiStore: (WikiStore*)wikiStore {
-    self = [super initWithNibName:@"WikiListController" bundle:nil];
+    self = [super initWithNibName:@"PageListController" bundle:nil];
     if (self) {
         _wikiStore = wikiStore;
 
