@@ -164,12 +164,14 @@
             break;
         case kTDReplicationIdle:
             message = @"In sync";
+            break;
         case kTDReplicationActive:
             message = [NSString stringWithFormat: @"Syncing (%.0f%% done)",
                        _syncManager.progress * 100.0];
             break;
         default:
             message = nil;
+            break;
     }
     _errorLabel.text = message;
     _errorLabel.textColor = _syncManager.error ? [UIColor redColor] : [UIColor whiteColor];

@@ -34,7 +34,7 @@
 
 - (Wiki*) wiki {
     NSString *wikiID, *title;
-    bool ok = [[self class] parseDocID: self.document.documentID intoWikiID: &wikiID andTitle: &title];
+    __unused bool ok = [[self class] parseDocID: self.document.documentID intoWikiID: &wikiID andTitle: &title];
     NSAssert(ok, @"Invalid doc ID");
     TDDocument* doc = [self.database documentWithID: wikiID];
     return doc ? [Wiki modelForDocument: doc] : nil;

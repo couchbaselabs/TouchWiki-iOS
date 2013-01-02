@@ -190,11 +190,11 @@
     UIImageView* accessory = (UIImageView*)cell.accessoryView;
     if (!page.needsSave) {
         accessory.image = nil;
-    } else if (!accessory) {
-        UIImage* editedImage = [UIImage imageNamed: @"EditedIcon"];
-        cell.accessoryView = accessory = [[UIImageView alloc] initWithImage: editedImage];
-    } else {
+    } else if (accessory) {
         accessory.image = [UIImage imageNamed: @"EditedIcon"];
+    } else {
+        UIImage* editedImage = [UIImage imageNamed: @"EditedIcon"];
+        cell.accessoryView = [[UIImageView alloc] initWithImage: editedImage];
     }
 }
 

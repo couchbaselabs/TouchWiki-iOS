@@ -38,7 +38,6 @@
 		274EF86D167BE8E300A66172 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF86C167BE8E300A66172 /* AppDelegate.m */; };
 		274EF86F167BE8E300A66172 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EF86E167BE8E300A66172 /* Default.png */; };
 		274EF871167BE8E300A66172 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EF870167BE8E300A66172 /* Default@2x.png */; };
-		274EF873167BE8E300A66172 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EF872167BE8E300A66172 /* Default-568h@2x.png */; };
 		274EF876167BE8E300A66172 /* PageListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF875167BE8E300A66172 /* PageListController.m */; };
 		274EF879167BE8E300A66172 /* PageEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF878167BE8E300A66172 /* PageEditController.m */; };
 		274EF87C167BE8E300A66172 /* PageListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274EF87A167BE8E300A66172 /* PageListController.xib */; };
@@ -114,7 +113,6 @@
 		274EF86C167BE8E300A66172 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		274EF86E167BE8E300A66172 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		274EF870167BE8E300A66172 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		274EF872167BE8E300A66172 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		274EF874167BE8E300A66172 /* PageListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageListController.h; sourceTree = "<group>"; };
 		274EF875167BE8E300A66172 /* PageListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PageListController.m; sourceTree = "<group>"; };
 		274EF877167BE8E300A66172 /* PageEditController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageEditController.h; sourceTree = "<group>"; };
@@ -168,7 +166,6 @@
 				270B93BB1682789D005ED1CE /* WikiIcon@2x.png */,
 				274EF86E167BE8E300A66172 /* Default.png */,
 				274EF870167BE8E300A66172 /* Default@2x.png */,
-				274EF872167BE8E300A66172 /* Default-568h@2x.png */,
 				270B93C61682CD46005ED1CE /* TouchDBLogo300px.png */,
 				27306BB41684E99500F91F61 /* Triangle-Left.png */,
 				27306BB51684E99500F91F61 /* Triangle-Right.png */,
@@ -349,7 +346,6 @@
 				274EF867167BE8E300A66172 /* InfoPlist.strings in Resources */,
 				274EF86F167BE8E300A66172 /* Default.png in Resources */,
 				274EF871167BE8E300A66172 /* Default@2x.png in Resources */,
-				274EF873167BE8E300A66172 /* Default-568h@2x.png in Resources */,
 				274EF87C167BE8E300A66172 /* PageListController.xib in Resources */,
 				274EF87F167BE8E300A66172 /* PageEditController.xib in Resources */,
 				273670A1167D42EA00BAEE8D /* PageController.xib in Resources */,
@@ -449,6 +445,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -465,6 +462,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -479,6 +477,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -488,6 +487,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
