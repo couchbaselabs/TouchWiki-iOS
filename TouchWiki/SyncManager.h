@@ -6,16 +6,28 @@
 //  Copyright (c) 2012 Couchbase. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <TouchDB/TouchDB.h>
 
 
 @interface SyncManager : NSObject
 
-@property TDDatabase* database;
+- (id) initWithDatabase: (TDDatabase*)database;
 
-- (IBAction)configureSync:(id)sender;
+@property (readonly) TDDatabase* database;
 
-@property (readonly) UIBarButtonItem* statusItem;
+@property (nonatomic) NSURL* syncURL;
+@property (nonatomic) bool continuous;
+
+// These are not KVO-observable; observe SyncManagerStateChangedNotification instead
+@property (nonatomic, readonly) unsigned completed, total;
+@property (nonatomic, readonly) float progress;
+@property (nonatomic, readonly) bool active;
+@property (nonatomic, readonly) TDReplicationMode mode;
+@property (nonatomic, readonly) NSError* error;
+
+- (void) syncNow;
 
 @end
+
+
+extern NSString* const SyncManagerStateChangedNotification;

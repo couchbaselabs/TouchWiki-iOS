@@ -16,6 +16,13 @@
 		270B93C81682CD46005ED1CE /* TouchDBLogo300px.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93C61682CD46005ED1CE /* TouchDBLogo300px.png */; };
 		270B93CB1682D81A005ED1CE /* EditedIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93CA1682D81A005ED1CE /* EditedIcon@2x.png */; };
 		270B93CD1682EBB1005ED1CE /* EditedIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93CC1682EBB1005ED1CE /* EditedIcon.png */; };
+		270B93D81684085A005ED1CE /* SyncButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 270B93D71684085A005ED1CE /* SyncButton.m */; };
+		27306B9B168410AE00F91F61 /* Sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 27306B9A168410AE00F91F61 /* Sync.png */; };
+		27306B9D1684159C00F91F61 /* SyncPopover.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27306B9C1684159C00F91F61 /* SyncPopover.xib */; };
+		27306BB31684E6EB00F91F61 /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 27306BB21684E6EB00F91F61 /* Util.m */; };
+		27306BB61684E99500F91F61 /* Triangle-Left.png in Resources */ = {isa = PBXBuildFile; fileRef = 27306BB41684E99500F91F61 /* Triangle-Left.png */; };
+		27306BB71684E99500F91F61 /* Triangle-Right.png in Resources */ = {isa = PBXBuildFile; fileRef = 27306BB51684E99500F91F61 /* Triangle-Right.png */; };
+		27306BC9168B9BFD00F91F61 /* Sync-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 27306BC8168B9BFD00F91F61 /* Sync-error.png */; };
 		273607C11680EE0E0018043D /* iPad icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 273607C01680EE0E0018043D /* iPad icon.png */; };
 		273607C31680EE110018043D /* iPad icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 273607C21680EE100018043D /* iPad icon@2x.png */; };
 		273607C9168121E30018043D /* WikiStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 273607C8168121E30018043D /* WikiStore.m */; };
@@ -76,6 +83,15 @@
 		270B93C61682CD46005ED1CE /* TouchDBLogo300px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TouchDBLogo300px.png; sourceTree = "<group>"; };
 		270B93CA1682D81A005ED1CE /* EditedIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EditedIcon@2x.png"; sourceTree = "<group>"; };
 		270B93CC1682EBB1005ED1CE /* EditedIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EditedIcon.png; sourceTree = "<group>"; };
+		270B93D61684085A005ED1CE /* SyncButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncButton.h; sourceTree = "<group>"; };
+		270B93D71684085A005ED1CE /* SyncButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncButton.m; sourceTree = "<group>"; };
+		27306B9A168410AE00F91F61 /* Sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sync.png; sourceTree = "<group>"; };
+		27306B9C1684159C00F91F61 /* SyncPopover.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SyncPopover.xib; sourceTree = "<group>"; };
+		27306BB11684E6EB00F91F61 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		27306BB21684E6EB00F91F61 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
+		27306BB41684E99500F91F61 /* Triangle-Left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Triangle-Left.png"; sourceTree = "<group>"; };
+		27306BB51684E99500F91F61 /* Triangle-Right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Triangle-Right.png"; sourceTree = "<group>"; };
+		27306BC8168B9BFD00F91F61 /* Sync-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sync-error.png"; sourceTree = "<group>"; };
 		273607C01680EE0E0018043D /* iPad icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad icon.png"; path = "../iPad icon.png"; sourceTree = "<group>"; };
 		273607C21680EE100018043D /* iPad icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad icon@2x.png"; path = "../iPad icon@2x.png"; sourceTree = "<group>"; };
 		273607C7168121E30018043D /* WikiStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikiStore.h; sourceTree = "<group>"; };
@@ -142,6 +158,8 @@
 		270B93C51682C94E005ED1CE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				27306B9A168410AE00F91F61 /* Sync.png */,
+				27306BC8168B9BFD00F91F61 /* Sync-error.png */,
 				270B93CC1682EBB1005ED1CE /* EditedIcon.png */,
 				270B93CA1682D81A005ED1CE /* EditedIcon@2x.png */,
 				270B93B616827888005ED1CE /* PageIcon.png */,
@@ -152,6 +170,8 @@
 				274EF870167BE8E300A66172 /* Default@2x.png */,
 				274EF872167BE8E300A66172 /* Default-568h@2x.png */,
 				270B93C61682CD46005ED1CE /* TouchDBLogo300px.png */,
+				27306BB41684E99500F91F61 /* Triangle-Left.png */,
+				27306BB51684E99500F91F61 /* Triangle-Right.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -219,6 +239,11 @@
 				274EF87D167BE8E300A66172 /* PageEditController.xib */,
 				270B93C216829825005ED1CE /* SyncManager.h */,
 				270B93C316829825005ED1CE /* SyncManager.m */,
+				270B93D61684085A005ED1CE /* SyncButton.h */,
+				270B93D71684085A005ED1CE /* SyncButton.m */,
+				27306B9C1684159C00F91F61 /* SyncPopover.xib */,
+				27306BB11684E6EB00F91F61 /* Util.h */,
+				27306BB21684E6EB00F91F61 /* Util.m */,
 				274EF863167BE8E300A66172 /* Supporting Files */,
 			);
 			path = TouchWiki;
@@ -338,6 +363,11 @@
 				270B93C81682CD46005ED1CE /* TouchDBLogo300px.png in Resources */,
 				270B93CB1682D81A005ED1CE /* EditedIcon@2x.png in Resources */,
 				270B93CD1682EBB1005ED1CE /* EditedIcon.png in Resources */,
+				27306B9B168410AE00F91F61 /* Sync.png in Resources */,
+				27306B9D1684159C00F91F61 /* SyncPopover.xib in Resources */,
+				27306BB61684E99500F91F61 /* Triangle-Left.png in Resources */,
+				27306BB71684E99500F91F61 /* Triangle-Right.png in Resources */,
+				27306BC9168B9BFD00F91F61 /* Sync-error.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +389,8 @@
 				273607CC168152510018043D /* WikiItem.m in Sources */,
 				270B93B516827195005ED1CE /* WikiListController.m in Sources */,
 				270B93C416829825005ED1CE /* SyncManager.m in Sources */,
+				270B93D81684085A005ED1CE /* SyncButton.m in Sources */,
+				27306BB31684E6EB00F91F61 /* Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

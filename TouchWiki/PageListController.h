@@ -11,7 +11,7 @@
 @class PageController, WikiStore, Wiki, WikiPage;
 
 
-@interface PageListController : UIViewController <TouchUITableDelegate>
+@interface PageListController : UIViewController <TDUITableDelegate>
 
 - (id)initWithWikiStore: (WikiStore*)wikiStore;
 

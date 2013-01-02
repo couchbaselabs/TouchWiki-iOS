@@ -13,6 +13,9 @@
 #import "WikiStore.h"
 #import "Wiki.h"
 #import "WikiPage.h"
+#import "SyncManager.h"
+#import "SyncButton.h"
+#import "Util.h"
 #import "GHMarkdownParser.h"
 
 #define kFlipDuration 0.4
@@ -28,6 +31,7 @@ static NSRegularExpression* sWikiWordRegex;
 {
     IBOutlet UITextField* _titleView;
     IBOutlet UIWebView* _webView;
+    IBOutlet SyncButton* _syncButton;
     IBOutlet UIBarButtonItem* _backButton;
     IBOutlet UIBarButtonItem* _fwdButton;
     IBOutlet UIBarButtonItem* _editButton;
@@ -76,8 +80,15 @@ static NSRegularExpression* sWikiWordRegex;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    _backButton = BarButtonWithImageNamed(@"Triangle-Left.png", self, @selector(goBack:));
+    _fwdButton = BarButtonWithImageNamed(@"Triangle-Right.png", self, @selector(goForward:));
+
+    SyncManager* syncMgr = [[SyncManager alloc] initWithDatabase: _wikiStore.database];
+    _syncButton.syncManager = syncMgr;
+
     self.navigationItem.rightBarButtonItem = _editButton;
-    [self.navigationItem setLeftBarButtonItems: @[_backButton, _fwdButton]];
+    self.navigationItem.leftBarButtonItems = @[_syncButton, _backButton, _fwdButton];
     [self configureView];
 }
 
@@ -284,6 +295,16 @@ static NSRegularExpression* sWikiWordRegex;
 }
 
 
+- (IBAction) goBack: (id)sender {
+    //[_webView goBack];
+}
+
+
+- (IBAction) goForward: (id)sender {
+    //[_webView goForward];
+}
+
+
 
 #pragma mark - SPLIT VIEW
 
@@ -295,7 +316,10 @@ static NSRegularExpression* sWikiWordRegex;
 {
     (void)self.view; // ensure nib is loaded
     barButtonItem.title = NSLocalizedString(@"Pages", @"Pages");
-    self.navigationItem.leftBarButtonItems = @[barButtonItem, _backButton, _fwdButton];
+
+    NSMutableArray* buttons = self.navigationItem.leftBarButtonItems.mutableCopy;
+    [buttons insertObject: barButtonItem atIndex: 0];
+    self.navigationItem.leftBarButtonItems = buttons;
     _masterPopoverController = popoverController;
 }
 
@@ -305,7 +329,9 @@ static NSRegularExpression* sWikiWordRegex;
 {
     // Called when the view is shown again in the split view, invalidating the button and popover controller.
     (void)self.view; // ensure nib is loaded
-    self.navigationItem.leftBarButtonItems = @[_backButton, _fwdButton];
+    NSMutableArray* buttons = self.navigationItem.leftBarButtonItems.mutableCopy;
+    [buttons removeObject: barButtonItem];
+    self.navigationItem.leftBarButtonItems = buttons;
     _masterPopoverController = nil;
 }
 

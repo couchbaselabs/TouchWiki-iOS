@@ -33,7 +33,6 @@
         _allWikisQuery = [[view query] asLiveQuery];
 
         [[_database viewNamed: @"pagesByTitle"] setMapBlock: MAPBLOCK({
-            NSLog(@"DOC = %@", doc);
             if ([doc[@"type"] isEqualToString: @"page"]) {
                 NSString *wikiID;
                 NSString *title;

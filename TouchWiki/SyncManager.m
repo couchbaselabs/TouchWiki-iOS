@@ -8,100 +8,123 @@
 
 #import "SyncManager.h"
 
+
+NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged";
+
+
 @implementation SyncManager
 {
-    TDReplication* _push;
-    TDReplication* _pull;
+    NSMutableArray* _replications;
     bool _showingSyncButton;
-    UIProgressView* _progress;
 }
 
 
-- (id) init {
+- (id) initWithDatabase: (TDDatabase*)db {
+    NSParameterAssert(db);
     self = [super init];
     if (self) {
-        _statusItem = [[UIBarButtonItem alloc] init];
+        _database = db;
+        _replications = [[NSMutableArray alloc] init];
+        [self addReplications: db.allReplications];
     }
     return self;
 }
 
 
-- (IBAction)configureSync:(id)sender {
-}
-
-
-- (void)updateSyncURL {
-    if (!_database)
-        return;
-    NSURL* newRemoteURL = nil;
-    NSString *urlStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"SyncURL"];
-    if (urlStr.length > 0)
-        newRemoteURL = [NSURL URLWithString:urlStr];
-
-    [self forgetSync];
-
-    NSArray* repls = [self.database replicateWithURL: newRemoteURL exclusively: YES];
-    if (repls) {
-        _pull = [repls objectAtIndex: 0];
-        _push = [repls objectAtIndex: 1];
-        NSNotificationCenter* nctr = [NSNotificationCenter defaultCenter];
-        [nctr addObserver: self selector: @selector(replicationProgress:)
-                     name: kTDReplicationChangeNotification object: _pull];
-        [nctr addObserver: self selector: @selector(replicationProgress:)
-                     name: kTDReplicationChangeNotification object: _push];
+- (void) addReplication: (TDReplication*)repl {
+    if (![_replications containsObject: repl]) {
+        [_replications addObject: repl];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(replicationProgress:)
+                                                     name: kTDReplicationChangeNotification
+                                                   object: repl];
+        if (!_syncURL)
+            _syncURL = repl.remoteURL;
+        if (repl.continuous)
+            _continuous = true;
+        NSLog(@"SyncMgr: added %@ (cont=%d, persistent=%d)", repl, repl.continuous, repl.persistent);
     }
 }
 
 
-- (void) forgetSync {
-    NSNotificationCenter* nctr = [NSNotificationCenter defaultCenter];
-    if (_pull) {
-        [nctr removeObserver: self name: nil object: _pull];
-        _pull = nil;
+- (void) addReplications: (NSArray*)replications {
+    for (TDReplication* repl in replications) {
+        [self addReplication: repl];
     }
-    if (_push) {
-        [nctr removeObserver: self name: nil object: _push];
-        _push = nil;
+}
+
+
+- (void) forgetReplication: (TDReplication*)repl {
+    [_replications removeObject: repl];
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kTDReplicationChangeNotification
+                                                  object: repl];
+}
+
+
+- (void) forgetAll {
+    for (TDReplication* repl in _replications) {
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: kTDReplicationChangeNotification
+                                                      object: repl];
+    }
+    _replications = [[NSMutableArray alloc] init];
+    _syncURL = nil;
+    _continuous = false;
+}
+
+
+- (void) setSyncURL: (NSURL*)url {
+    [self forgetAll];
+    for (TDReplication* repl in [self.database replicateWithURL: url exclusively: YES]) {
+        repl.persistent = YES;
+        [self addReplication: repl];
+    }
+}
+
+
+- (void) setContinuous:(bool)continuous {
+    for (TDReplication* repl in _replications)
+        repl.continuous = continuous;
+}
+
+
+- (void) syncNow {
+    NSLog(@"SYNC NOW"); //FIX
+    for (TDReplication* repl in _replications) {
+        if (!repl.continuous)
+            [repl start];
     }
 }
 
 
 - (void) replicationProgress: (NSNotificationCenter*)n {
-    if (_pull.mode == kTDReplicationActive || _push.mode == kTDReplicationActive) {
-        unsigned completed = _pull.completed + _push.completed;
-        unsigned total = _pull.total + _push.total;
-        NSLog(@"SYNC progress: %u / %u", completed, total);
-        [self showSyncStatus];
-        _progress.progress = (completed / (float)MAX(total, 1u));
-    } else {
-        [self showSyncButton];
-    }
-}
-
-
-- (void)showSyncButton {
-    if (!_showingSyncButton) {
-        _showingSyncButton = YES;
-        _statusItem.style = UIBarButtonItemStylePlain;
-        _statusItem.title = @"Configure"; //FIX: I18N
-        _statusItem.customView = nil;
-        _statusItem.enabled = YES;
-        _statusItem.action = @selector(configureSync:);
-    }
-}
-
-
-- (void)showSyncStatus {
-    if (_showingSyncButton) {
-        _showingSyncButton = NO;
-        if (!_progress) {
-            _progress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-            CGRect frame = _progress.frame;
-            frame.size.width = 75.0;    //FIX: Don't hardcode
-            _progress.frame = frame;
+    bool active = false;
+    unsigned completed = 0, total = 0;
+    TDReplicationMode mode = kTDReplicationStopped;
+    NSError* error = nil;
+    for (TDReplication* repl in _replications) {
+        mode = MAX(mode, repl.mode);
+        if (!error)
+            error = repl.error;
+        if (repl.mode == kTDReplicationActive) {
+            active = true;
+            _completed += repl.completed;
+            _total += repl.total;
         }
-        _statusItem.customView = _progress;
-        _statusItem.enabled = NO;
+    }
+
+    if (active != _active || completed != _completed || total != _total || mode != _mode
+                          || error != _error) {
+        _active = active;
+        _completed = completed;
+        _total = total;
+        _progress = (completed / (float)MAX(total, 1u));
+        _mode = mode;
+        _error = error;
+        NSLog(@"SYNCMGR: active=%d; mode=%d; %u/%u; %@", active, mode, completed, total, error.localizedDescription);
+        [[NSNotificationCenter defaultCenter] postNotificationName: SyncManagerStateChangedNotification
+                                                            object: self];
     }
 }
 
