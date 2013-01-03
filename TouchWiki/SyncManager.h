@@ -7,6 +7,7 @@
 //
 
 #import <TouchDB/TouchDB.h>
+@protocol SyncManagerDelegate;
 
 
 @interface SyncManager : NSObject
@@ -14,9 +15,12 @@
 - (id) initWithDatabase: (TDDatabase*)database;
 
 @property (readonly) TDDatabase* database;
+@property (nonatomic, weak) id<SyncManagerDelegate> delegate;
 
 @property (nonatomic) NSURL* syncURL;
 @property (nonatomic) bool continuous;
+
+@property (nonatomic, readonly) NSArray* replications;
 
 // These are not KVO-observable; observe SyncManagerStateChangedNotification instead
 @property (nonatomic, readonly) unsigned completed, total;
@@ -30,4 +34,12 @@
 @end
 
 
+/** Posted by a SyncManager instance when its replication state properties change. */
 extern NSString* const SyncManagerStateChangedNotification;
+
+
+@protocol SyncManagerDelegate <NSObject>
+
+- (void) syncManager: (SyncManager*)manager addedReplication: (TDReplication*)replication;
+
+@end

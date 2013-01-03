@@ -16,6 +16,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 {
     NSMutableArray* _replications;
     bool _showingSyncButton;
+    __weak id<SyncManagerDelegate> _delegate;
 }
 
 
@@ -31,6 +32,9 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 }
 
 
+@synthesize delegate=_delegate, replications=_replications;
+
+
 - (void) addReplication: (TDReplication*)repl {
     if (![_replications containsObject: repl]) {
         [_replications addObject: repl];
@@ -42,7 +46,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
             _syncURL = repl.remoteURL;
         if (repl.continuous)
             _continuous = true;
-        NSLog(@"SyncMgr: added %@ (cont=%d, persistent=%d)", repl, repl.continuous, repl.persistent);
+        [_delegate syncManager: self addedReplication: repl];
     }
 }
 
@@ -84,13 +88,14 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 
 
 - (void) setContinuous:(bool)continuous {
+    _continuous = continuous;
     for (TDReplication* repl in _replications)
         repl.continuous = continuous;
 }
 
 
 - (void) syncNow {
-    NSLog(@"SYNC NOW"); //FIX
+    NSLog(@"SYNC NOW"); //FIX: temporary logging
     for (TDReplication* repl in _replications) {
         if (!repl.continuous)
             [repl start];
@@ -122,9 +127,11 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
         _progress = (completed / (float)MAX(total, 1u));
         _mode = mode;
         _error = error;
-        NSLog(@"SYNCMGR: active=%d; mode=%d; %u/%u; %@", active, mode, completed, total, error.localizedDescription);
-        [[NSNotificationCenter defaultCenter] postNotificationName: SyncManagerStateChangedNotification
-                                                            object: self];
+        NSLog(@"SYNCMGR: active=%d; mode=%d; %u/%u; %@",
+              active, mode, completed, total, error.localizedDescription); //FIX: temporary logging
+        [[NSNotificationCenter defaultCenter]
+                                        postNotificationName: SyncManagerStateChangedNotification
+                                                      object: self];
     }
 }
 
