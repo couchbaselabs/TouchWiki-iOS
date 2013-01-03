@@ -8,6 +8,13 @@
 
 #import "WikiPage.h"
 #import "Wiki.h"
+#import "WikiStore.h"
+
+
+@interface WikiPage ()
+@property (readwrite) NSString* owner_id;
+@end
+
 
 @implementation WikiPage
 
@@ -16,9 +23,8 @@
     TDDocument* doc = [wiki.database documentWithID: [wiki docIDForPageWithTitle: title]];
     self = [super initWithDocument: doc];
     if (self) {
-        [self setValue: @"page" ofProperty: @"type"];
+        [self setType: @"page" owner: wiki.wikiStore.username];
         [self setValue: wiki.wikiID ofProperty: @"wiki_id"];
-        self.created_at = self.updated_at = [NSDate date];
     }
     return self;
 }
@@ -56,11 +62,6 @@
     *outWikiID = [docID substringToIndex: colon.location];
     *outTitle = [docID substringFromIndex: NSMaxRange(colon)];
     return (*outWikiID).length > 0 && (*outTitle).length > 0;
-}
-
-
-- (Wiki*) newWikiWithTitle: (NSString*)pageTitle {
-    return [[Wiki alloc] initNewWithTitle: pageTitle inDatabase: self.database];
 }
 
 

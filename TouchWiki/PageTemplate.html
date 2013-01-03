@@ -38,6 +38,30 @@
                 color: rgba(255, 0, 0, 0.1);
                 -webkit-transform: rotate(15deg);
             }
+            #access {
+                position: fixed;
+                top: 5px;
+                right: -1px;
+                width: 100px;
+                padding: 2px;
+                border: 1px solid lightgray;
+                background-color: yellow;
+                font-family: "Avenir Next", sans-serif;
+                font-size: 75%;
+                text-align: center;
+            }
+            #access.locked:before {
+                content: "🔒 ";
+            }
+            #access.locked {
+                background-color: gray;
+                color: white;
+            }
+            #access.unlocked:before {
+                content: "🔓 ";
+            }
+            #access.unlocked {
+            }
         </style>
     </head>
     <body>

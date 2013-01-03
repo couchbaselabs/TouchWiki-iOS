@@ -16,6 +16,8 @@
 
 - (id) initWithDatabase: (TDDatabase*)database;
 
++ (WikiStore*) sharedInstance;
+
 @property (readonly) TDDatabase* database;
 
 @property (readonly) TDLiveQuery* allWikisQuery;
@@ -27,5 +29,7 @@
 - (Wiki*) newWikiWithTitle: (NSString*)title;
 
 - (WikiPage*) pageWithID: (NSString*)pageID;
+
+@property (strong) NSString* username;
 
 @end

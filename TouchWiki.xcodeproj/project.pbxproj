@@ -51,6 +51,7 @@
 		274EF89C167BEC9800A66172 /* WikiPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF89B167BEC9800A66172 /* WikiPage.m */; };
 		274EF8A7167C011E00A66172 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF8A6167C011E00A66172 /* libz.dylib */; };
 		274FB33F167FB72000D1DDA8 /* PageTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 274FB33E167FB72000D1DDA8 /* PageTemplate.html */; };
+		27F1E46216962A9B00F0E50F /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F1E46116962A9B00F0E50F /* LoginController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,6 +131,8 @@
 		274EF89B167BEC9800A66172 /* WikiPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiPage.m; sourceTree = "<group>"; };
 		274EF8A6167C011E00A66172 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		274FB33E167FB72000D1DDA8 /* PageTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PageTemplate.html; sourceTree = "<group>"; };
+		27F1E46016962A9B00F0E50F /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
+		27F1E46116962A9B00F0E50F /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +242,8 @@
 				270B93D61684085A005ED1CE /* SyncButton.h */,
 				270B93D71684085A005ED1CE /* SyncButton.m */,
 				27306B9C1684159C00F91F61 /* SyncPopover.xib */,
+				27F1E46016962A9B00F0E50F /* LoginController.h */,
+				27F1E46116962A9B00F0E50F /* LoginController.m */,
 				27306BB11684E6EB00F91F61 /* Util.h */,
 				27306BB21684E6EB00F91F61 /* Util.m */,
 				274EF863167BE8E300A66172 /* Supporting Files */,
@@ -387,6 +392,7 @@
 				270B93C416829825005ED1CE /* SyncManager.m in Sources */,
 				270B93D81684085A005ED1CE /* SyncButton.m in Sources */,
 				27306BB31684E6EB00F91F61 /* Util.m in Sources */,
+				27F1E46216962A9B00F0E50F /* LoginController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

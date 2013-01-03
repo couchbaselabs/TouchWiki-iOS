@@ -13,7 +13,7 @@
 /** One wiki in the database. */
 @interface Wiki : WikiItem
 
-- (id) initNewWithTitle: (NSString*)title inDatabase: (TDDatabase*)db;
+- (id) initNewWithTitle: (NSString*)title inWikiStore: (WikiStore*)wikiStore;
 
 @property (readonly) NSString* wikiID;
 

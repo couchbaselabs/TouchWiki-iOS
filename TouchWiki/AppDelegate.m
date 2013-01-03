@@ -7,9 +7,10 @@
 //
 
 #import "AppDelegate.h"
-#import "wikiListController.h"
+#import "WikiListController.h"
 #import "PageListController.h"
 #import "PageController.h"
+#import "LoginController.h"
 #import "Wiki.h"
 #import "WikiStore.h"
 #import <TouchDB/TouchDB.h>
@@ -52,6 +53,10 @@
     self.splitViewController.viewControllers = @[tableNavController, pageNavController];
     self.window.rootViewController = self.splitViewController;
     [self.window makeKeyAndVisible];
+
+    if (_wikiStore.username == nil) {
+        [[[LoginController alloc] init] run];
+    }
     return YES;
 }
 

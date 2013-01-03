@@ -20,12 +20,11 @@
 @dynamic title, markdown, created_at, updated_at;
 
 
-- (id) initNewWithTitle: (NSString*)title inDatabase: (TDDatabase*)db {
-    self = [super initWithNewDocumentInDatabase: db];
+- (id) initNewWithTitle: (NSString*)title inWikiStore: (WikiStore*)wikiStore {
+    self = [super initWithNewDocumentInDatabase: wikiStore.database];
     if (self) {
-        [self setValue: @"wiki" ofProperty: @"type"];
+        [self setType: @"wiki" owner: wikiStore.username];
         self.title = title;
-        self.created_at = self.updated_at = [NSDate date];
     }
     return self;
 }

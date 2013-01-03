@@ -7,11 +7,26 @@
 //
 
 #import "WikiItem.h"
+#import "WikiStore.h"
+
+
+@interface WikiItem ()
+@property (readwrite) NSString* owner_id;
+@end
+
 
 @implementation WikiItem
 
 
-@dynamic title, markdown, created_at, updated_at, tags, members;
+@dynamic title, markdown, created_at, updated_at, owner_id, members;
+
+
+- (void) setType: (NSString*)type owner: (NSString*)owner {
+    NSParameterAssert(owner.length > 0);
+    [self setValue: type ofProperty: @"type"];
+    self.owner_id = owner;
+    self.created_at = self.updated_at = [NSDate date];
+}
 
 
 - (NSDictionary*) propertiesToSave {
@@ -22,6 +37,23 @@
             self.created_at = now;
     }
     return [super propertiesToSave];
+}
+
+
+- (WikiStore*) wikiStore {
+    return [WikiStore sharedInstance];
+}
+
+
+- (bool) editable {
+    NSString* username = self.wikiStore.username;
+    return [self.owner_id isEqualToString: username] || [self.members containsObject: username];
+}
+
+
+- (bool) owned {
+    NSString* username = self.wikiStore.username;
+    return [self.owner_id isEqualToString: username];
 }
 
 

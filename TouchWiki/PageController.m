@@ -127,6 +127,7 @@ static NSRegularExpression* sWikiWordRegex;
         _previewButton.title = _page.needsSave ? @"Preview" : @"Done";
     } else {
         [buttons addObject: _editButton];
+        _editButton.title = _page.editable ? @"Edit" : @"View Source";
     }
     
     if (_page.editing && _page.needsSave)
@@ -144,6 +145,11 @@ static NSRegularExpression* sWikiWordRegex;
 
     NSMutableString* html = [sHTMLPrefix mutableCopy];
 
+    if (!_page.owned) {
+        NSString* klass = _page.editable ? @"unlocked" : @"locked";
+        [html appendFormat: @"<div id='access' class='%@'>Owner: %@</div>\n",
+                             klass, _page.owner_id];
+    }
     if (_page.needsSave) {
         [html appendString: @"<div id='banner'>PREVIEW</div>\n"];
     }

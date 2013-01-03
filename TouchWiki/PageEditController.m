@@ -44,8 +44,11 @@
     _textView.text = _page.markdown;
     _textView.selectedRange = _page.selectedRange;
     [_textView scrollRangeToVisible: _textView.selectedRange];
+    _textView.editable = _page.editable;
     self.title = _page.title;
-    [_textView becomeFirstResponder];
+
+    if (_textView.editable)
+        [_textView becomeFirstResponder];
 }
 
 
@@ -67,7 +70,8 @@
 
 
 - (void) storeText {
-    _page.markdown = _textView.text;
+    if (_page.editable)
+        _page.markdown = _textView.text;
     _page.selectedRange = _textView.selectedRange;
     NSLog(@"Stored text; changed = %d", _page.needsSave);
 }

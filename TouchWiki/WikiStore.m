@@ -12,12 +12,20 @@
 #import <TouchDB/TDModelFactory.h>
 
 
+static WikiStore* sInstance;
+
+
 @implementation WikiStore
+{
+    NSString* _username;
+}
 
 
 - (id) initWithDatabase: (TDDatabase*)database {
     self = [super init];
     if (self) {
+        NSAssert(!sInstance, @"Cannot create more than one WikiStore");
+        sInstance = self;
         _database = database;
         [_database.modelFactory registerClass: [Wiki class] forDocumentType: @"wiki"];
         [_database.modelFactory registerClass: [WikiPage class] forDocumentType: @"page"];
@@ -52,6 +60,11 @@
 }
 
 
++ (WikiStore*) sharedInstance {
+    return sInstance;
+}
+
+
 - (void) applicationWillTerminate: (NSNotification*)n {
     if (_database.unsavedModels.count) {
         NSLog(@"*** Saving unsaved models...");
@@ -59,6 +72,17 @@
         if (![_database saveAllModels: &error])
             NSLog(@"WARNING: Failed to save pages: %@", error);
     }
+}
+
+
+- (NSString*) username {
+    //FIX: This would be better stored in a _local document in the database
+    return [[NSUserDefaults standardUserDefaults] stringForKey: @"UserName"];
+}
+
+
+- (void) setUsername:(NSString *)username {
+    [[NSUserDefaults standardUserDefaults] setObject: username forKey: @"UserName"];
 }
 
 
@@ -80,7 +104,7 @@
 
 
 - (Wiki*) newWikiWithTitle: (NSString*)title {
-    return [[Wiki alloc] initNewWithTitle: title inDatabase: self.database];
+    return [[Wiki alloc] initNewWithTitle: title inWikiStore: self];
 }
 
 
