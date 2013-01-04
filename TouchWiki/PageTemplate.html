@@ -15,17 +15,6 @@
             h2 {
                 border-top: 1px solid gray;
             }
-            p { /* http://stackoverflow.com/questions/5356752/webkit-hyphenation */
-                hyphens:auto;
-                text-align:justify;
-                -webkit-hyphens:auto;
-                -webkit-hyphenate-character:"\2010";
-                -webkit-hyphenate-limit-after:1;
-                -webkit-hyphenate-limit-before:3;
-            }
-            code {
-                font-size: 90%;
-            }
             #container {
                 margin: 0px 12px;
             }
@@ -61,6 +50,23 @@
                 content: "🔓 ";
             }
             #access.unlocked {
+            }
+            p { /* http://stackoverflow.com/questions/5356752/webkit-hyphenation */
+                hyphens:auto;
+                text-align:justify;
+                -webkit-hyphens:auto;
+                -webkit-hyphenate-character:"\2010";
+                -webkit-hyphenate-limit-after:1;
+                -webkit-hyphenate-limit-before:3;
+            }
+            code {
+                font-size: 90%;
+            }
+            a.wikiword {
+                color: inherit;
+                text-decoration: inherit;
+                border-bottom: 1px dotted black;
+                padding-bottom: -5px;
             }
         </style>
     </head>

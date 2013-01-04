@@ -19,6 +19,7 @@
 {
     IBOutlet UITableView* _table;
     IBOutlet TDUITableSource* _dataSource;
+    UIBarButtonItem* _newPageButton;
     Wiki* _wiki;
 }
 
@@ -39,11 +40,10 @@
 
     _dataSource.deletionAllowed = YES;
     
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc]
-                                        initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                             target:self
-                                                             action:@selector(newPage:)];
-    self.navigationItem.rightBarButtonItem = addButton;
+    _newPageButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                   target:self
+                                                                   action:@selector(newPage:)];
+    self.navigationItem.rightBarButtonItem = _newPageButton;
 
     [self showWiki];
 
@@ -73,6 +73,7 @@
 - (void) showWiki {
     _dataSource.query = _wiki.allPagesQuery;
     self.title = _wiki.title;
+    _newPageButton.enabled = _wiki.editable;
 }
 
 

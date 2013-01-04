@@ -24,7 +24,8 @@
 
 
 static NSString *sHTMLPrefix, *sHTMLSuffix;
-static NSRegularExpression* sWikiWordRegex;
+static NSRegularExpression* sExplicitWikiWordRegex;
+static NSRegularExpression* sImplicitWikiWordRegex;
 
 
 @implementation PageController
@@ -55,10 +56,17 @@ static NSRegularExpression* sWikiWordRegex;
         sHTMLPrefix = parts[0];
         sHTMLSuffix = parts[1];
 
-        sWikiWordRegex = [NSRegularExpression regularExpressionWithPattern: @"\\[\\[([\\w ]+)\\]\\]"
-                                                                   options: 0
-                                                                     error: nil];
-        NSAssert(sWikiWordRegex != nil, @"Bad regex");
+        sExplicitWikiWordRegex =
+                    [NSRegularExpression regularExpressionWithPattern: @"\\[\\[([\\w ]+)\\]\\]"
+                                                              options: 0
+                                                                error: nil];
+        NSAssert(sExplicitWikiWordRegex != nil, @"Bad regex");
+
+        sImplicitWikiWordRegex =
+            [NSRegularExpression regularExpressionWithPattern: @"\\b[A-Z][a-z]+[A-Z][A-Za-z]*\\b"
+                                              options: NSRegularExpressionUseUnicodeWordBoundaries
+                                                            error: nil];
+        NSAssert(sImplicitWikiWordRegex != nil, @"Bad regex");
     }
 }
 
@@ -157,10 +165,14 @@ static NSRegularExpression* sWikiWordRegex;
     NSMutableString* markdown = _page.markdown.mutableCopy;
     if (markdown.length > 0) {
         // Markdown parsing:
-        [sWikiWordRegex replaceMatchesInString: markdown options: 0
+        [sExplicitWikiWordRegex replaceMatchesInString: markdown options: 0
                                          range: NSMakeRange(0,markdown.length)
                                   withTemplate: @"[$1](wiki:$1)"];
-        [html appendString: [GHMarkdownParser flavoredHTMLStringFromMarkdownString: markdown]];
+        markdown = [[GHMarkdownParser flavoredHTMLStringFromMarkdownString: markdown] mutableCopy];
+        [sImplicitWikiWordRegex replaceMatchesInString: markdown options: 0
+                                                 range: NSMakeRange(0,markdown.length)
+                                          withTemplate: @"<a class='wikiword' href='wiki:$0'>$0</a>"];
+        [html appendString: markdown];
     }
     [html appendString: sHTMLSuffix];
     [_webView loadHTMLString: html baseURL: nil];

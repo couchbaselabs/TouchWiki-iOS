@@ -21,6 +21,8 @@
 
 @property (readonly) TDLiveQuery* allPagesQuery;
 
+@property (readonly) NSSet* allPageTitles;
+
 - (WikiPage*) pageWithTitle: (NSString*)pageTitle;
 - (WikiPage*) newPageWithTitle: (NSString*)pageTitle;
 
