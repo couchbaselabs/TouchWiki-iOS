@@ -175,6 +175,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
         NSMutableString* replacedHTML = [origHTML mutableCopy];
         __block int offset = 0;
         NSSet* titles = _page.wiki.allPageTitles;
+        NSString* curTitle = _page.title;
         [sImplicitWikiWordRegex enumerateMatchesInString: origHTML
                                                  options: 0
                                                    range: NSMakeRange(0,markdown.length)
@@ -182,6 +183,8 @@ static NSRegularExpression* sImplicitWikiWordRegex;
              ^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
                  NSRange range = result.range;
                  NSString* word = [origHTML substringWithRange: range];
+                 if ([word isEqualToString: curTitle])
+                     return;
                  NSString* klass = [titles containsObject: word] ? @"" : @"wikiword";
                  NSString* replacement = [NSString stringWithFormat: @"<a class='%@' href='wiki:%@'>%@</a>",
                                           klass, word, word];
