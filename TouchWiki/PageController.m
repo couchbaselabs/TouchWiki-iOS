@@ -168,11 +168,28 @@ static NSRegularExpression* sImplicitWikiWordRegex;
         [sExplicitWikiWordRegex replaceMatchesInString: markdown options: 0
                                          range: NSMakeRange(0,markdown.length)
                                   withTemplate: @"[$1](wiki:$1)"];
-        markdown = [[GHMarkdownParser flavoredHTMLStringFromMarkdownString: markdown] mutableCopy];
-        [sImplicitWikiWordRegex replaceMatchesInString: markdown options: 0
-                                                 range: NSMakeRange(0,markdown.length)
-                                          withTemplate: @"<a class='wikiword' href='wiki:$0'>$0</a>"];
-        [html appendString: markdown];
+
+        // Implicit wiki-word matching -- matches all words in CamelCase.
+        // Generates a different (unobtrusive) style of link if the word does not match a page.
+        NSString* origHTML = [GHMarkdownParser flavoredHTMLStringFromMarkdownString: markdown];
+        NSMutableString* replacedHTML = [origHTML mutableCopy];
+        __block int offset = 0;
+        NSSet* titles = _page.wiki.allPageTitles;
+        [sImplicitWikiWordRegex enumerateMatchesInString: origHTML
+                                                 options: 0
+                                                   range: NSMakeRange(0,markdown.length)
+                                              usingBlock:
+             ^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+                 NSRange range = result.range;
+                 NSString* word = [origHTML substringWithRange: range];
+                 NSString* klass = [titles containsObject: word] ? @"" : @"wikiword";
+                 NSString* replacement = [NSString stringWithFormat: @"<a class='%@' href='wiki:%@'>%@</a>",
+                                          klass, word, word];
+                 range.location += offset;
+                 [replacedHTML replaceCharactersInRange: range withString: replacement];
+                 offset += replacement.length - range.length;
+             }];
+        [html appendString: replacedHTML];
     }
     [html appendString: sHTMLSuffix];
     [_webView loadHTMLString: html baseURL: nil];
