@@ -15,7 +15,7 @@ if (!SYNC_HOSTNAME) {
   process.exit(-1);
 }
 
-var coux = require("coux"),
+var coux = require("coax"),
   http = require("http"),
   url = require("url"),
   _ = require("underscore"),
@@ -38,12 +38,7 @@ function installDDoc(url, doc, cb) {
     if (!err) {
       doc._rev = old._rev;
     }
-    coux.put(url, doc, function(err, ok){
-      if (err) {
-        throw("couldn't push doc " +url+" : "+JSON.stringify(err));
-      }
-      console.log("pushed doc", doc._id);
-    });
+    coux.put(url, doc, cb);
   });
 }
 
@@ -96,7 +91,7 @@ installDDoc(bucketDesignUrl, {
     }
   }, function(err, ok){
     if (err) {
-      throw("couldn't push bucket ddoc" + err);
+      throw("couldn't push bucket ddoc " + JSON.stringify(err));
     } else {
       console.log("pushed bucket ddoc");
     }
