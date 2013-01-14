@@ -46,7 +46,8 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
             _syncURL = repl.remoteURL;
         if (repl.continuous)
             _continuous = true;
-        [_delegate syncManager: self addedReplication: repl];
+        if ([_delegate respondsToSelector: @selector(syncManager:addedReplication:)])
+            [_delegate syncManager: self addedReplication: repl];
     }
 }
 
@@ -129,6 +130,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
         _error = error;
         NSLog(@"SYNCMGR: active=%d; mode=%d; %u/%u; %@",
               active, mode, completed, total, error.localizedDescription); //FIX: temporary logging
+        [_delegate syncManagerProgressChanged: self];
         [[NSNotificationCenter defaultCenter]
                                         postNotificationName: SyncManagerStateChangedNotification
                                                       object: self];

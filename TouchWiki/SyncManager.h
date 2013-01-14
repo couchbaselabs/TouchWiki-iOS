@@ -39,7 +39,8 @@ extern NSString* const SyncManagerStateChangedNotification;
 
 
 @protocol SyncManagerDelegate <NSObject>
-
+- (void) syncManagerProgressChanged: (SyncManager*)manager;
+@optional
 - (void) syncManager: (SyncManager*)manager addedReplication: (TDReplication*)replication;
 
 @end

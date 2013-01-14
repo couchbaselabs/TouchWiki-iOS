@@ -51,6 +51,9 @@
 		274EF89C167BEC9800A66172 /* WikiPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF89B167BEC9800A66172 /* WikiPage.m */; };
 		274EF8A7167C011E00A66172 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF8A6167C011E00A66172 /* libz.dylib */; };
 		274FB33F167FB72000D1DDA8 /* PageTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 274FB33E167FB72000D1DDA8 /* PageTemplate.html */; };
+		2776A5A016A0E233006FF199 /* BrowserIDController+UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */; };
+		2776A5A116A0E233006FF199 /* BrowserIDController.js in Resources */ = {isa = PBXBuildFile; fileRef = 2776A59D16A0E233006FF199 /* BrowserIDController.js */; };
+		2776A5A216A0E233006FF199 /* BrowserIDController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2776A59E16A0E233006FF199 /* BrowserIDController.m */; };
 		27F1E46216962A9B00F0E50F /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F1E46116962A9B00F0E50F /* LoginController.m */; };
 /* End PBXBuildFile section */
 
@@ -131,6 +134,11 @@
 		274EF89B167BEC9800A66172 /* WikiPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiPage.m; sourceTree = "<group>"; };
 		274EF8A6167C011E00A66172 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		274FB33E167FB72000D1DDA8 /* PageTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PageTemplate.html; sourceTree = "<group>"; };
+		2776A59A16A0E233006FF199 /* BrowserIDController+UIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BrowserIDController+UIKit.h"; sourceTree = "<group>"; };
+		2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BrowserIDController+UIKit.m"; sourceTree = "<group>"; };
+		2776A59C16A0E233006FF199 /* BrowserIDController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserIDController.h; sourceTree = "<group>"; };
+		2776A59D16A0E233006FF199 /* BrowserIDController.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = BrowserIDController.js; sourceTree = "<group>"; };
+		2776A59E16A0E233006FF199 /* BrowserIDController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserIDController.m; sourceTree = "<group>"; };
 		27F1E46016962A9B00F0E50F /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
 		27F1E46116962A9B00F0E50F /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -246,6 +254,7 @@
 				27F1E46116962A9B00F0E50F /* LoginController.m */,
 				27306BB11684E6EB00F91F61 /* Util.h */,
 				27306BB21684E6EB00F91F61 /* Util.m */,
+				2776A59716A0E233006FF199 /* BrowserID */,
 				274EF863167BE8E300A66172 /* Supporting Files */,
 			);
 			path = TouchWiki;
@@ -279,6 +288,19 @@
 			name = Model;
 			path = TouchWiki;
 			sourceTree = "<group>";
+		};
+		2776A59716A0E233006FF199 /* BrowserID */ = {
+			isa = PBXGroup;
+			children = (
+				2776A59C16A0E233006FF199 /* BrowserIDController.h */,
+				2776A59E16A0E233006FF199 /* BrowserIDController.m */,
+				2776A59A16A0E233006FF199 /* BrowserIDController+UIKit.h */,
+				2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */,
+				2776A59D16A0E233006FF199 /* BrowserIDController.js */,
+			);
+			name = BrowserID;
+			path = vendor/browserid/Sources;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -369,6 +391,7 @@
 				27306BB61684E99500F91F61 /* Triangle-Left.png in Resources */,
 				27306BB71684E99500F91F61 /* Triangle-Right.png in Resources */,
 				27306BC9168B9BFD00F91F61 /* Sync-error.png in Resources */,
+				2776A5A116A0E233006FF199 /* BrowserIDController.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +416,8 @@
 				270B93D81684085A005ED1CE /* SyncButton.m in Sources */,
 				27306BB31684E6EB00F91F61 /* Util.m in Sources */,
 				27F1E46216962A9B00F0E50F /* LoginController.m in Sources */,
+				2776A5A016A0E233006FF199 /* BrowserIDController+UIKit.m in Sources */,
+				2776A5A216A0E233006FF199 /* BrowserIDController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

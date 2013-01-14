@@ -16,6 +16,7 @@
 #import "SyncManager.h"
 #import "SyncButton.h"
 #import "Util.h"
+#import "BrowserIDController+UIKit.h"
 #import "GHMarkdownParser.h"
 
 #define kFlipDuration 0.4
@@ -26,6 +27,10 @@
 static NSString *sHTMLPrefix, *sHTMLSuffix;
 static NSRegularExpression* sExplicitWikiWordRegex;
 static NSRegularExpression* sImplicitWikiWordRegex;
+
+
+@interface PageController () <SyncManagerDelegate, BrowserIDControllerDelegate>
+@end
 
 
 @implementation PageController
@@ -44,6 +49,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     UIPopoverController *_masterPopoverController;
     NSString* _pendingTitle;
     NSURL* _pendingURL;
+    BrowserIDController* _browserIDController;
 }
 
 
@@ -94,6 +100,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 
     SyncManager* syncMgr = [[SyncManager alloc] initWithDatabase: _wikiStore.database];
     _syncButton.syncManager = syncMgr;
+    syncMgr.delegate = self;
 
     self.navigationItem.rightBarButtonItem = _editButton;
     self.navigationItem.leftBarButtonItems = @[_syncButton, _backButton, _fwdButton];
@@ -266,6 +273,59 @@ static NSRegularExpression* sImplicitWikiWordRegex;
         [self configureButtons];
     }
 }
+
+
+#pragma mark - BROWSERID:
+
+
+static NSURL* URLToOrigin(NSURL* url) {
+    NSMutableString* str = [NSMutableString stringWithFormat: @"%@://%@",
+                            url.scheme.lowercaseString, url.host.lowercaseString];
+    NSNumber* port = url.port;
+    if (port) {
+        int defaultPort = [url.scheme isEqualToString: @"https"] ? 443 : 80;
+        if (port.intValue != defaultPort)
+            [str appendFormat: @":%@", port];
+    }
+    return [NSURL URLWithString: str];
+}
+
+
+- (void) syncManagerProgressChanged: (SyncManager*)manager {
+    NSError* error = manager.error;
+    NSLog(@"ERROR = %@", error);//TEMP
+    if (error && error.code == 401) {   //FIX: Check domain too
+        if (!_browserIDController) {
+            _browserIDController = [[BrowserIDController alloc] init];
+            _browserIDController.origin = URLToOrigin([manager.replications[0] remoteURL]);
+            _browserIDController.delegate = self;
+            [_browserIDController presentModalInController: self];
+        }
+    }
+}
+
+
+- (void) browserIDControllerDidCancel: (BrowserIDController*) browserIDController {
+    [_browserIDController.viewController dismissViewControllerAnimated: YES completion: NULL];
+    _browserIDController = nil;
+}
+
+- (void) browserIDController: (BrowserIDController*) browserIDController
+           didFailWithReason: (NSString*) reason
+{
+    [self browserIDControllerDidCancel: browserIDController];
+}
+
+- (void) browserIDController: (BrowserIDController*) browserIDController
+     didSucceedWithAssertion: (NSString*) assertion
+{
+    [self browserIDControllerDidCancel: browserIDController];
+    NSLog(@"ASSERTION = %@", assertion);
+    for (TDReplication* repl in _syncButton.syncManager.replications) {
+        repl.browserIDAssertion = assertion;
+    }
+}
+
 
 
 #pragma mark - WEB VIEW

@@ -1,3 +1,6 @@
 [submodule "vendor/GHMarkdownParser"]
 	path = vendor/GHMarkdownParser
 	url = git://github.com/OliverLetterer/GHMarkdownParser.git
+[submodule "vendor/browserid"]
+	path = vendor/browserid
+	url = git://github.com/couchbaselabs/browserid-ios.git
