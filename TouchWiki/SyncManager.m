@@ -75,15 +75,19 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
     }
     _replications = [[NSMutableArray alloc] init];
     _syncURL = nil;
-    _continuous = false;
 }
 
 
 - (void) setSyncURL: (NSURL*)url {
+    if (url == _syncURL || [url isEqual: _syncURL])
+        return;
     [self forgetAll];
-    for (TDReplication* repl in [self.database replicateWithURL: url exclusively: YES]) {
-        repl.persistent = YES;
-        [self addReplication: repl];
+    if (url) {
+        for (TDReplication* repl in [self.database replicateWithURL: url exclusively: YES]) {
+            repl.persistent = YES;
+            repl.continuous = _continuous;
+            [self addReplication: repl];
+        }
     }
 }
 

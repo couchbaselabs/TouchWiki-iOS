@@ -278,26 +278,13 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 #pragma mark - BROWSERID:
 
 
-static NSURL* URLToOrigin(NSURL* url) {
-    NSMutableString* str = [NSMutableString stringWithFormat: @"%@://%@",
-                            url.scheme.lowercaseString, url.host.lowercaseString];
-    NSNumber* port = url.port;
-    if (port) {
-        int defaultPort = [url.scheme isEqualToString: @"https"] ? 443 : 80;
-        if (port.intValue != defaultPort)
-            [str appendFormat: @":%@", port];
-    }
-    return [NSURL URLWithString: str];
-}
-
-
 - (void) syncManagerProgressChanged: (SyncManager*)manager {
     NSError* error = manager.error;
     NSLog(@"ERROR = %@", error);//TEMP
     if (error && error.code == 401) {   //FIX: Check domain too
         if (!_browserIDController) {
             _browserIDController = [[BrowserIDController alloc] init];
-            _browserIDController.origin = URLToOrigin([manager.replications[0] remoteURL]);
+            _browserIDController.origin = [manager.replications[0] browserIDOrigin];
             _browserIDController.delegate = self;
             [_browserIDController presentModalInController: self];
         }
@@ -320,9 +307,9 @@ static NSURL* URLToOrigin(NSURL* url) {
      didSucceedWithAssertion: (NSString*) assertion
 {
     [self browserIDControllerDidCancel: browserIDController];
-    NSLog(@"ASSERTION = %@", assertion);
     for (TDReplication* repl in _syncButton.syncManager.replications) {
-        repl.browserIDAssertion = assertion;
+        repl.browserIDEmailAddress = browserIDController.emailAddress;
+        [repl registerBrowserIDAssertion: assertion];
     }
 }
 

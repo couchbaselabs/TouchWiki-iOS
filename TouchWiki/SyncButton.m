@@ -143,6 +143,7 @@
 
 - (void) viewDidLoad {
     _urlField.text = _syncManager.syncURL.absoluteString;
+    _onOffSwitch.on = _syncManager.continuous;
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(urlChanged:)
                                                  name: UITextFieldTextDidChangeNotification
                                                object: _urlField];
@@ -153,7 +154,8 @@
 - (void) updateUI {
     BOOL hasURL = _urlField.text.length > 0;
     _onOffSwitch.enabled = hasURL;
-    _syncNowButton.enabled = hasURL && !_onOffSwitch.on && !_syncManager.active;
+    _syncNowButton.hidden = _onOffSwitch.on;
+    _syncNowButton.enabled = hasURL && !_syncManager.active;
 
     NSString* message;
     if (_syncManager.error) {
@@ -163,7 +165,7 @@
             message = @"Offline (can’t reach server)";
             break;
         case kTDReplicationIdle:
-            message = @"In sync";
+            message = @"Everything’s in sync";
             break;
         case kTDReplicationActive:
             message = [NSString stringWithFormat: @"Syncing (%.0f%% done)",
