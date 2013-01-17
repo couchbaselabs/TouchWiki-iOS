@@ -160,7 +160,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 
     NSMutableString* html = [sHTMLPrefix mutableCopy];
 
-    if (!_page.owned) {
+    if (_page && !_page.owned) {
         NSString* klass = _page.editable ? @"unlocked" : @"locked";
         [html appendFormat: @"<div id='access' class='%@'>Owner: %@</div>\n",
                              klass, _page.owner_id];
@@ -308,7 +308,6 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 {
     [self browserIDControllerDidCancel: browserIDController];
     for (TDReplication* repl in _syncButton.syncManager.replications) {
-        repl.browserIDEmailAddress = browserIDController.emailAddress;
         [repl registerBrowserIDAssertion: assertion];
     }
 }
