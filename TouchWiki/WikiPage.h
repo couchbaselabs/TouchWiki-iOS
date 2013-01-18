@@ -17,8 +17,10 @@
 
 @property (readonly) Wiki* wiki;
 
+@property bool draft;
+
 // Ephemeral properties:
-@property bool editing;
+//@property bool editing;
 @property NSRange selectedRange;
 
 + (bool) parseDocID: (NSString*)docID

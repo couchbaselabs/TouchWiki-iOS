@@ -19,12 +19,24 @@
 @implementation WikiPage
 
 
+@dynamic draft;
+
+
 - (id) initNewWithTitle: (NSString*)title inWiki: (Wiki*)wiki {
     TDDocument* doc = [wiki.database documentWithID: [wiki docIDForPageWithTitle: title]];
     self = [super initWithDocument: doc];
     if (self) {
         [self setType: @"page" owner: wiki.wikiStore.username];
         [self setValue: wiki.wikiID ofProperty: @"wiki_id"];
+    }
+    return self;
+}
+
+
+- (id) initWithDocument: (TDDocument*)document {
+    self = [super initWithDocument: document];
+    if (self) {
+        self.autosaves = true;
     }
     return self;
 }
@@ -48,7 +60,7 @@
 
 
 - (NSString*) description {
-    return [NSString stringWithFormat: @"%@[%@ / '%@'", self.class, self.wiki.title, self.title];
+    return [NSString stringWithFormat: @"%@[%@/'%@']", self.class, self.wiki.title, self.title];
 }
 
 
@@ -62,6 +74,11 @@
     *outWikiID = [docID substringToIndex: colon.location];
     *outTitle = [docID substringFromIndex: NSMaxRange(colon)];
     return (*outWikiID).length > 0 && (*outTitle).length > 0;
+}
+
+
+- (NSTimeInterval) autosaveDelay {
+    return 30.0;
 }
 
 

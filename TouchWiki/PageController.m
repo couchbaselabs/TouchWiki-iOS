@@ -113,9 +113,9 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     if (_page != newPage) {
         [self hideEditor: self];
 
-        [_page removeObserver: self forKeyPath: @"needsSave"];
+        [_page removeObserver: self forKeyPath: @"draft"];
         _page = newPage;
-        [_page addObserver: self forKeyPath: @"needsSave" options: 0 context: NULL];
+        [_page addObserver: self forKeyPath: @"draft" options: 0 context: NULL];
         [self configureView];
 
         [[NSUserDefaults standardUserDefaults] setObject: _page.document.documentID
@@ -139,13 +139,13 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     
     if (_editController) {
         [buttons addObject: _previewButton];
-        _previewButton.title = _page.needsSave ? @"Preview" : @"Done";
+        _previewButton.title = _page.draft ? @"Preview" : @"Done";
     } else {
         [buttons addObject: _editButton];
         _editButton.title = _page.editable ? @"Edit" : @"View Source";
     }
     
-    if (_page.editing && _page.needsSave)
+    if (_page.draft)
         [buttons addObject: _saveButton];
 
     [self.navigationItem setRightBarButtonItems: buttons animated: YES];
@@ -165,7 +165,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
         [html appendFormat: @"<div id='access' class='%@'>Owner: %@</div>\n",
                              klass, _page.owner_id];
     }
-    if (_page.needsSave) {
+    if (_page.draft) {
         [html appendString: @"<div id='banner'>PREVIEW</div>\n"];
     }
 
@@ -210,11 +210,6 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 - (IBAction) showEditor: (id)sender {
     if (_editController)
         return;
-    // Start editing:
-    if (!_page.editing) {
-        NSLog(@"*** EDITING '%@'", _page.title);
-        _page.editing = YES;
-    }
     
     _editController = [[PageEditController alloc] initWithPage: _page];
     [_editController willMoveToParentViewController: self];
@@ -234,11 +229,8 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     if (!_editController)
         return;
     
-    if (_page.needsSave)
-        [self loadContent];
-    else
-        _page.editing = NO;
-    
+    [self loadContent];
+
     [_editController willMoveToParentViewController: nil];
     [_editController removeFromParentViewController];
 
@@ -255,6 +247,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 
 - (IBAction) saveChanges: (id)sender {
     [_editController storeText];
+    _page.draft = false;
 
     NSError* error;
     NSLog(@"Saving...");
@@ -268,10 +261,18 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 }
 
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                         change:(NSDictionary *)change context:(void *)context
+{
     if (object == _page) {
         [self configureButtons];
     }
+}
+
+
+- (void) syncManager: (SyncManager*)manager addedReplication: (TDReplication*)replication {
+    if (!replication.pull)
+        replication.filter = @"notDraft";   // filter defined in WikiStore.m
 }
 
 

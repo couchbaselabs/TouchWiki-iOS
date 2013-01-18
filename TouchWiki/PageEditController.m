@@ -70,10 +70,13 @@
 
 
 - (void) storeText {
-    if (_page.editable)
+    if (_page.editable) {
         _page.markdown = _textView.text;
+        if (_page.needsSave)
+            _page.draft = true;
+    }
     _page.selectedRange = _textView.selectedRange;
-    NSLog(@"Stored text; changed = %d", _page.needsSave);
+    NSLog(@"Stored text; draft = %d, needsSave = %d", _page.draft, _page.needsSave);
 }
 
 
@@ -112,6 +115,8 @@
 
 - (void)textViewDidChange:(UITextView *)textView {
     _page.markdown = _textView.text;
+    if (_page.needsSave)
+        _page.draft = true;
 }
 
 

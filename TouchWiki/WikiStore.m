@@ -30,6 +30,7 @@ static WikiStore* sInstance;
         [_database.modelFactory registerClass: [Wiki class] forDocumentType: @"wiki"];
         [_database.modelFactory registerClass: [WikiPage class] forDocumentType: @"page"];
 
+        // Map function for finding wikis by title
         TDView* view = [_database viewNamed: @"wikisByTitle"];
         [view setMapBlock: MAPBLOCK({
             if ([doc[@"type"] isEqualToString: @"wiki"]) {
@@ -40,16 +41,24 @@ static WikiStore* sInstance;
         }) reduceBlock: nil version: @"1"];
         _allWikisQuery = [[view query] asLiveQuery];
 
+        // Map function for finding pages by title
         [[_database viewNamed: @"pagesByTitle"] setMapBlock: MAPBLOCK({
             if ([doc[@"type"] isEqualToString: @"page"]) {
                 NSString *wikiID;
                 NSString *title;
                 if ([WikiPage parseDocID: (doc[@"_id"]) intoWikiID: &wikiID andTitle: &title]) {
                     emit(@[wikiID, title], nil);
-                    NSLog(@"EMITTED %@, %@", wikiID, title);
                 }
             }
         }) reduceBlock: nil version: @"4"];
+
+        // Filter for push replications, to avoid sending draft page revisions to the server.
+        [_database defineFilter: @"notDraft"
+                        asBlock: ^BOOL(TDRevision *revision, NSDictionary *params) {
+                            if ([revision[@"type"] isEqualToString: @"page"])
+                                return ![revision[@"draft"] boolValue];
+                            return YES;
+                        }];
 
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(applicationWillTerminate:)

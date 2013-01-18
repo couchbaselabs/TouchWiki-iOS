@@ -189,7 +189,7 @@
 
 - (void) updateCell: (UITableViewCell*)cell forPage: (WikiPage*)page {
     UIImageView* accessory = (UIImageView*)cell.accessoryView;
-    if (!page.needsSave) {
+    if (!page.draft) {
         accessory.image = nil;
     } else if (accessory) {
         accessory.image = [UIImage imageNamed: @"EditedIcon"];

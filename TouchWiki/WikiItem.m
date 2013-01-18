@@ -31,6 +31,7 @@
 
 - (NSDictionary*) propertiesToSave {
     if (self.needsSave) {
+        // Bump the updated_at date when saving:
         NSDate* now = [NSDate date];
         self.updated_at = now;
         if (!self.created_at)
