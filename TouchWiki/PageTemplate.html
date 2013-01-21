@@ -27,17 +27,17 @@
                 color: rgba(255, 0, 0, 0.1);
                 -webkit-transform: rotate(15deg);
             }
+            
             #access {
                 position: fixed;
                 top: 5px;
                 right: -1px;
-                width: 100px;
+                width: 200px;
                 padding: 2px;
                 border: 1px solid lightgray;
                 background-color: yellow;
                 font-family: "Avenir Next", sans-serif;
-                font-size: 75%;
-                text-align: center;
+                font-size: 60%;
             }
             #access.locked:before {
                 content: "🔒 ";
@@ -46,11 +46,24 @@
                 background-color: gray;
                 color: white;
             }
-            #access.unlocked:before {
+            #access.unlocked:before,
+            #access.owned.before {
                 content: "🔓 ";
             }
             #access.unlocked {
             }
+            .editButton {
+                display: none;
+            }
+            #access.owned .editbutton {
+                display: inline;
+            }
+
+            #membersEdit {
+                display: none;
+                width: 180px;
+            }
+
             p { /* http://stackoverflow.com/questions/5356752/webkit-hyphenation */
                 hyphens:auto;
                 text-align:justify;
@@ -69,9 +82,38 @@
                 padding-bottom: -5px;
             }
         </style>
+
+        <script>
+            function editMembers(button) {
+                var span = document.getElementById("members");
+                var area = document.getElementById("membersEdit");
+                if (area.style.display != "block") {
+                    span.style.display = "none";
+                    area.style.display = "block";
+                    area.value = span.innerText;
+                    area.focus();
+                    button.innerText = "Done";
+                } else {
+                    var members = area.value.split(/\s*(?:,|\s)\s*/); // comma or space
+                    span.style.display = "inline";
+                    area.style.display = "none";
+                    span.innerText = members.join(", ");
+                    button.innerText = "Edit";
+                    window.location = "wikicmd:///setMembers/" + members.join("/");
+                }
+            }
+        </script>
     </head>
+    
     <body>
         <div id="container">
+            <div id='access' class='{{ACCESSCLASS}}'>
+                <strong>Owner:</strong> {{OWNER}}<br />
+                <strong>Members:</strong> <span id="members">{{MEMBERS}}</span>
+                <textarea id="membersEdit" autocorrect='off' autocapitalize='none'></textarea>
+                <button class="editbutton" onclick="editMembers(this)">Edit</button>
+            </div>
+            
             {{BODY}}
         </div>
     </body>

@@ -21,6 +21,15 @@
 @dynamic title, markdown, created_at, updated_at, owner_id, members;
 
 
+- (id) initWithDocument: (TDDocument*)document {
+    self = [super initWithDocument: document];
+    if (self) {
+        self.autosaves = true;
+    }
+    return self;
+}
+
+
 - (void) setType: (NSString*)type owner: (NSString*)owner {
     NSParameterAssert(owner.length > 0);
     [self setValue: type ofProperty: @"type"];
@@ -55,6 +64,18 @@
 - (bool) owned {
     NSString* username = self.wikiStore.username;
     return [self.owner_id isEqualToString: username];
+}
+
+
+- (void) addMembers: (NSArray*)newMembers {
+    NSArray* oldMembers = self.members;
+    if (!oldMembers) {
+        self.members = newMembers;
+        return;
+    }
+    NSMutableOrderedSet* members = [NSMutableOrderedSet orderedSetWithArray: self.members];
+    [members addObjectsFromArray: newMembers];
+    self.members = members.array;
 }
 
 

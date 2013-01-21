@@ -23,6 +23,8 @@
 @property (readonly) NSString* owner_id;
 @property (copy) NSArray* members;
 
+- (void) addMembers: (NSArray*)newMembers;
+
 @property (readonly) bool editable;
 @property (readonly) bool owned;
 

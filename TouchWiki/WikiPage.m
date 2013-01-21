@@ -32,16 +32,6 @@
     return self;
 }
 
-
-- (id) initWithDocument: (TDDocument*)document {
-    self = [super initWithDocument: document];
-    if (self) {
-        self.autosaves = true;
-    }
-    return self;
-}
-
-
 - (NSString*) title {
     NSString *wikiID, *title;
     if (![[self class] parseDocID: self.document.documentID intoWikiID: &wikiID andTitle: &title])

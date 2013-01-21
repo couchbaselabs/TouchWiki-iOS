@@ -24,7 +24,7 @@
 #define kFlipToPreviewAnimation UIViewAnimationOptionTransitionFlipFromRight
 
 
-static NSString *sHTMLPrefix, *sHTMLSuffix;
+static NSString *sHTMLTemplate;
 static NSRegularExpression* sExplicitWikiWordRegex;
 static NSRegularExpression* sImplicitWikiWordRegex;
 
@@ -54,13 +54,10 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 
 
 + (void) initialize {
-    if (!sHTMLPrefix) {
+    if (!sHTMLTemplate) {
         NSURL* url = [[NSBundle bundleForClass: self] URLForResource: @"PageTemplate" withExtension: @"html"];
-        NSString* html = [NSString stringWithContentsOfURL: url encoding: NSUTF8StringEncoding error: nil];
-        NSArray* parts = [html componentsSeparatedByString: @"{{BODY}}"];
-        NSAssert(parts.count == 2, @"PageTemplate.html does not contain {{BODY}}");
-        sHTMLPrefix = parts[0];
-        sHTMLSuffix = parts[1];
+        sHTMLTemplate = [NSString stringWithContentsOfURL: url encoding: NSUTF8StringEncoding error: nil];
+        NSAssert(sHTMLTemplate != nil, @"Can't load PageTemplate.html");
 
         sExplicitWikiWordRegex =
                     [NSRegularExpression regularExpressionWithPattern: @"\\[\\[([\\w ]+)\\]\\]"
@@ -152,23 +149,36 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 }
 
 
+static void replace(NSMutableString* str, NSString* pattern, NSString* replacement) {
+    if (!replacement)
+        replacement = @"";
+    [str replaceOccurrencesOfString: pattern withString: replacement
+                            options: 0 range: NSMakeRange(0, str.length)];
+}
+
+
 - (void) loadContent {
-    if (_page)
-        self.title = [NSString stringWithFormat: @"%@ » %@", _page.wiki.title, _page.title];
-    else
+    if (!_page) {
         self.title = NSLocalizedString(@"No Page", @"No Page");
-
-    NSMutableString* html = [sHTMLPrefix mutableCopy];
-
-    if (_page && !_page.owned) {
-        NSString* klass = _page.editable ? @"unlocked" : @"locked";
-        [html appendFormat: @"<div id='access' class='%@'>Owner: %@</div>\n",
-                             klass, _page.owner_id];
+        [_webView loadHTMLString: @"" baseURL: nil];
+        return;
     }
+    
+    self.title = [NSString stringWithFormat: @"%@ » %@", _page.wiki.title, _page.title];
+    NSMutableString* html = [sHTMLTemplate mutableCopy];
+
+    NSString* klass = _page.owned ? @"owned" : (_page.editable ? @"unlocked" : @"locked");
+
+    //FIX: Use a real template engine!
+    replace(html, @"{{ACCESSCLASS}}", klass);
+    replace(html, @"{{OWNER}}", _page.owner_id);
+    replace(html, @"{{MEMBERS}}", [_page.members componentsJoinedByString: @", "]);
+
     if (_page.draft) {
         [html appendString: @"<div id='banner'>PREVIEW</div>\n"];
     }
 
+    NSMutableString* bodyHTML = [NSMutableString string];
     NSMutableString* markdown = _page.markdown.mutableCopy;
     if (markdown.length > 0) {
         // Markdown parsing:
@@ -179,7 +189,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
         // Implicit wiki-word matching -- matches all words in CamelCase.
         // Generates a different (unobtrusive) style of link if the word does not match a page.
         NSString* origHTML = [GHMarkdownParser flavoredHTMLStringFromMarkdownString: markdown];
-        NSMutableString* replacedHTML = [origHTML mutableCopy];
+        bodyHTML = [origHTML mutableCopy];
         __block int offset = 0;
         NSSet* titles = _page.wiki.allPageTitles;
         NSString* curTitle = _page.title;
@@ -196,12 +206,11 @@ static NSRegularExpression* sImplicitWikiWordRegex;
                  NSString* replacement = [NSString stringWithFormat: @"<a class='%@' href='wiki:%@'>%@</a>",
                                           klass, word, word];
                  range.location += offset;
-                 [replacedHTML replaceCharactersInRange: range withString: replacement];
+                 [bodyHTML replaceCharactersInRange: range withString: replacement];
                  offset += replacement.length - range.length;
              }];
-        [html appendString: replacedHTML];
     }
-    [html appendString: sHTMLSuffix];
+    replace(html, @"{{BODY}}", bodyHTML);
     [_webView loadHTMLString: html baseURL: nil];
     //NSLog(@"HTML = %@", html);
 }
@@ -359,24 +368,45 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 }
 
 
+- (void) updateMembers: (NSArray*)members {
+    members = [[NSOrderedSet orderedSetWithArray: members] array];  // Remove duplicates
+    _page.members = members;
+    [_page.wiki addMembers: members];
+}
+
+
 - (BOOL)webView:(UIWebView *)webView
         shouldStartLoadWithRequest:(NSURLRequest *)request
         navigationType:(UIWebViewNavigationType)navigationType
 {
-    if (navigationType != UIWebViewNavigationTypeLinkClicked)
-        return YES;
     NSURL* url = request.URL;
-    if ([url.scheme isEqualToString: @"wiki"]) {
-        NSString* title = [url.resourceSpecifier stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-        NSLog(@"Link to '%@'", title);
-        [self performSelector: @selector(goToPageNamed:) withObject: title afterDelay: 0.0];
-    } else if ([[UIApplication sharedApplication] canOpenURL: url]) {
-        [self performSelector: @selector(goToExternalURL:) withObject: url afterDelay: 0.0];
-    } else {
-        NSString* message = [NSString stringWithFormat: @"Couldn't open URL <%@>", url.absoluteString];
-        [gAppDelegate showAlert: message error: nil fatal: NO];
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        if ([url.scheme isEqualToString: @"wiki"]) {
+            NSString* title = [url.resourceSpecifier stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+            NSLog(@"Link to '%@'", title);
+            [self performSelector: @selector(goToPageNamed:) withObject: title afterDelay: 0.0];
+        } else if ([[UIApplication sharedApplication] canOpenURL: url]) {
+            [self performSelector: @selector(goToExternalURL:) withObject: url afterDelay: 0.0];
+        } else {
+            NSString* message = [NSString stringWithFormat: @"Couldn't open URL <%@>", url.absoluteString];
+            [gAppDelegate showAlert: message error: nil fatal: NO];
+        }
+        return NO;
+
+    } else if (navigationType == UIWebViewNavigationTypeOther) {
+        if ([url.scheme isEqualToString: @"wikicmd"]) {
+            NSArray* items = [url.path componentsSeparatedByString: @"/"];
+            NSString* cmd = items[1];
+            items = [items subarrayWithRange: NSMakeRange(2, items.count - 2)];
+            if ([cmd isEqualToString: @"setMembers"]) {
+                [self updateMembers: items];
+            } else {
+                NSLog(@"Warning: WebView sent unknown command '%@'", cmd);
+            }
+            return NO;
+        }
     }
-    return NO;
+    return YES;
 }
 
 
