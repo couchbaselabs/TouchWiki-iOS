@@ -105,6 +105,19 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 }
 
 
+- (void) syncManager: (SyncManager*)manager addedReplication: (TDReplication*)replication {
+    if (replication.pull) {
+        // Pull replication: Define the set of channels to sync
+        replication.filter = @"sync_gateway/bychannel";
+        NSArray* channels = _wikiStore.channelsToSync;
+        replication.query_params = @{@"channels": [channels componentsJoinedByString: @","]};
+    } else {
+        // Push replication: Set filter to block pushing draft documents
+        replication.filter = @"notDraft";   // defined in WikiStore.m
+    }
+}
+
+
 - (void) setPage: (WikiPage*)newPage {
     NSLog(@"setPage: %@", newPage);
     if (_page != newPage) {
@@ -122,6 +135,15 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 }
 
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                         change:(NSDictionary *)change context:(void *)context
+{
+    if (object == _page) {
+        [self configureButtons];
+    }
+}
+
+
 // Display the page in the UI.
 - (void)configureView {
     [self loadContent];
@@ -131,7 +153,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 
 - (void) configureButtons {
     (void)self.view; // make sure nib is loaded
-    
+
     NSMutableArray* buttons = [NSMutableArray array];
     
     if (_editController) {
@@ -216,6 +238,9 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 }
 
 
+#pragma mark - ACTIONS:
+
+
 - (IBAction) showEditor: (id)sender {
     if (_editController)
         return;
@@ -267,21 +292,6 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
     
     [self loadContent];
     [self hideEditor: nil];
-}
-
-
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-                         change:(NSDictionary *)change context:(void *)context
-{
-    if (object == _page) {
-        [self configureButtons];
-    }
-}
-
-
-- (void) syncManager: (SyncManager*)manager addedReplication: (TDReplication*)replication {
-    if (!replication.pull)
-        replication.filter = @"notDraft";   // filter defined in WikiStore.m
 }
 
 
