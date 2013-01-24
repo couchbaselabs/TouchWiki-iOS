@@ -164,6 +164,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2702BFA616B1EEC000AAFD77 /* Sync UI */ = {
+			isa = PBXGroup;
+			children = (
+				270B93C216829825005ED1CE /* SyncManager.h */,
+				270B93C316829825005ED1CE /* SyncManager.m */,
+				270B93D61684085A005ED1CE /* SyncButton.h */,
+				270B93D71684085A005ED1CE /* SyncButton.m */,
+				27306B9C1684159C00F91F61 /* SyncPopover.xib */,
+				27F1E46016962A9B00F0E50F /* LoginController.h */,
+				27F1E46116962A9B00F0E50F /* LoginController.m */,
+			);
+			name = "Sync UI";
+			sourceTree = "<group>";
+		};
 		270B93C51682C94E005ED1CE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,15 +259,9 @@
 				274EF877167BE8E300A66172 /* PageEditController.h */,
 				274EF878167BE8E300A66172 /* PageEditController.m */,
 				274EF87D167BE8E300A66172 /* PageEditController.xib */,
-				270B93C216829825005ED1CE /* SyncManager.h */,
-				270B93C316829825005ED1CE /* SyncManager.m */,
-				270B93D61684085A005ED1CE /* SyncButton.h */,
-				270B93D71684085A005ED1CE /* SyncButton.m */,
-				27306B9C1684159C00F91F61 /* SyncPopover.xib */,
-				27F1E46016962A9B00F0E50F /* LoginController.h */,
-				27F1E46116962A9B00F0E50F /* LoginController.m */,
 				27306BB11684E6EB00F91F61 /* Util.h */,
 				27306BB21684E6EB00F91F61 /* Util.m */,
+				2702BFA616B1EEC000AAFD77 /* Sync UI */,
 				2776A59716A0E233006FF199 /* BrowserID */,
 				274EF863167BE8E300A66172 /* Supporting Files */,
 			);

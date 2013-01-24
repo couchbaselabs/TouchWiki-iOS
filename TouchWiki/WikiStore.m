@@ -55,7 +55,10 @@ static WikiStore* sInstance;
         // Filter for push replications, to avoid sending draft page revisions to the server.
         [_database defineFilter: @"notDraft"
                         asBlock: ^BOOL(TDRevision *revision, NSDictionary *params) {
-                            if ([revision[@"type"] isEqualToString: @"page"])
+                            NSString* type = revision[@"type"];
+                            if (!type)
+                                return NO;
+                            if ([type isEqualToString: @"page"])
                                 return ![revision[@"draft"] boolValue];
                             return YES;
                         }];
