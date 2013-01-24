@@ -95,23 +95,6 @@ static WikiStore* sInstance;
 }
 
 
-- (NSArray*) channelsToSync {
-    //FIX: This would be better stored in a _local document in the database
-    NSArray* channels = [[NSUserDefaults standardUserDefaults] objectForKey: @"ChannelsToSync"];
-    if (!channels)
-        channels = @[];
-    NSString* username = self.username;
-    if (username && ![channels containsObject: username])
-        channels = [channels arrayByAddingObject: username];
-    return channels;
-}
-
-
-- (void) setChannelsToSync:(NSArray *)channelsToSync {
-    [[NSUserDefaults standardUserDefaults] setObject: channelsToSync forKey: @"ChannelsToSync"];
-}
-
-
 - (TDQuery*) queryPagesOfWiki: (Wiki*)wiki {
     TDQuery* query = [[_database viewNamed: @"pagesByTitle"] query];
     query.startKey = @[wiki.wikiID];

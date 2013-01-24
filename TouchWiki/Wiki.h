@@ -28,6 +28,11 @@
 
 - (NSString*) docIDForPageWithTitle: (NSString*)title;
 
+@property (readonly) NSString* owner_id;
+@property (copy) NSArray* members;
+
+- (void) addMembers: (NSArray*)newMembers;
+
 @end
 
 

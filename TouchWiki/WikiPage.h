@@ -17,10 +17,10 @@
 
 @property (readonly) Wiki* wiki;
 
+// A document with this flag set will not be pushed to the server. */
 @property bool draft;
 
 // Ephemeral properties:
-//@property bool editing;
 @property NSRange selectedRange;
 
 + (bool) parseDocID: (NSString*)docID

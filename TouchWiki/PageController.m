@@ -109,8 +109,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     if (replication.pull) {
         // Pull replication: Define the set of channels to sync
         replication.filter = @"sync_gateway/bychannel";
-        NSArray* channels = _wikiStore.channelsToSync;
-        replication.query_params = @{@"channels": [channels componentsJoinedByString: @","]};
+        replication.query_params = @{@"channels": @[@"*"]};
     } else {
         // Push replication: Set filter to block pushing draft documents
         replication.filter = @"notDraft";   // defined in WikiStore.m
@@ -193,8 +192,8 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 
     //FIX: Use a real template engine!
     replace(html, @"{{ACCESSCLASS}}", klass);
-    replace(html, @"{{OWNER}}", _page.owner_id);
-    replace(html, @"{{MEMBERS}}", [_page.members componentsJoinedByString: @", "]);
+    replace(html, @"{{OWNER}}", _page.wiki.owner_id);
+    replace(html, @"{{MEMBERS}}", [_page.wiki.members componentsJoinedByString: @", "]);
 
     if (_page.draft) {
         [html appendString: @"<div id='banner'>PREVIEW</div>\n"];
@@ -380,7 +379,7 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 
 - (void) updateMembers: (NSArray*)members {
     members = [[NSOrderedSet orderedSetWithArray: members] array];  // Remove duplicates
-    _page.members = members;
+    _page.wiki.members = members;
     [_page.wiki addMembers: members];
 }
 

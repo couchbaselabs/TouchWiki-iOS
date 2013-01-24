@@ -20,11 +20,6 @@
 @property (strong) NSDate* created_at;
 @property (strong) NSDate* updated_at;
 
-@property (readonly) NSString* owner_id;
-@property (copy) NSArray* members;
-
-- (void) addMembers: (NSArray*)newMembers;
-
 @property (readonly) bool editable;
 @property (readonly) bool owned;
 
@@ -32,5 +27,5 @@
 
 
 @interface WikiItem (Private)
-- (void) setType: (NSString*)type owner: (NSString*)owner;
+- (void) setupType: (NSString*)type;
 @end

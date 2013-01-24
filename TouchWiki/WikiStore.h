@@ -32,6 +32,4 @@
 
 @property (strong) NSString* username;
 
-@property (strong) NSArray* channelsToSync;
-
 @end

@@ -11,11 +11,6 @@
 #import "WikiStore.h"
 
 
-@interface WikiPage ()
-@property (readwrite) NSString* owner_id;
-@end
-
-
 @implementation WikiPage
 
 
@@ -26,7 +21,7 @@
     TDDocument* doc = [wiki.database documentWithID: [wiki docIDForPageWithTitle: title]];
     self = [super initWithDocument: doc];
     if (self) {
-        [self setType: @"page" owner: wiki.wikiStore.username];
+        [self setupType: @"page"];
         [self setValue: wiki.wikiID ofProperty: @"wiki_id"];
     }
     return self;
@@ -69,6 +64,16 @@
 
 - (NSTimeInterval) autosaveDelay {
     return 30.0;
+}
+
+
+- (bool) editable {
+    return self.wiki.editable;
+}
+
+
+- (bool) owned {
+    return self.wiki.owned;
 }
 
 

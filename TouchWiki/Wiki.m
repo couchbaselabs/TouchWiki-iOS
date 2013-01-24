@@ -18,13 +18,14 @@
     NSSet* _allPageTitles;
 }
 
-@dynamic title, markdown, created_at, updated_at;
+@dynamic title, markdown, created_at, updated_at, owner_id, members;
 
 
 - (id) initNewWithTitle: (NSString*)title inWikiStore: (WikiStore*)wikiStore {
     self = [super initWithNewDocumentInDatabase: wikiStore.database];
     if (self) {
-        [self setType: @"wiki" owner: wikiStore.username];
+        [self setupType: @"wiki"];
+        [self setValue: wikiStore.username ofProperty: @"owner_id"];
         self.title = title;
     }
     return self;
@@ -87,6 +88,30 @@
 {
     if (object == _allPagesQuery)
         _allPageTitles = nil;
+}
+
+
+- (bool) editable {
+    NSString* username = self.wikiStore.username;
+    return [self.owner_id isEqualToString: username] || [self.members containsObject: username];
+}
+
+
+- (bool) owned {
+    NSString* username = self.wikiStore.username;
+    return [self.owner_id isEqualToString: username];
+}
+
+
+- (void) addMembers: (NSArray*)newMembers {
+    NSArray* oldMembers = self.members;
+    if (!oldMembers) {
+        self.members = newMembers;
+        return;
+    }
+    NSMutableOrderedSet* members = [NSMutableOrderedSet orderedSetWithArray: self.members];
+    [members addObjectsFromArray: newMembers];
+    self.members = members.array;
 }
 
 
