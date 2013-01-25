@@ -98,14 +98,6 @@ static WikiStore* sInstance;
 }
 
 
-- (TDQuery*) queryPagesOfWiki: (Wiki*)wiki {
-    TDQuery* query = [[_database viewNamed: @"pagesByTitle"] query];
-    query.startKey = @[wiki.wikiID];
-    query.endKey = @[wiki.wikiID, @{}];
-    return query;
-}
-
-
 - (Wiki*) wikiWithTitle: (NSString*)title {
     for (TDQueryRow* row in _allWikisQuery.rows) {
         if ([row.key isEqualToString: title])

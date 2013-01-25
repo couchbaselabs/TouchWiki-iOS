@@ -22,8 +22,6 @@
 
 @property (readonly) TDLiveQuery* allWikisQuery;
 
-- (TDQuery*) queryPagesOfWiki: (Wiki*)wiki;
-
 - (Wiki*) wikiWithTitle: (NSString*)title;
 
 - (Wiki*) newWikiWithTitle: (NSString*)title;

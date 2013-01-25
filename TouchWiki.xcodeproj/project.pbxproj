@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2702BFB516B3079200AAFD77 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2702BFB416B3079100AAFD77 /* README.md */; };
 		270B93B516827195005ED1CE /* WikiListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 270B93B416827195005ED1CE /* WikiListController.m */; };
 		270B93B816827888005ED1CE /* PageIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93B616827888005ED1CE /* PageIcon.png */; };
 		270B93B916827888005ED1CE /* PageIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93B716827888005ED1CE /* PageIcon@2x.png */; };
@@ -75,6 +76,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2702BFB416B3079100AAFD77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		270B93B316827195005ED1CE /* WikiListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikiListController.h; sourceTree = "<group>"; };
 		270B93B416827195005ED1CE /* WikiListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiListController.m; sourceTree = "<group>"; };
 		270B93B616827888005ED1CE /* PageIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PageIcon.png; sourceTree = "<group>"; };
@@ -209,7 +211,8 @@
 		274EF84D167BE8E300A66172 = {
 			isa = PBXGroup;
 			children = (
-				274EF862167BE8E300A66172 /* TouchWiki */,
+				2702BFB416B3079100AAFD77 /* README.md */,
+				274EF862167BE8E300A66172 /* UI Controllers */,
 				274EF899167BEC7700A66172 /* Model */,
 				270B93C51682C94E005ED1CE /* Resources */,
 				27367092167D0C9300BAEE8D /* GHMarkdownParser.xcodeproj */,
@@ -242,19 +245,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		274EF862167BE8E300A66172 /* TouchWiki */ = {
+		274EF862167BE8E300A66172 /* UI Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				274EF86B167BE8E300A66172 /* AppDelegate.h */,
 				274EF86C167BE8E300A66172 /* AppDelegate.m */,
+				273670A2167D46AB00BAEE8D /* PageController.h */,
+				273670A3167D46AB00BAEE8D /* PageController.m */,
+				2736709F167D42EA00BAEE8D /* PageController.xib */,
 				270B93B316827195005ED1CE /* WikiListController.h */,
 				270B93B416827195005ED1CE /* WikiListController.m */,
 				274EF874167BE8E300A66172 /* PageListController.h */,
 				274EF875167BE8E300A66172 /* PageListController.m */,
 				274EF87A167BE8E300A66172 /* PageListController.xib */,
-				273670A2167D46AB00BAEE8D /* PageController.h */,
-				273670A3167D46AB00BAEE8D /* PageController.m */,
-				2736709F167D42EA00BAEE8D /* PageController.xib */,
 				274FB33E167FB72000D1DDA8 /* PageTemplate.html */,
 				274EF877167BE8E300A66172 /* PageEditController.h */,
 				274EF878167BE8E300A66172 /* PageEditController.m */,
@@ -265,6 +268,7 @@
 				2776A59716A0E233006FF199 /* BrowserID */,
 				274EF863167BE8E300A66172 /* Supporting Files */,
 			);
+			name = "UI Controllers";
 			path = TouchWiki;
 			sourceTree = "<group>";
 		};
@@ -400,6 +404,7 @@
 				27306BB71684E99500F91F61 /* Triangle-Right.png in Resources */,
 				27306BC9168B9BFD00F91F61 /* Sync-error.png in Resources */,
 				2776A5A116A0E233006FF199 /* BrowserIDController.js in Resources */,
+				2702BFB516B3079200AAFD77 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
