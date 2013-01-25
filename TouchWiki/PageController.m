@@ -109,7 +109,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     if (replication.pull) {
         // Pull replication: Define the set of channels to sync
         replication.filter = @"sync_gateway/bychannel";
-        replication.query_params = @{@"channels": @[@"*"]};
+        replication.query_params = @{@"channels": @"*"};
     } else {
         // Push replication: Set filter to block pushing draft documents
         replication.filter = @"notDraft";   // defined in WikiStore.m
