@@ -1,4 +1,6 @@
-This is a fairly large demo of [TouchDB][TOUCHDB]. It's a viewer and editor for a wiki that lives in a database. The wiki functionality is pretty basic, but allows you to view and edit pages (in Markdown format) and link between them. It even supports multiple wiki namespaces.
+# TouchWiki For iOS
+
+This is a fairly large demo of [TouchDB][TOUCHDB]. It's an iPad-only viewer and editor app for a wiki that lives in a database. The wiki functionality is pretty basic, but allows you to view and edit pages (in Markdown format) and link between them. It even supports multiple wiki namespaces.
 
 The schema is compatible with the HTML5 ([PhoneGap][TOUCHGAP]) wiki demo app, so the two apps can interoperate on the same database. There is also a companion app server for use with the [Couchbase Sync Gateway][GATEWAY] that enables access control so that multiple users can have their own private or shared wikis.
 
