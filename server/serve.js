@@ -1,44 +1,46 @@
 var SYNC_HOSTNAME=process.env.SYNC_HOSTNAME,
-  dbName = "wiki",
-  designUrl = "http://"+SYNC_HOSTNAME+":4984/basecouch/_design/channels",
-  bucketDesignUrl = "http://"+SYNC_HOSTNAME+":8091/couchBase/basecouch/_design/wiki",
-  bucketWikiMembersView = "http://"+SYNC_HOSTNAME+":8092/basecouch/_design/"+dbName+"/_view/by_members",
+  bucketDesignUrl = "http://"+SYNC_HOSTNAME+":8091/couchBase/wiki_sync/_design/threads",
+  bucketWikiMembersView = "http://"+SYNC_HOSTNAME+":8092/wiki_sync/_design/threads/_view/by_members",
   baseCouchAuth = "http://"+SYNC_HOSTNAME+":4985",
   channelPass = Math.random().toString(20).slice(2),
-  baseDbUrl = "http://channelServer:"+channelPass+"@"+SYNC_HOSTNAME+":4984/basecouch",
-  channelChanges = "http://channelServer:"+channelPass+"@"+SYNC_HOSTNAME+
-    ":4984/basecouch/_changes?filter=basecouch/bychannel&channels=wikis&feed=longpoll"
-  ;
+  baseDbUrl = "http://channelServer:"+channelPass+"@"+SYNC_HOSTNAME+":4984/wiki_sync",
+  designUrl = "http://channelServer:"+channelPass+"@"+SYNC_HOSTNAME+":4984/wiki_sync/_design/channels";
 
 if (!SYNC_HOSTNAME) {
   console.log(("launch like: SYNC_HOSTNAME=myhost.local node serve.js"));
   process.exit(-1);
 }
 
-var coux = require("coax"),
+var fs = require("fs"),
+  coax = require("coax"),
   http = require("http"),
   url = require("url"),
-  _ = require("underscore"),
   async = require("async");
 
-// turn off guest access
-coux.put(baseCouchAuth+"/GUEST", {
-  name: "GUEST", password : "GUEST",
-  channels : []
-}, function(err, ok) {
-  if (err) {
-    console.log("couldn't turn off GUEST access", err);
-    process.exit(-1);
-  }
-});
+function revokeGuestAccess(cb) {
+  // turn off guest access
+  coax.put(baseCouchAuth+"/GUEST", {
+    disabled : true,
+    channels : []
+  }, function(err, ok) {
+    if (err) {
+      console.log("couldn't turn off GUEST access", err);
+      process.exit(-1);
+    }
+    cb();
+  });
+}
 
 function installDDoc(url, doc, cb) {
   console.log("installing "+url)
-  coux(url, function(err, old) {
+  coax(url, function(err, old) {
+    if (err && err.error !== "not_found") {
+      return cb(err)
+    }
     if (!err) {
       doc._rev = old._rev;
     }
-    coux.put(url, doc, cb);
+    coax.put(url, doc, cb);
   });
 }
 
@@ -50,8 +52,8 @@ function channelMap(doc) {
   if (doc.members && doc.owner_id) {
     sync("wikis");
     sync("wikis-"+doc.owner_id);
-    ms = doc.members.split(" ");
-    for (i = ms.length - 1; i >= 0; i--) {
+    var ms = doc.members;
+    for (var i = ms.length - 1; i >= 0; i--) {
       if (ms[i]) {
         sync("wikis-"+ms[i]);
       }
@@ -59,21 +61,8 @@ function channelMap(doc) {
   }
 }
 
-// install sync function
-installDDoc(designUrl, {
-    _id : "_design/channels",
-    channelmap : channelMap.toString()
-  }, function(err, ok){
-    if (err) {
-      throw(["couldn't push sync ddoc", err]);
-    } else {
-      console.log("pushed sync ddoc");
-    }
-  });
-
-
 var ByMembersBucketView = function (doc, meta) {
-  var i, ms, ch = doc.wiki_id;
+  var i, ms, ch = doc.thread_id;
   if (ch && doc.members) {
     ms = doc.members.split(" ");
     for (i = ms.length - 1; i >= 0; i--) {
@@ -83,37 +72,27 @@ var ByMembersBucketView = function (doc, meta) {
   }
 }
 
-// install bucket design docs
-installDDoc(bucketDesignUrl, {
-    _id : "_design/wiki",
-    views : {
-      "by_members" : {reduce : "_count", map : ByMembersBucketView.toString()}
-    }
-  }, function(err, ok){
-    if (err) {
-      throw("couldn't push bucket ddoc " + JSON.stringify(err));
-    } else {
-      console.log("pushed bucket ddoc");
-    }
-  });
+
 
 var since = 0;
-function watchForWikis(url, cb) {
-  coux(url+'&since='+since, function(err, ok){
+function watchForThreads(url, cb) {
+  coax(url+'&since='+since, function(err, ok){
     if (err) {
-      throw(err)
+      throw("watchForThreads: "+JSON.stringify(err))
     } else {
       since = ok.last_seq;
       async.map(ok.results, function(r, next){
-        coux([baseDbUrl, r.id], next);
-      }, cb);
-      watchForWikis(url, cb);
+        coax([baseDbUrl, r.id], next);
+      }, function(changes) {
+        cb(changes);
+        watchForThreads(url, cb);
+      });
     }
   });
 }
 
 function setChannelsForUser(user, channels, cb){
-  coux([baseCouchAuth, user], function(err, doc) {
+  coax([baseCouchAuth, user], function(err, doc) {
     if (err || doc.statusCode == 404) {
       console.log("missing user", user);
       return cb();
@@ -122,14 +101,14 @@ function setChannelsForUser(user, channels, cb){
       channels.push("wikis-"+user);
       doc.channels = channels;
       // console.log("put", user, doc);
-      coux.put([baseCouchAuth, user], doc, cb);
+      coax.put([baseCouchAuth, user], doc, cb);
     }
   })
 };
 
 function updateUsers(users) {
   async.forEach(users, function(user, cb){
-    coux([bucketWikiMembersView,
+    coax([bucketWikiMembersView,
         {stale:false,group:true,connection_timeout:60000,
           start_key : [user], end_key : [user, {}]}], function(err, view){
             if (err) return cb(err);
@@ -145,96 +124,85 @@ function updateUsers(users) {
   });
 }
 
-// watch basecouch for channel changes
-coux.put(baseCouchAuth+"/channelServer", {
-  name: "channelServer", password : channelPass,
-  channels : ["wikis"]
-}, function(err, ok) {
-  if (err) {
-    console.log("couldn't turn on channelServer access", err);
-    process.exit(-1);
-  } else {
-    watchForWikis(channelChanges, function(err, docs){
-      if (err) {
-        console.log('changes err', channelChanges)
-        throw(err)
-      } else {
-        // for all the users mentioned in the wiki doc,
-        // update their channels list
-        var docUsers, users = [];
-        docs.forEach(function(doc){
-          if (doc.members && doc.owner_id) {
-            docUsers = doc.members.split(' ');
-            docUsers.push(doc.owner_id);
-            users = users.concat(docUsers);
-          }
-        });
-        updateUsers(_.uniq(users))
-      }
-    })
-  }
-});
-
-// serve http for user signup
-// get credentials request, set credentials if they aren't set yet
-
-function handleSignup (req, res) {
-  function handleSignupBody(body) {
-    var data = JSON.parse(body); // {user : "name", pass : "s3cr3t"}
-    coux([baseCouchAuth, data.user], function(err, doc) {
-      console.log("get user", data.user, err, doc.statusCode)
-      if (doc.statusCode == 404) {
-        console.log("new user", data);
-        coux.put([baseCouchAuth, data.user], {
-          name : data.user,
-          password : data.pass,
-          channels : []
-        }, function(err, ok) {
-          if (err) {
-            console.log("new user put err",err);
-            res.statusCode = 500;
-            res.end("new user err")
-          } else {
-            console.log("new user put",data.user, ok);
-            res.statusCode = 200;
-            res.end("new user");
-          }
-
-        });
-      } else {
-        res.statusCode = 401;
-        res.end("can't set credentials for existing user");
-      }
-    })
-  }
-
-  if (req.method != "POST") {
-    res.statusCode = 406;
-    res.end("POST required")
-  }
-
-  var chunk = "";
-  req.on('data', function(data) {
-    console.log(chunk += data.toString());
-  });
-
-  req.on('end', function() {
-    // empty 200 OK response for now
-    if (chunk) {
-      handleSignupBody(chunk)
+function listenForNewChannels() {
+  coax(baseDbUrl).changes({
+    filter:"sync_gateway/bychannel",
+    include_docs : true,
+    channels : "*"
+  }, function(err, change) {
+    if (err) {
+      console.log('changes err', baseDbUrl)
+      throw(JSON.stringify(err))
     } else {
-      console.log("empty body");
+      var doc = change.doc;
+      if (doc && doc.members && doc.owner_id) {
+        updateUsers(doc.members.concat(doc.owner_id));
+      }
     }
   });
 }
 
+function pushSyncDDoc(cb) {
+  // install sync function
+  installDDoc(designUrl, {
+      _id : "_design/channels",
+      channelmap : channelMap.toString()
+    }, function(err, ok){
+      if (err) {
+        throw("couldn't push sync ddoc: "+JSON.stringify(err));
+      } else {
+        console.log("pushed sync ddoc");
+        cb();
+      }
+    });
+}
 
 
-var app = http.createServer(function(req, res){
-  var path = url.parse(req.url).pathname;
-  if (/^\/signup/.test(path)) {
-    handleSignup(req, res);
-  }
-}).listen(3000);
+function pushBucketDDoc(cb) {
+  installDDoc(bucketDesignUrl, {
+      _id : "_design/threads",
+      views : {
+        "by_members" : {reduce : "_count", map : ByMembersBucketView.toString()}
+      }
+    }, function(err, ok){
+      if (err) {
+        throw("couldn't push bucket ddoc " + JSON.stringify(err));
+      } else {
+        console.log("pushed bucket ddoc");
+        cb()
+      }
+    });
+}
+
+function setupChannelServerAuth(cb) {
+  coax.put(baseCouchAuth+"/channelServer", {
+    name: "channelServer", password : channelPass,
+    channels : ["wikis"]
+  }, function(err, ok) {
+    if (err) {
+      console.log("couldn't turn on channelServer access", err);
+      process.exit(-1);
+    } else {
+      cb();
+    }
+  });
+}
+
+function doSetup(done) {
+  // install bucket design docs
+  revokeGuestAccess(function(){
+    setupChannelServerAuth(function(){
+      pushBucketDDoc(function(){
+        pushSyncDDoc(function(){
+          done();
+        });
+      });
+    })
+  });
+}
+
+doSetup(function(){
+  listenForNewChannels();
+});
 
 

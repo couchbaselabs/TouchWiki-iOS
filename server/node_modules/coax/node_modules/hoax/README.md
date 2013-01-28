@@ -4,6 +4,8 @@ JSON HTTP client using [pax](https://npmjs.org/package/pax) for path currying an
 
 Used by [coax](https://npmjs.org/package/coax)
 
+[![Build Status](https://travis-ci.org/jchris/hoax.png?branch=master)](https://travis-ci.org/jchris/hoax)
+
 ## Getting Started
 Install the module with: `npm install hoax`
 

@@ -2,6 +2,8 @@
 
 Curry your path segments with intelligent escaping. Tiny. Used by `hoax` and `coax`, hopefully your library too.
 
+[![Build Status](https://travis-ci.org/jchris/pax.png?branch=master)](https://travis-ci.org/jchris/pax)
+
 ## Getting Started
 Install the module with: `npm install pax`
 
