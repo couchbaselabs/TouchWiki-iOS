@@ -21,4 +21,6 @@
 - (IBAction) hideEditor: (id)sender;
 - (IBAction) saveChanges: (id)sender;
 
+- (IBAction) configureSync;
+
 @end

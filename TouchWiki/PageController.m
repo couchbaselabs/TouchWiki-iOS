@@ -154,7 +154,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     if (_editController) {
         [buttons addObject: _previewButton];
         _previewButton.title = _page.draft ? @"Preview" : @"Done";
-    } else {
+    } else if (_page) {
         [buttons addObject: _editButton];
         _editButton.title = _page.editable ? @"Edit" : @"View Source";
     }
@@ -297,11 +297,18 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
     // Display BrowserID login panel, not the default username/password one:
     if (!_browserIDController) {
         _browserIDController = [[BrowserIDController alloc] init];
-        _browserIDController.origin = [manager.replications[0] browserIDOrigin];
+        NSArray* replications = _syncButton.syncManager.replications;
+        if (replications.count > 0)
+            _browserIDController.origin = [replications[0] browserIDOrigin];
         _browserIDController.delegate = self;
         [_browserIDController presentModalInController: self];
     }
     return false;
+}
+
+
+- (IBAction) configureSync {
+    [_syncButton configureSync: self];
 }
 
 
@@ -322,6 +329,18 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
     [self browserIDControllerDidCancel: browserIDController];
     for (TDReplication* repl in _syncButton.syncManager.replications) {
         [repl registerBrowserIDAssertion: assertion];
+    }
+}
+
+
+- (void) syncManagerProgressChanged: (SyncManager*)manager {
+    if (_wikiStore.username == nil) {
+        TDReplication* repl = manager.replications[0];
+        if (repl.mode >= kTDReplicationIdle) {
+            NSString* email = repl.browserIDEmailAddress;
+            if (email)
+                _wikiStore.username = email;
+        }
     }
 }
 

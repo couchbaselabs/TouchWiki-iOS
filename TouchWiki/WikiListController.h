@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <TouchDB/TDUITableSource.h>
-@class PageListController, WikiStore, Wiki;
+@class PageListController, PageController, WikiStore, Wiki;
 
 
 @interface WikiListController : UIViewController <TDUITableDelegate>
@@ -16,6 +16,7 @@
 - (id)initWithWikiStore: (WikiStore*)wikiStore;
 
 @property (strong, nonatomic) PageListController *pageListController;
+@property (strong, nonatomic) PageController *pageController;
 
 @property (readonly, nonatomic) WikiStore* wikiStore;
 

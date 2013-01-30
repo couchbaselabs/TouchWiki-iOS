@@ -126,6 +126,7 @@
     IBOutlet UISwitch* _onOffSwitch;
     IBOutlet UITextField* _urlField;
     IBOutlet UILabel* _errorLabel;
+    bool _wasActive;
 }
 
 - (id) initWithSyncManager: (SyncManager*)syncManager {
@@ -170,9 +171,13 @@
         case kTDReplicationActive:
             message = [NSString stringWithFormat: @"Syncing (%.0f%% done)",
                        _syncManager.progress * 100.0];
+            _wasActive = true;
             break;
         default:
-            message = nil;
+            if (_wasActive)
+                message = @"Finished sync";
+            else
+                message = nil;
             break;
     }
     _errorLabel.text = message;
@@ -200,6 +205,7 @@
 
 - (IBAction) syncNow: (id)sender {
     [self makeItSo];
+    _wasActive = false;
     [_syncManager syncNow];
     //[_popover dismissPopoverAnimated: YES];
     //[self popoverControllerDidDismissPopover: _popover];

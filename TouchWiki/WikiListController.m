@@ -8,6 +8,7 @@
 
 #import "WikiListController.h"
 #import "PageListController.h"
+#import "PageController.h"
 #import "AppDelegate.h"
 #import "WikiStore.h"
 #import "Wiki.h"
@@ -68,17 +69,26 @@
 
     
 - (IBAction) newWiki: (id)sender {
-    //FIX: This is an awful UI.
     NSString* title = [NSString stringWithFormat: @"Create A New Wiki"];
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle: title
-                                                    message: @"What's the title of the new wiki?"
-                                                   delegate: self
-                                          cancelButtonTitle: @"Cancel"
-                                          otherButtonTitles: @"Create", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    UITextField* titleField = [alert textFieldAtIndex: 0];
-    titleField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    titleField.returnKeyType = UIReturnKeyDone;
+    UIAlertView* alert;
+    if (!_wikiStore.username) {
+        alert = [[UIAlertView alloc] initWithTitle: title
+                                           message: @"Please log in and sync first."
+                                          delegate: self
+                                 cancelButtonTitle: @"Login"
+                                 otherButtonTitles: nil];
+    } else {
+        //FIX: This is an awful UI.
+        alert = [[UIAlertView alloc] initWithTitle: title
+                                           message: @"What's the title of the new wiki?"
+                                          delegate: self
+                                 cancelButtonTitle: @"Cancel"
+                                 otherButtonTitles: @"Create", nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        UITextField* titleField = [alert textFieldAtIndex: 0];
+        titleField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+        titleField.returnKeyType = UIReturnKeyDone;
+    }
     [alert show];
 }
 
@@ -87,10 +97,14 @@
 }
 
 - (void)alertView:(UIAlertView *)alert didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex > 0) {
-        NSString* title = [alert textFieldAtIndex: 0].text;
-        if (title.length > 0)
-            [self createWikiWithTitle: title];
+    if (_wikiStore.username) {
+        if (buttonIndex > 0) {
+            NSString* title = [alert textFieldAtIndex: 0].text;
+            if (title.length > 0)
+                [self createWikiWithTitle: title];
+        }
+    } else {
+        [_pageController configureSync];
     }
 }
 

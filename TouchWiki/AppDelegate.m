@@ -10,7 +10,6 @@
 #import "WikiListController.h"
 #import "PageListController.h"
 #import "PageController.h"
-#import "ChooseUsernameController.h"
 #import "Wiki.h"
 #import "WikiStore.h"
 #import <TouchDB/TouchDB.h>
@@ -45,6 +44,7 @@
     UINavigationController *pageNavController = [[UINavigationController alloc] initWithRootViewController:pageController];
 
     wikiListController.pageListController = pageListController;
+    wikiListController.pageController = pageController;
     pageListController.pageController = pageController;
     pageController.pageListController = pageListController;
 
@@ -53,10 +53,6 @@
     self.splitViewController.viewControllers = @[tableNavController, pageNavController];
     self.window.rootViewController = self.splitViewController;
     [self.window makeKeyAndVisible];
-
-    if (_wikiStore.username == nil) {
-        [[[ChooseUsernameController alloc] init] run];
-    }
     return YES;
 }
 

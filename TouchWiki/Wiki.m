@@ -22,6 +22,7 @@
 
 
 - (id) initNewWithTitle: (NSString*)title inWikiStore: (WikiStore*)wikiStore {
+    NSAssert(wikiStore.username, @"No username set up yet");
     self = [super initWithNewDocumentInDatabase: wikiStore.database];
     if (self) {
         [self setupType: @"wiki"];
@@ -93,13 +94,15 @@
 
 - (bool) editable {
     NSString* username = self.wikiStore.username;
+    if (!username)
+        return false;
     return [self.owner_id isEqualToString: username] || [self.members containsObject: username];
 }
 
 
 - (bool) owned {
     NSString* username = self.wikiStore.username;
-    return [self.owner_id isEqualToString: username];
+    return username && [self.owner_id isEqualToString: username];
 }
 
 

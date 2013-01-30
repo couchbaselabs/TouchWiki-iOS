@@ -94,6 +94,7 @@ static WikiStore* sInstance;
 
 
 - (void) setUsername:(NSString *)username {
+    NSLog(@"Setting wiki username to '%@'", username);
     [[NSUserDefaults standardUserDefaults] setObject: username forKey: @"UserName"];
 }
 
