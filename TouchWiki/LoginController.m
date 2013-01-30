@@ -7,48 +7,56 @@
 //
 
 #import "LoginController.h"
-#import "WikiStore.h"
+#import "SyncManager.h"
 
 
 @implementation LoginController
+{
+    NSString* _username;
+    NSURL* _url;
+}
 
 
-static LoginController* sLoginController;
+- (id) initWithURL: (NSURL*)url username: (NSString*)username {
+    self = [super init];
+    if (self) {
+        _url = url;
+        _username = username;
+    }
+    return self;
+}
 
 
 - (void) run {
-    //FIX: This is a terrible UI.
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle: @"Who Are You?"
-                                                    message: @"Please enter your hopefully-unique wiki username:"
+    NSString* title = [NSString stringWithFormat: @"Log into %@", _url.host];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle: title
+                                                    message: nil
                                                    delegate: self
-                                          cancelButtonTitle: @"Quit"
+                                          cancelButtonTitle: @"Cancel"
                                           otherButtonTitles: @"OK", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    UITextField* titleField = [alert textFieldAtIndex: 0];
-    titleField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    titleField.returnKeyType = UIReturnKeyDone;
+    alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    if (_username)
+        [alert textFieldAtIndex: 0].text = _username;
     [alert show];
-    sLoginController = self;
 }
 
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alert {
-    return [alert textFieldAtIndex: 0].text.length > 0;
+    return [alert textFieldAtIndex: 0].text.length > 0
+        && [alert textFieldAtIndex: 1].text.length > 0;
 }
 
 
 - (void)alertView:(UIAlertView *)alert didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    NSString* username = [alert textFieldAtIndex: 0].text;
-    sLoginController = nil;
-    if (buttonIndex > 0) {
-        if (username.length > 0) {
-            [WikiStore sharedInstance].username = username;
-            return;
-        }
+    switch (buttonIndex) {
+        case 0:
+            [_delegate loginCanceled];
+            break;
+        case 1:
+            [_delegate setUsername: [alert textFieldAtIndex: 0].text
+                          password: [alert textFieldAtIndex: 1].text];
+            break;
     }
-
-    // User canceled:
-    exit(0);
 }
 
 

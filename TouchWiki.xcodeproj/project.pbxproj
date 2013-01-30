@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2702BFB516B3079200AAFD77 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2702BFB416B3079100AAFD77 /* README.md */; };
+		2702BFB816B3333200AAFD77 /* ChooseUsernameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2702BFB716B3333200AAFD77 /* ChooseUsernameController.m */; };
 		270B93B516827195005ED1CE /* WikiListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 270B93B416827195005ED1CE /* WikiListController.m */; };
 		270B93B816827888005ED1CE /* PageIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93B616827888005ED1CE /* PageIcon.png */; };
 		270B93B916827888005ED1CE /* PageIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270B93B716827888005ED1CE /* PageIcon@2x.png */; };
@@ -77,6 +78,8 @@
 
 /* Begin PBXFileReference section */
 		2702BFB416B3079100AAFD77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
+		2702BFB616B3333100AAFD77 /* ChooseUsernameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseUsernameController.h; sourceTree = "<group>"; };
+		2702BFB716B3333200AAFD77 /* ChooseUsernameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseUsernameController.m; sourceTree = "<group>"; };
 		270B93B316827195005ED1CE /* WikiListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikiListController.h; sourceTree = "<group>"; };
 		270B93B416827195005ED1CE /* WikiListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiListController.m; sourceTree = "<group>"; };
 		270B93B616827888005ED1CE /* PageIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PageIcon.png; sourceTree = "<group>"; };
@@ -250,6 +253,8 @@
 			children = (
 				274EF86B167BE8E300A66172 /* AppDelegate.h */,
 				274EF86C167BE8E300A66172 /* AppDelegate.m */,
+				2702BFB616B3333100AAFD77 /* ChooseUsernameController.h */,
+				2702BFB716B3333200AAFD77 /* ChooseUsernameController.m */,
 				273670A2167D46AB00BAEE8D /* PageController.h */,
 				273670A3167D46AB00BAEE8D /* PageController.m */,
 				2736709F167D42EA00BAEE8D /* PageController.xib */,
@@ -431,6 +436,7 @@
 				27F1E46216962A9B00F0E50F /* LoginController.m in Sources */,
 				2776A5A016A0E233006FF199 /* BrowserIDController+UIKit.m in Sources */,
 				2776A5A216A0E233006FF199 /* BrowserIDController.m in Sources */,
+				2702BFB816B3333200AAFD77 /* ChooseUsernameController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 //
 
 #import "SyncManager.h"
+#import "LoginController.h"
 
 
 NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged";
@@ -17,6 +18,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
     NSMutableArray* _replications;
     bool _showingSyncButton;
     __weak id<SyncManagerDelegate> _delegate;
+    LoginController* _loginController;
 }
 
 
@@ -99,8 +101,23 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 }
 
 
+- (void) setUsername: (NSString*)username password: (NSString*)password {
+    _loginController = nil;
+    NSURLCredential* cred = [NSURLCredential credentialWithUser: username
+                                                       password: password
+                                                    persistence: NSURLCredentialPersistencePermanent];
+    for (TDReplication* repl in _replications) {
+        repl.credential = cred;
+    }
+}
+
+
+- (void) loginCanceled {
+    _loginController = nil;
+}
+
+
 - (void) syncNow {
-    NSLog(@"SYNC NOW"); //FIX: temporary logging
     for (TDReplication* repl in _replications) {
         if (!repl.continuous)
             [repl start];
@@ -124,6 +141,21 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
         }
     }
 
+    if (error != _error && error.code == 401) {
+        // Auth needed (or auth is incorrect). See if the delegate wants to do its own auth;
+        // otherwise put up a username/password login panel:
+        if (![_delegate respondsToSelector: @selector(syncManagerShouldPromptForLogin:)] ||
+                [_delegate syncManagerShouldPromptForLogin: self]) {
+            if (!_loginController) {
+                NSString* user = [_replications[0] credential].user;
+                _loginController = [[LoginController alloc] initWithURL: self.syncURL username: user];
+                _loginController.delegate = self;
+                [_loginController run];
+            }
+            error = nil;
+        }
+    }
+
     if (active != _active || completed != _completed || total != _total || mode != _mode
                           || error != _error) {
         _active = active;
@@ -134,7 +166,8 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
         _error = error;
         NSLog(@"SYNCMGR: active=%d; mode=%d; %u/%u; %@",
               active, mode, completed, total, error.localizedDescription); //FIX: temporary logging
-        [_delegate syncManagerProgressChanged: self];
+        if ([_delegate respondsToSelector: @selector(syncManagerProgressChanged:)])
+            [_delegate syncManagerProgressChanged: self];
         [[NSNotificationCenter defaultCenter]
                                         postNotificationName: SyncManagerStateChangedNotification
                                                       object: self];

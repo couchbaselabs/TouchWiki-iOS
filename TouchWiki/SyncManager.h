@@ -31,6 +31,9 @@
 
 - (void) syncNow;
 
+- (void) setUsername: (NSString*)username password: (NSString*)password;
+- (void) loginCanceled;
+
 @end
 
 
@@ -39,8 +42,9 @@ extern NSString* const SyncManagerStateChangedNotification;
 
 
 @protocol SyncManagerDelegate <NSObject>
-- (void) syncManagerProgressChanged: (SyncManager*)manager;
 @optional
+- (void) syncManagerProgressChanged: (SyncManager*)manager;
 - (void) syncManager: (SyncManager*)manager addedReplication: (TDReplication*)replication;
+- (bool) syncManagerShouldPromptForLogin: (SyncManager*)manager;
 
 @end

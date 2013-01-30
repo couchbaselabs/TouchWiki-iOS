@@ -10,7 +10,7 @@
 #import "WikiListController.h"
 #import "PageListController.h"
 #import "PageController.h"
-#import "LoginController.h"
+#import "ChooseUsernameController.h"
 #import "Wiki.h"
 #import "WikiStore.h"
 #import <TouchDB/TouchDB.h>
@@ -55,7 +55,7 @@
     [self.window makeKeyAndVisible];
 
     if (_wikiStore.username == nil) {
-        [[[LoginController alloc] init] run];
+        [[[ChooseUsernameController alloc] init] run];
     }
     return YES;
 }

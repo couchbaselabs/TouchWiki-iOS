@@ -7,9 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+@class SyncManager;
 
+
+/** Simple wrapper around a UIAlertView that prompts for a username and password. */
 @interface LoginController : NSObject
 
+- (id) initWithURL: (NSURL*)url username: (NSString*)username;
+
 - (void) run;
+
+@property (weak) SyncManager* delegate;
 
 @end

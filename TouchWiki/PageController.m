@@ -293,17 +293,15 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 #pragma mark - BROWSERID:
 
 
-- (void) syncManagerProgressChanged: (SyncManager*)manager {
-    NSError* error = manager.error;
-    NSLog(@"ERROR = %@", error);//TEMP
-    if (error && error.code == 401) {   //FIX: Check domain too
-        if (!_browserIDController) {
-            _browserIDController = [[BrowserIDController alloc] init];
-            _browserIDController.origin = [manager.replications[0] browserIDOrigin];
-            _browserIDController.delegate = self;
-            [_browserIDController presentModalInController: self];
-        }
+- (bool) syncManagerShouldPromptForLogin: (SyncManager*)manager {
+    // Display BrowserID login panel, not the default username/password one:
+    if (!_browserIDController) {
+        _browserIDController = [[BrowserIDController alloc] init];
+        _browserIDController.origin = [manager.replications[0] browserIDOrigin];
+        _browserIDController.delegate = self;
+        [_browserIDController presentModalInController: self];
     }
+    return false;
 }
 
 
