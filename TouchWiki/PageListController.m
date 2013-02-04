@@ -12,13 +12,13 @@
 #import "WikiStore.h"
 #import "Wiki.h"
 #import "WikiPage.h"
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 
 @implementation PageListController
 {
     IBOutlet UITableView* _table;
-    IBOutlet TDUITableSource* _dataSource;
+    IBOutlet CBLUITableSource* _dataSource;
     UIBarButtonItem* _newPageButton;
     Wiki* _wiki;
 }
@@ -151,20 +151,20 @@
 #pragma mark - TABLE DELEGATE:
 
 
-- (WikiPage*) pageForRow: (TDQueryRow*)row {
+- (WikiPage*) pageForRow: (CBLQueryRow*)row {
     return [WikiPage modelForDocument: row.document];
 }
 
 - (WikiPage*) pageForPath: (NSIndexPath*)indexPath {
-    TDDocument* doc = [_dataSource documentAtIndexPath: indexPath];
+    CBLDocument* doc = [_dataSource documentAtIndexPath: indexPath];
     return [WikiPage modelForDocument: doc];
 }
 
 
 
-- (void)couchTableSource:(TDUITableSource*)source
+- (void)couchTableSource:(CBLUITableSource*)source
              willUseCell:(UITableViewCell*)cell
-                  forRow:(TDQueryRow*)row
+                  forRow:(CBLQueryRow*)row
 {
     WikiPage* page = [self pageForRow: row];
     cell.textLabel.text = page.title;

@@ -22,7 +22,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 }
 
 
-- (id) initWithDatabase: (TDDatabase*)db {
+- (id) initWithDatabase: (CBLDatabase*)db {
     NSParameterAssert(db);
     self = [super init];
     if (self) {
@@ -37,12 +37,12 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 @synthesize delegate=_delegate, replications=_replications;
 
 
-- (void) addReplication: (TDReplication*)repl {
+- (void) addReplication: (CBLReplication*)repl {
     if (![_replications containsObject: repl]) {
         [_replications addObject: repl];
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(replicationProgress:)
-                                                     name: kTDReplicationChangeNotification
+                                                     name: kCBLReplicationChangeNotification
                                                    object: repl];
         if (!_syncURL)
             _syncURL = repl.remoteURL;
@@ -55,24 +55,24 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 
 
 - (void) addReplications: (NSArray*)replications {
-    for (TDReplication* repl in replications) {
+    for (CBLReplication* repl in replications) {
         [self addReplication: repl];
     }
 }
 
 
-- (void) forgetReplication: (TDReplication*)repl {
+- (void) forgetReplication: (CBLReplication*)repl {
     [_replications removeObject: repl];
     [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: kTDReplicationChangeNotification
+                                                    name: kCBLReplicationChangeNotification
                                                   object: repl];
 }
 
 
 - (void) forgetAll {
-    for (TDReplication* repl in _replications) {
+    for (CBLReplication* repl in _replications) {
         [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                        name: kTDReplicationChangeNotification
+                                                        name: kCBLReplicationChangeNotification
                                                       object: repl];
     }
     _replications = [[NSMutableArray alloc] init];
@@ -85,7 +85,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
         return;
     [self forgetAll];
     if (url) {
-        for (TDReplication* repl in [self.database replicateWithURL: url exclusively: YES]) {
+        for (CBLReplication* repl in [self.database replicateWithURL: url exclusively: YES]) {
             repl.persistent = YES;
             repl.continuous = _continuous;
             [self addReplication: repl];
@@ -96,7 +96,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 
 - (void) setContinuous:(bool)continuous {
     _continuous = continuous;
-    for (TDReplication* repl in _replications)
+    for (CBLReplication* repl in _replications)
         repl.continuous = continuous;
 }
 
@@ -106,7 +106,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
     NSURLCredential* cred = [NSURLCredential credentialWithUser: username
                                                        password: password
                                                     persistence: NSURLCredentialPersistencePermanent];
-    for (TDReplication* repl in _replications) {
+    for (CBLReplication* repl in _replications) {
         repl.credential = cred;
     }
 }
@@ -118,7 +118,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 
 
 - (void) syncNow {
-    for (TDReplication* repl in _replications) {
+    for (CBLReplication* repl in _replications) {
         if (!repl.continuous)
             [repl start];
     }
@@ -128,13 +128,13 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 - (void) replicationProgress: (NSNotificationCenter*)n {
     bool active = false;
     unsigned completed = 0, total = 0;
-    TDReplicationMode mode = kTDReplicationStopped;
+    CBLReplicationMode mode = kCBLReplicationStopped;
     NSError* error = nil;
-    for (TDReplication* repl in _replications) {
+    for (CBLReplication* repl in _replications) {
         mode = MAX(mode, repl.mode);
         if (!error)
             error = repl.error;
-        if (repl.mode == kTDReplicationActive) {
+        if (repl.mode == kCBLReplicationActive) {
             active = true;
             _completed += repl.completed;
             _total += repl.total;

@@ -14,21 +14,21 @@
 //  and limitations under the License.
 
 #import <Cocoa/Cocoa.h>
-@class TDQuery, TDLiveQuery;
+@class CBLQuery, CBLLiveQuery;
 
 
-/** Simple controller for TouchDB demo apps.
-    This class acts as glue between a TDQuery (a TouchDB view) and an NSArrayController.
+/** Simple controller for CouchbaseLite demo apps.
+    This class acts as glue between a CBLQuery (a CouchbaseLite view) and an NSArrayController.
     The app can then bind its UI controls to the NSArrayController and get basic CRUD operations
     without needing any code. */
 @interface DemoQuery : NSObject
 {
-    TDLiveQuery* _query;
+    CBLLiveQuery* _query;
     NSMutableArray* _entries;
     Class _modelClass;
 }
 
-- (id) initWithQuery: (TDQuery*)query modelClass: (Class)modelClass;
+- (id) initWithQuery: (CBLQuery*)query modelClass: (Class)modelClass;
 
 /** The documents returned by the query, wrapped in DemoItem objects.
     An NSArrayController can be bound to this property. */

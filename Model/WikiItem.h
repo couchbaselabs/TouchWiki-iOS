@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 Couchbase. All rights reserved.
 //
 
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 @class WikiStore;
 
 /** Common base class of Wiki and WikiPage. */
-@interface WikiItem : TDModel
+@interface WikiItem : CBLModel
 
 @property (readonly) WikiStore* wikiStore;
 

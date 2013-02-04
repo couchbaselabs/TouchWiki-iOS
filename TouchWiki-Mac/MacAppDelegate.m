@@ -9,7 +9,7 @@
 #import "MacAppDelegate.h"
 #import "WindowController.h"
 #import "WikiStore.h"
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 
 @implementation MacAppDelegate
@@ -20,10 +20,10 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Initialize TouchDB:
+    // Initialize CouchbaseLite:
     NSError* error;
-    TDDatabase* database = [[TDDatabaseManager sharedInstance] createDatabaseNamed: @"wiki2"
-                                                                             error: &error];
+    CBLDatabase* database = [[CBLManager sharedInstance] createDatabaseNamed: @"wiki2"
+                                                                       error: &error];
     if (!database) {
         NSRunCriticalAlertPanel(@"Fatal Error", @"Couldn't open the database", @"Sorry", nil, nil);
         exit(0);

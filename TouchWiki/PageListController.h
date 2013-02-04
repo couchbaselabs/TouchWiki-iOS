@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TouchDB/TDUITableSource.h>
+#import <CouchbaseLite/CBLUITableSource.h>
 @class PageController, WikiStore, Wiki, WikiPage;
 
 
-@interface PageListController : UIViewController <TDUITableDelegate>
+@interface PageListController : UIViewController <CBLUITableDelegate>
 
 - (id)initWithWikiStore: (WikiStore*)wikiStore;
 

@@ -7,20 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 @class Wiki, WikiPage;
 
 
-/** Wiki interface to a TouchDB database. This is the root of the object model. */
+/** Wiki interface to a CouchbaseLite database. This is the root of the object model. */
 @interface WikiStore : NSObject
 
-- (id) initWithDatabase: (TDDatabase*)database;
+- (id) initWithDatabase: (CBLDatabase*)database;
 
 + (WikiStore*) sharedInstance;
 
-@property (readonly) TDDatabase* database;
+@property (readonly) CBLDatabase* database;
 
-@property (readonly) TDLiveQuery* allWikisQuery;
+@property (readonly) CBLLiveQuery* allWikisQuery;
 
 - (Wiki*) wikiWithTitle: (NSString*)title;
 

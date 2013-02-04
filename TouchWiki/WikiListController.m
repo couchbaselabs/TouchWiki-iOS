@@ -12,13 +12,13 @@
 #import "AppDelegate.h"
 #import "WikiStore.h"
 #import "Wiki.h"
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 
 @implementation WikiListController
 {
     IBOutlet UITableView* _table;
-    IBOutlet TDUITableSource* _dataSource;
+    IBOutlet CBLUITableSource* _dataSource;
 }
 
 
@@ -134,14 +134,14 @@
 #pragma mark - TABLE DELEGATE:
 
 
-- (Wiki*) wikiForRow: (TDQueryRow*)row {
+- (Wiki*) wikiForRow: (CBLQueryRow*)row {
     return [Wiki modelForDocument: row.document];
 }
 
 
-- (void)couchTableSource:(TDUITableSource*)source
+- (void)couchTableSource:(CBLUITableSource*)source
              willUseCell:(UITableViewCell*)cell
-                  forRow:(TDQueryRow*)row
+                  forRow:(CBLQueryRow*)row
 {
     cell.textLabel.text = [self wikiForRow: row].title;
     cell.imageView.image = [UIImage imageNamed: @"WikiIcon"];
@@ -151,7 +151,7 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    TDDocument* doc = [_dataSource documentAtIndexPath: indexPath];
+    CBLDocument* doc = [_dataSource documentAtIndexPath: indexPath];
     Wiki* wiki = [Wiki modelForDocument: doc];
     _pageListController.wiki = wiki;
     [self.navigationController pushViewController: _pageListController animated: YES];

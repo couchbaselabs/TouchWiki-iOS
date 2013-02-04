@@ -16,7 +16,7 @@
 @dynamic title, markdown, created_at, updated_at;
 
 
-- (id) initWithDocument: (TDDocument*)document {
+- (id) initWithDocument: (CBLDocument*)document {
     self = [super initWithDocument: document];
     if (self) {
         self.autosaves = true;

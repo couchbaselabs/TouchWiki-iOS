@@ -9,12 +9,12 @@
 #import "Wiki.h"
 #import "WikiStore.h"
 #import "WikiPage.h"
-#import <TouchDB/TDModelFactory.h>
+#import <CouchbaseLite/CBLModelFactory.h>
 
 
 @implementation Wiki
 {
-    TDLiveQuery* _allPagesQuery;
+    CBLLiveQuery* _allPagesQuery;
     NSSet* _allPageTitles;
 }
 
@@ -45,7 +45,7 @@
 
 - (WikiPage*) pageWithTitle: (NSString*)title {
     NSString* pageID = [self docIDForPageWithTitle: title];
-    TDDocument* doc = [self.database documentWithID: pageID];
+    CBLDocument* doc = [self.database documentWithID: pageID];
     if (!doc.currentRevisionID)
         return nil;
     return [WikiPage modelForDocument: doc];
@@ -57,9 +57,9 @@
 }
 
 
-- (TDLiveQuery*) allPagesQuery {
+- (CBLLiveQuery*) allPagesQuery {
     if (!_allPagesQuery) {
-        TDQuery* query = [[self.database viewNamed: @"pagesByTitle"] query];
+        CBLQuery* query = [[self.database viewNamed: @"pagesByTitle"] query];
         query.startKey = @[self.wikiID];
         query.endKey = @[self.wikiID, @{}];
         _allPagesQuery = [query asLiveQuery];
@@ -72,7 +72,7 @@
 - (NSSet*) allPageTitles {
     if (!_allPageTitles) {
         NSMutableSet* titles = [NSMutableSet set];
-        for (TDQueryRow* row in self.allPagesQuery.rows) {
+        for (CBLQueryRow* row in self.allPagesQuery.rows) {
             NSArray* key = row.key;
             [titles addObject: key[1]];
         }

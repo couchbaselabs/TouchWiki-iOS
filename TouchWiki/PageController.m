@@ -105,7 +105,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
 }
 
 
-- (void) syncManager: (SyncManager*)manager addedReplication: (TDReplication*)replication {
+- (void) syncManager: (SyncManager*)manager addedReplication: (CBLReplication*)replication {
     if (!replication.pull) {
         // Push replication: Set filter to block pushing draft documents
         replication.filter = @"notDraft";   // defined in WikiStore.m
@@ -327,7 +327,7 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
      didSucceedWithAssertion: (NSString*) assertion
 {
     [self browserIDControllerDidCancel: browserIDController];
-    for (TDReplication* repl in _syncButton.syncManager.replications) {
+    for (CBLReplication* repl in _syncButton.syncManager.replications) {
         [repl registerBrowserIDAssertion: assertion];
     }
 }
@@ -335,8 +335,8 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 
 - (void) syncManagerProgressChanged: (SyncManager*)manager {
     if (_wikiStore.username == nil) {
-        TDReplication* repl = manager.replications[0];
-        if (repl.mode >= kTDReplicationIdle) {
+        CBLReplication* repl = manager.replications[0];
+        if (repl.mode >= kCBLReplicationIdle) {
             NSString* email = repl.browserIDEmailAddress;
             if (email)
                 _wikiStore.username = email;

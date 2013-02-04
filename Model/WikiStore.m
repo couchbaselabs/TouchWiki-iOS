@@ -9,7 +9,7 @@
 #import "WikiStore.h"
 #import "Wiki.h"
 #import "WikiPage.h"
-#import <TouchDB/TDModelFactory.h>
+#import <CouchbaseLite/CBLModelFactory.h>
 
 
 static WikiStore* sInstance;
@@ -21,7 +21,7 @@ static WikiStore* sInstance;
 }
 
 
-- (id) initWithDatabase: (TDDatabase*)database {
+- (id) initWithDatabase: (CBLDatabase*)database {
     self = [super init];
     if (self) {
         NSAssert(!sInstance, @"Cannot create more than one WikiStore");
@@ -31,7 +31,7 @@ static WikiStore* sInstance;
         [_database.modelFactory registerClass: [WikiPage class] forDocumentType: @"page"];
 
         // Map function for finding wikis by title
-        TDView* view = [_database viewNamed: @"wikisByTitle"];
+        CBLView* view = [_database viewNamed: @"wikisByTitle"];
         [view setMapBlock: MAPBLOCK({
             if ([doc[@"type"] isEqualToString: @"wiki"]) {
                 NSString* title = doc[@"title"];
@@ -54,7 +54,7 @@ static WikiStore* sInstance;
 
         // Filter for push replications, to avoid sending draft page revisions to the server.
         [_database defineFilter: @"notDraft"
-                        asBlock: ^BOOL(TDRevision *revision, NSDictionary *params) {
+                        asBlock: ^BOOL(CBLRevision *revision, NSDictionary *params) {
                             NSString* type = revision[@"type"];
                             if (!type)
                                 return NO;
@@ -105,7 +105,7 @@ static WikiStore* sInstance;
 
 
 - (Wiki*) wikiWithTitle: (NSString*)title {
-    for (TDQueryRow* row in _allWikisQuery.rows) {
+    for (CBLQueryRow* row in _allWikisQuery.rows) {
         if ([row.key isEqualToString: title])
             return [Wiki modelForDocument: row.document];
     }
@@ -119,7 +119,7 @@ static WikiStore* sInstance;
 
 
 - (WikiPage*) pageWithID: (NSString*)pageID {
-    TDDocument* doc = [self.database documentWithID: pageID];
+    CBLDocument* doc = [self.database documentWithID: pageID];
     if (!doc.currentRevisionID)
         return nil;
     return [WikiPage modelForDocument: doc];

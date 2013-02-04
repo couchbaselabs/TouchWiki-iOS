@@ -18,7 +18,7 @@
 
 
 - (id) initNewWithTitle: (NSString*)title inWiki: (Wiki*)wiki {
-    TDDocument* doc = [wiki.database documentWithID: [wiki docIDForPageWithTitle: title]];
+    CBLDocument* doc = [wiki.database documentWithID: [wiki docIDForPageWithTitle: title]];
     self = [super initWithDocument: doc];
     if (self) {
         [self setupType: @"page"];
@@ -39,7 +39,7 @@
     NSString *wikiID, *title;
     __unused bool ok = [[self class] parseDocID: self.document.documentID intoWikiID: &wikiID andTitle: &title];
     NSAssert(ok, @"Invalid doc ID");
-    TDDocument* doc = [self.database documentWithID: wikiID];
+    CBLDocument* doc = [self.database documentWithID: wikiID];
     return doc ? [Wiki modelForDocument: doc] : nil;
 }
 

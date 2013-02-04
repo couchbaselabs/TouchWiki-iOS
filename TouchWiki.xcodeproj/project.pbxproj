@@ -43,7 +43,7 @@
 		274EF879167BE8E300A66172 /* PageEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF878167BE8E300A66172 /* PageEditController.m */; };
 		274EF87C167BE8E300A66172 /* PageListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274EF87A167BE8E300A66172 /* PageListController.xib */; };
 		274EF87F167BE8E300A66172 /* PageEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 274EF87D167BE8E300A66172 /* PageEditController.xib */; };
-		274EF88D167BE9AF00A66172 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF88C167BE9AF00A66172 /* TouchDB.framework */; };
+		274EF88D167BE9AF00A66172 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF88C167BE9AF00A66172 /* CouchbaseLite.framework */; };
 		274EF890167BEB4A00A66172 /* Wiki.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF88F167BEB4A00A66172 /* Wiki.m */; };
 		274EF892167BEC4A00A66172 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF891167BEC4A00A66172 /* CFNetwork.framework */; };
 		274EF894167BEC5000A66172 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF893167BEC5000A66172 /* SystemConfiguration.framework */; };
@@ -62,10 +62,10 @@
 		275A250816B9F7BA00561DF0 /* Wiki.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF88F167BEB4A00A66172 /* Wiki.m */; };
 		275A250916B9F7BA00561DF0 /* WikiPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF89B167BEC9800A66172 /* WikiPage.m */; };
 		275A250A16B9F7BA00561DF0 /* WikiItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 273607CB168152510018043D /* WikiItem.m */; };
-		275A250C16B9F81600561DF0 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275A250B16B9F81600561DF0 /* TouchDB.framework */; };
+		275A250C16B9F81600561DF0 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275A250B16B9F81600561DF0 /* CouchbaseLite.framework */; };
 		275A251016B9FB7B00561DF0 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275A250E16B9FB7B00561DF0 /* WindowController.m */; };
 		275A251116B9FB7B00561DF0 /* WikiWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275A250F16B9FB7B00561DF0 /* WikiWindow.xib */; };
-		275A251316B9FED400561DF0 /* TouchDB.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 275A250B16B9F81600561DF0 /* TouchDB.framework */; };
+		275A251316B9FED400561DF0 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 275A250B16B9F81600561DF0 /* CouchbaseLite.framework */; };
 		275A251516B9FF3E00561DF0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275A251416B9FF3E00561DF0 /* WebKit.framework */; };
 		275A251816BA01A800561DF0 /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 275A251716BA01A800561DF0 /* DemoQuery.m */; };
 		2776A5A016A0E233006FF199 /* BrowserIDController+UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */; };
@@ -98,7 +98,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				275A251316B9FED400561DF0 /* TouchDB.framework in Copy Frameworks */,
+				275A251316B9FED400561DF0 /* CouchbaseLite.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -155,7 +155,7 @@
 		274EF878167BE8E300A66172 /* PageEditController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PageEditController.m; sourceTree = "<group>"; };
 		274EF87B167BE8E300A66172 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PageListController.xib; sourceTree = "<group>"; };
 		274EF87E167BE8E300A66172 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PageEditController.xib; sourceTree = "<group>"; };
-		274EF88C167BE9AF00A66172 /* TouchDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TouchDB.framework; path = Frameworks/TouchDB.framework; sourceTree = "<group>"; };
+		274EF88C167BE9AF00A66172 /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLite.framework; path = Frameworks/CouchbaseLite.framework; sourceTree = "<group>"; };
 		274EF88E167BEB4A00A66172 /* Wiki.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wiki.h; sourceTree = "<group>"; };
 		274EF88F167BEB4A00A66172 /* Wiki.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Wiki.m; sourceTree = "<group>"; };
 		274EF891167BEC4A00A66172 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -182,7 +182,7 @@
 		275A24FE16B9F79500561DF0 /* MacAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacAppDelegate.h; sourceTree = "<group>"; };
 		275A24FF16B9F79500561DF0 /* MacAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MacAppDelegate.m; sourceTree = "<group>"; };
 		275A250216B9F79500561DF0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		275A250B16B9F81600561DF0 /* TouchDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TouchDB.framework; path = Frameworks/Mac/TouchDB.framework; sourceTree = "<group>"; };
+		275A250B16B9F81600561DF0 /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLite.framework; path = Frameworks/Mac/CouchbaseLite.framework; sourceTree = "<group>"; };
 		275A250D16B9FB7B00561DF0 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		275A250E16B9FB7B00561DF0 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
 		275A250F16B9FB7B00561DF0 /* WikiWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WikiWindow.xib; sourceTree = "<group>"; };
@@ -212,7 +212,7 @@
 				274EF85D167BE8E300A66172 /* UIKit.framework in Frameworks */,
 				274EF85F167BE8E300A66172 /* Foundation.framework in Frameworks */,
 				274EF861167BE8E300A66172 /* CoreGraphics.framework in Frameworks */,
-				274EF88D167BE9AF00A66172 /* TouchDB.framework in Frameworks */,
+				274EF88D167BE9AF00A66172 /* CouchbaseLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,7 +222,7 @@
 			files = (
 				275A251516B9FF3E00561DF0 /* WebKit.framework in Frameworks */,
 				275A24ED16B9F79500561DF0 /* Cocoa.framework in Frameworks */,
-				275A250C16B9F81600561DF0 /* TouchDB.framework in Frameworks */,
+				275A250C16B9F81600561DF0 /* CouchbaseLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,8 +297,8 @@
 		274EF85B167BE8E300A66172 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				275A250B16B9F81600561DF0 /* TouchDB.framework */,
-				274EF88C167BE9AF00A66172 /* TouchDB.framework */,
+				275A250B16B9F81600561DF0 /* CouchbaseLite.framework */,
+				274EF88C167BE9AF00A66172 /* CouchbaseLite.framework */,
 				275A251416B9FF3E00561DF0 /* WebKit.framework */,
 				274EF85C167BE8E300A66172 /* UIKit.framework */,
 				274EF85E167BE8E300A66172 /* Foundation.framework */,

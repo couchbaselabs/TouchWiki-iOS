@@ -12,7 +12,7 @@
 #import "PageController.h"
 #import "Wiki.h"
 #import "WikiStore.h"
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 
 @implementation AppDelegate
@@ -23,10 +23,10 @@
     gAppDelegate = self;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    // Initialize TouchDB:
+    // Initialize CouchbaseLite:
     NSError* error;
-    TDDatabase* database = [[TDDatabaseManager sharedInstance] createDatabaseNamed: @"wiki2"
-                                                                             error: &error];
+    CBLDatabase* database = [[CBLManager sharedInstance] createDatabaseNamed: @"wiki2"
+                                                                       error: &error];
     if (!database)
         [self showAlert: @"Couldn't open database" error: error fatal: YES];
 

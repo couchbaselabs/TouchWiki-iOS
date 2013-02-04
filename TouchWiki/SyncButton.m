@@ -162,13 +162,13 @@
     if (_syncManager.error) {
         message = _syncManager.error.localizedDescription;
     } else switch (_syncManager.mode) {
-        case kTDReplicationOffline:
+        case kCBLReplicationOffline:
             message = @"Offline (can’t reach server)";
             break;
-        case kTDReplicationIdle:
+        case kCBLReplicationIdle:
             message = @"Everything’s in sync";
             break;
-        case kTDReplicationActive:
+        case kCBLReplicationActive:
             message = [NSString stringWithFormat: @"Syncing (%.0f%% done)",
                        _syncManager.progress * 100.0];
             _wasActive = true;

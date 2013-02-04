@@ -1,6 +1,6 @@
 # TouchWiki For iOS
 
-This is a fairly large demo of [TouchDB][TOUCHDB]. It's an iPad-only viewer and editor app for a wiki that lives in a database. The wiki functionality is pretty basic, but allows you to view and edit pages (in Markdown format) and link between them. It even supports multiple wiki namespaces.
+This is a fairly large demo of [CouchbaseLite][TOUCHDB]. It's an iPad-only viewer and editor app for a wiki that lives in a database. The wiki functionality is pretty basic, but allows you to view and edit pages (in Markdown format) and link between them. It even supports multiple wiki namespaces.
 
 The schema is compatible with the HTML5 ([PhoneGap][TOUCHGAP]) wiki demo app, so the two apps can interoperate on the same database. There is also a companion app server for use with the [Couchbase Sync Gateway][GATEWAY] that enables access control so that multiple users can have their own private or shared wikis.
 
@@ -8,7 +8,7 @@ The schema is compatible with the HTML5 ([PhoneGap][TOUCHGAP]) wiki demo app, so
 
 1. Clone/checkout this repository.
 2. Install the submodule (the Markdown parser) by running `git submodule update --recursive` from within the checked-out repository directory.
-3. Obtain a recent build of [_the `public_api` branch_ of TouchDB for iOS][PUBLICAPI], and copy `TouchDB.framework` into the `Frameworks` subdirectory of this repo.
+3. Obtain a recent build of [_the `public_api` branch_ of CouchbaseLite for iOS][PUBLICAPI], and copy `CouchbaseLite.framework` into the `Frameworks` subdirectory of this repo.
 4. Open `TouchWiki.xcodeproj` in Xcode.
 5. Build and run.
 6. ...
@@ -80,9 +80,9 @@ This is a pretty useful technique for any application where a database is shared
 
 ### Sync UI
 
-The app includes some classes for managing the user interface for syncing. These are intended to be reuseable, and might eventually end up in TouchDB itself.
+The app includes some classes for managing the user interface for syncing. These are intended to be reuseable, and might eventually end up in CouchbaseLite itself.
 
-**SyncManager** is a thin wrapper around TDDatabase's sync API that manages a pair of replications to and from a server. It supports a delegate object that can customize replication objects and will be notified of the progress of replication.
+**SyncManager** is a thin wrapper around CBLDatabase's sync API that manages a pair of replications to and from a server. It supports a delegate object that can customize replication objects and will be notified of the progress of replication.
 
 **SyncButton** is a UI front-end for sync. It's a `UIBarButtonItem` that can be put in the app's nav bar or toolbar. It displays a "cloud" icon that represents the current state of sync. Right now the appearance is fairly crude, but it does show a progress bar during replication, and highlights the icon if there's an error. Tapping the button opens a pop-up window that lets the user configure sync: there's a text field for the remote database URL, a slider to enable continuous syncing, and a button to trigger a manual sync. It also displays a brief error message if sync failed.
 
@@ -90,18 +90,18 @@ The app includes some classes for managing the user interface for syncing. These
 
 The rest of the app code is a hopefully-straightforward set of iOS UI controllers.
 
-**AppDelegate** is the application delegate; it just initializes TouchDB and constructs the app's top-level UI components.
+**AppDelegate** is the application delegate; it just initializes CouchbaseLite and constructs the app's top-level UI components.
 
 **PageController** manages the primary window contents: the display of the current page, the navigation bar, and the split-view that overlays the page list. This is the biggest class in the app since it does several different things; it might be refactored in the future.
 
-**WikiListController** controls the top-level table view that lists all wikis, using a `TDUITableSource`
+**WikiListController** controls the top-level table view that lists all wikis, using a `CBLUITableSource`
 
-**PageListController** controls the second-level table view that lists all pages in the currently selected wiki, also using a `TDUITableSource`.
+**PageListController** controls the second-level table view that lists all pages in the currently selected wiki, also using a `CBLUITableSource`.
 
 **PageEditController** runs the editable-text view that's overlaid on the PageController while a page is being edited.
 
 [TOUCHDB]: http://touchdb.org
 [TOUCHGAP]: https://github.com/jchris/TouchGap
 [GATEWAY]: https://github.com/couchbaselabs/sync_gateway
-[PUBLICAPI]: https://github.com/couchbaselabs/TouchDB-iOS/tree/public-api
+[PUBLICAPI]: https://github.com/couchbaselabs/CouchbaseLite-iOS/tree/public-api
 [BROWSERID]: https://developer.mozilla.org/en-US/docs/persona

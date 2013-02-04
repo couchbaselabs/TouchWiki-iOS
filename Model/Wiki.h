@@ -19,7 +19,7 @@
 
 @property (readwrite) NSString* title;
 
-@property (readonly) TDLiveQuery* allPagesQuery;
+@property (readonly) CBLLiveQuery* allPagesQuery;
 
 @property (readonly) NSSet* allPageTitles;
 

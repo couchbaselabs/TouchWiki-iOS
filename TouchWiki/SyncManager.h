@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 Couchbase. All rights reserved.
 //
 
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 @protocol SyncManagerDelegate;
 
 
 @interface SyncManager : NSObject
 
-- (id) initWithDatabase: (TDDatabase*)database;
+- (id) initWithDatabase: (CBLDatabase*)database;
 
-@property (readonly) TDDatabase* database;
+@property (readonly) CBLDatabase* database;
 @property (nonatomic, weak) id<SyncManagerDelegate> delegate;
 
 @property (nonatomic) NSURL* syncURL;
@@ -26,7 +26,7 @@
 @property (nonatomic, readonly) unsigned completed, total;
 @property (nonatomic, readonly) float progress;
 @property (nonatomic, readonly) bool active;
-@property (nonatomic, readonly) TDReplicationMode mode;
+@property (nonatomic, readonly) CBLReplicationMode mode;
 @property (nonatomic, readonly) NSError* error;
 
 - (void) syncNow;
@@ -44,7 +44,7 @@ extern NSString* const SyncManagerStateChangedNotification;
 @protocol SyncManagerDelegate <NSObject>
 @optional
 - (void) syncManagerProgressChanged: (SyncManager*)manager;
-- (void) syncManager: (SyncManager*)manager addedReplication: (TDReplication*)replication;
+- (void) syncManager: (SyncManager*)manager addedReplication: (CBLReplication*)replication;
 - (bool) syncManagerShouldPromptForLogin: (SyncManager*)manager;
 
 @end
