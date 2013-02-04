@@ -65,7 +65,12 @@ static WikiStore* sInstance;
 
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(applicationWillTerminate:)
-                                                     name: UIApplicationWillTerminateNotification
+                                                     name:
+#if TARGET_OS_IPHONE
+                                                             UIApplicationWillTerminateNotification
+#else
+                                                             NSApplicationWillTerminateNotification
+#endif
                                                    object: nil];
     }
     return self;

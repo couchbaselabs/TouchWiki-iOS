@@ -52,6 +52,22 @@
 		274EF89C167BEC9800A66172 /* WikiPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF89B167BEC9800A66172 /* WikiPage.m */; };
 		274EF8A7167C011E00A66172 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EF8A6167C011E00A66172 /* libz.dylib */; };
 		274FB33F167FB72000D1DDA8 /* PageTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 274FB33E167FB72000D1DDA8 /* PageTemplate.html */; };
+		275A24ED16B9F79500561DF0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275A24EC16B9F79500561DF0 /* Cocoa.framework */; };
+		275A24F716B9F79500561DF0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 275A24F516B9F79500561DF0 /* InfoPlist.strings */; };
+		275A24F916B9F79500561DF0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 275A24F816B9F79500561DF0 /* main.m */; };
+		275A24FD16B9F79500561DF0 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 275A24FB16B9F79500561DF0 /* Credits.rtf */; };
+		275A250016B9F79500561DF0 /* MacAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 275A24FF16B9F79500561DF0 /* MacAppDelegate.m */; };
+		275A250316B9F79500561DF0 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275A250116B9F79500561DF0 /* MainMenu.xib */; };
+		275A250716B9F7BA00561DF0 /* WikiStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 273607C8168121E30018043D /* WikiStore.m */; };
+		275A250816B9F7BA00561DF0 /* Wiki.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF88F167BEB4A00A66172 /* Wiki.m */; };
+		275A250916B9F7BA00561DF0 /* WikiPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EF89B167BEC9800A66172 /* WikiPage.m */; };
+		275A250A16B9F7BA00561DF0 /* WikiItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 273607CB168152510018043D /* WikiItem.m */; };
+		275A250C16B9F81600561DF0 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275A250B16B9F81600561DF0 /* TouchDB.framework */; };
+		275A251016B9FB7B00561DF0 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275A250E16B9FB7B00561DF0 /* WindowController.m */; };
+		275A251116B9FB7B00561DF0 /* WikiWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275A250F16B9FB7B00561DF0 /* WikiWindow.xib */; };
+		275A251316B9FED400561DF0 /* TouchDB.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 275A250B16B9F81600561DF0 /* TouchDB.framework */; };
+		275A251516B9FF3E00561DF0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275A251416B9FF3E00561DF0 /* WebKit.framework */; };
+		275A251816BA01A800561DF0 /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 275A251716BA01A800561DF0 /* DemoQuery.m */; };
 		2776A5A016A0E233006FF199 /* BrowserIDController+UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */; };
 		2776A5A116A0E233006FF199 /* BrowserIDController.js in Resources */ = {isa = PBXBuildFile; fileRef = 2776A59D16A0E233006FF199 /* BrowserIDController.js */; };
 		2776A5A216A0E233006FF199 /* BrowserIDController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2776A59E16A0E233006FF199 /* BrowserIDController.m */; };
@@ -74,6 +90,20 @@
 			remoteInfo = GHMarkdownParser;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		275A251216B9FE8800561DF0 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				275A251316B9FED400561DF0 /* TouchDB.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2702BFB416B3079100AAFD77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -136,6 +166,29 @@
 		274EF89B167BEC9800A66172 /* WikiPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiPage.m; sourceTree = "<group>"; };
 		274EF8A6167C011E00A66172 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		274FB33E167FB72000D1DDA8 /* PageTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PageTemplate.html; sourceTree = "<group>"; };
+		275A24E316B9EE3400561DF0 /* BrowserIDController+AppKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BrowserIDController+AppKit.h"; sourceTree = "<group>"; };
+		275A24E416B9EE3400561DF0 /* BrowserIDController+AppKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BrowserIDController+AppKit.m"; sourceTree = "<group>"; };
+		275A24E516B9EF9200561DF0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = vendor/browserid/README.md; sourceTree = SOURCE_ROOT; };
+		275A24EB16B9F79500561DF0 /* TouchWiki-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TouchWiki-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		275A24EC16B9F79500561DF0 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		275A24EF16B9F79500561DF0 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		275A24F016B9F79500561DF0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		275A24F116B9F79500561DF0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		275A24F416B9F79500561DF0 /* TouchWiki-Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TouchWiki-Mac-Info.plist"; sourceTree = "<group>"; };
+		275A24F616B9F79500561DF0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		275A24F816B9F79500561DF0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		275A24FA16B9F79500561DF0 /* TouchWiki-Mac-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TouchWiki-Mac-Prefix.pch"; sourceTree = "<group>"; };
+		275A24FC16B9F79500561DF0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		275A24FE16B9F79500561DF0 /* MacAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacAppDelegate.h; sourceTree = "<group>"; };
+		275A24FF16B9F79500561DF0 /* MacAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MacAppDelegate.m; sourceTree = "<group>"; };
+		275A250216B9F79500561DF0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		275A250B16B9F81600561DF0 /* TouchDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TouchDB.framework; path = Frameworks/Mac/TouchDB.framework; sourceTree = "<group>"; };
+		275A250D16B9FB7B00561DF0 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
+		275A250E16B9FB7B00561DF0 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
+		275A250F16B9FB7B00561DF0 /* WikiWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WikiWindow.xib; sourceTree = "<group>"; };
+		275A251416B9FF3E00561DF0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
+		275A251616BA01A800561DF0 /* DemoQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoQuery.h; sourceTree = "<group>"; };
+		275A251716BA01A800561DF0 /* DemoQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoQuery.m; sourceTree = "<group>"; };
 		2776A59A16A0E233006FF199 /* BrowserIDController+UIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BrowserIDController+UIKit.h"; sourceTree = "<group>"; };
 		2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BrowserIDController+UIKit.m"; sourceTree = "<group>"; };
 		2776A59C16A0E233006FF199 /* BrowserIDController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserIDController.h; sourceTree = "<group>"; };
@@ -160,6 +213,16 @@
 				274EF85F167BE8E300A66172 /* Foundation.framework in Frameworks */,
 				274EF861167BE8E300A66172 /* CoreGraphics.framework in Frameworks */,
 				274EF88D167BE9AF00A66172 /* TouchDB.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		275A24E816B9F79500561DF0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				275A251516B9FF3E00561DF0 /* WebKit.framework in Frameworks */,
+				275A24ED16B9F79500561DF0 /* Cocoa.framework in Frameworks */,
+				275A250C16B9F81600561DF0 /* TouchDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +277,7 @@
 				2702BFB416B3079100AAFD77 /* README.md */,
 				274EF862167BE8E300A66172 /* UI Controllers */,
 				274EF899167BEC7700A66172 /* Model */,
+				275A24F216B9F79500561DF0 /* TouchWiki-Mac */,
 				270B93C51682C94E005ED1CE /* Resources */,
 				27367092167D0C9300BAEE8D /* GHMarkdownParser.xcodeproj */,
 				274EF85B167BE8E300A66172 /* Frameworks */,
@@ -225,6 +289,7 @@
 			isa = PBXGroup;
 			children = (
 				274EF858167BE8E300A66172 /* TouchWiki.app */,
+				275A24EB16B9F79500561DF0 /* TouchWiki-Mac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -232,7 +297,9 @@
 		274EF85B167BE8E300A66172 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				275A250B16B9F81600561DF0 /* TouchDB.framework */,
 				274EF88C167BE9AF00A66172 /* TouchDB.framework */,
+				275A251416B9FF3E00561DF0 /* WebKit.framework */,
 				274EF85C167BE8E300A66172 /* UIKit.framework */,
 				274EF85E167BE8E300A66172 /* Foundation.framework */,
 				274EF860167BE8E300A66172 /* CoreGraphics.framework */,
@@ -241,6 +308,8 @@
 				274EF8A6167C011E00A66172 /* libz.dylib */,
 				274EF893167BEC5000A66172 /* SystemConfiguration.framework */,
 				274EF891167BEC4A00A66172 /* CFNetwork.framework */,
+				275A24EC16B9F79500561DF0 /* Cocoa.framework */,
+				275A24EE16B9F79500561DF0 /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -297,8 +366,45 @@
 				273607CA168152510018043D /* WikiItem.h */,
 				273607CB168152510018043D /* WikiItem.m */,
 			);
-			name = Model;
-			path = TouchWiki;
+			path = Model;
+			sourceTree = "<group>";
+		};
+		275A24EE16B9F79500561DF0 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				275A24EF16B9F79500561DF0 /* AppKit.framework */,
+				275A24F016B9F79500561DF0 /* CoreData.framework */,
+				275A24F116B9F79500561DF0 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		275A24F216B9F79500561DF0 /* TouchWiki-Mac */ = {
+			isa = PBXGroup;
+			children = (
+				275A24FE16B9F79500561DF0 /* MacAppDelegate.h */,
+				275A24FF16B9F79500561DF0 /* MacAppDelegate.m */,
+				275A250116B9F79500561DF0 /* MainMenu.xib */,
+				275A24F316B9F79500561DF0 /* Supporting Files */,
+				275A250D16B9FB7B00561DF0 /* WindowController.h */,
+				275A250E16B9FB7B00561DF0 /* WindowController.m */,
+				275A251616BA01A800561DF0 /* DemoQuery.h */,
+				275A251716BA01A800561DF0 /* DemoQuery.m */,
+				275A250F16B9FB7B00561DF0 /* WikiWindow.xib */,
+			);
+			path = "TouchWiki-Mac";
+			sourceTree = "<group>";
+		};
+		275A24F316B9F79500561DF0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				275A24F416B9F79500561DF0 /* TouchWiki-Mac-Info.plist */,
+				275A24F516B9F79500561DF0 /* InfoPlist.strings */,
+				275A24F816B9F79500561DF0 /* main.m */,
+				275A24FA16B9F79500561DF0 /* TouchWiki-Mac-Prefix.pch */,
+				275A24FB16B9F79500561DF0 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		2776A59716A0E233006FF199 /* BrowserID */ = {
@@ -308,7 +414,10 @@
 				2776A59E16A0E233006FF199 /* BrowserIDController.m */,
 				2776A59A16A0E233006FF199 /* BrowserIDController+UIKit.h */,
 				2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */,
+				275A24E316B9EE3400561DF0 /* BrowserIDController+AppKit.h */,
+				275A24E416B9EE3400561DF0 /* BrowserIDController+AppKit.m */,
 				2776A59D16A0E233006FF199 /* BrowserIDController.js */,
+				275A24E516B9EF9200561DF0 /* README.md */,
 			);
 			name = BrowserID;
 			path = vendor/browserid/Sources;
@@ -333,6 +442,24 @@
 			name = TouchWiki;
 			productName = TouchWiki;
 			productReference = 274EF858167BE8E300A66172 /* TouchWiki.app */;
+			productType = "com.apple.product-type.application";
+		};
+		275A24EA16B9F79500561DF0 /* TouchWiki-Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 275A250416B9F79500561DF0 /* Build configuration list for PBXNativeTarget "TouchWiki-Mac" */;
+			buildPhases = (
+				275A24E716B9F79500561DF0 /* Sources */,
+				275A24E816B9F79500561DF0 /* Frameworks */,
+				275A24E916B9F79500561DF0 /* Resources */,
+				275A251216B9FE8800561DF0 /* Copy Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TouchWiki-Mac";
+			productName = "TouchWiki-Mac";
+			productReference = 275A24EB16B9F79500561DF0 /* TouchWiki-Mac.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -363,6 +490,7 @@
 			projectRoot = "";
 			targets = (
 				274EF857167BE8E300A66172 /* TouchWiki */,
+				275A24EA16B9F79500561DF0 /* TouchWiki-Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -408,6 +536,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		275A24E916B9F79500561DF0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				275A24F716B9F79500561DF0 /* InfoPlist.strings in Resources */,
+				275A24FD16B9F79500561DF0 /* Credits.rtf in Resources */,
+				275A250316B9F79500561DF0 /* MainMenu.xib in Resources */,
+				275A251116B9FB7B00561DF0 /* WikiWindow.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -431,6 +570,21 @@
 				27F1E46216962A9B00F0E50F /* LoginController.m in Sources */,
 				2776A5A016A0E233006FF199 /* BrowserIDController+UIKit.m in Sources */,
 				2776A5A216A0E233006FF199 /* BrowserIDController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		275A24E716B9F79500561DF0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				275A24F916B9F79500561DF0 /* main.m in Sources */,
+				275A250016B9F79500561DF0 /* MacAppDelegate.m in Sources */,
+				275A250716B9F7BA00561DF0 /* WikiStore.m in Sources */,
+				275A250816B9F7BA00561DF0 /* Wiki.m in Sources */,
+				275A250916B9F7BA00561DF0 /* WikiPage.m in Sources */,
+				275A250A16B9F7BA00561DF0 /* WikiItem.m in Sources */,
+				275A251016B9FB7B00561DF0 /* WindowController.m in Sources */,
+				275A251816BA01A800561DF0 /* DemoQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +631,30 @@
 			name = PageEditController.xib;
 			sourceTree = "<group>";
 		};
+		275A24F516B9F79500561DF0 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				275A24F616B9F79500561DF0 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		275A24FB16B9F79500561DF0 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				275A24FC16B9F79500561DF0 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		275A250116B9F79500561DF0 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				275A250216B9F79500561DF0 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -489,7 +667,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Mac Developer: Jens Alfke (4RH3RRNK4H)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 0.2;
@@ -576,6 +754,59 @@
 			};
 			name = Release;
 		};
+		275A250516B9F79500561DF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/Frameworks/Mac\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TouchWiki-Mac/TouchWiki-Mac-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "TouchWiki-Mac/TouchWiki-Mac-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks/";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		275A250616B9F79500561DF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/Frameworks/Mac\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TouchWiki-Mac/TouchWiki-Mac-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "TouchWiki-Mac/TouchWiki-Mac-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks/";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -593,6 +824,15 @@
 			buildConfigurations = (
 				274EF883167BE8E300A66172 /* Debug */,
 				274EF884167BE8E300A66172 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		275A250416B9F79500561DF0 /* Build configuration list for PBXNativeTarget "TouchWiki-Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				275A250516B9F79500561DF0 /* Debug */,
+				275A250616B9F79500561DF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
