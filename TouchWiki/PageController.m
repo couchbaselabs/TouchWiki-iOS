@@ -16,7 +16,7 @@
 #import "SyncManager.h"
 #import "SyncButton.h"
 #import "Util.h"
-#import "BrowserIDController+UIKit.h"
+#import "PersonaController+UIKit.h"
 #import "GHMarkdownParser.h"
 
 #define kFlipDuration 0.4
@@ -29,7 +29,7 @@ static NSRegularExpression* sExplicitWikiWordRegex;
 static NSRegularExpression* sImplicitWikiWordRegex;
 
 
-@interface PageController () <SyncManagerDelegate, BrowserIDControllerDelegate>
+@interface PageController () <SyncManagerDelegate, PersonaControllerDelegate>
 @end
 
 
@@ -49,7 +49,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     UIPopoverController *_masterPopoverController;
     NSString* _pendingTitle;
     NSURL* _pendingURL;
-    BrowserIDController* _browserIDController;
+    PersonaController* _browserIDController;
 }
 
 
@@ -294,12 +294,12 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 
 
 - (bool) syncManagerShouldPromptForLogin: (SyncManager*)manager {
-    // Display BrowserID login panel, not the default username/password one:
+    // Display Persona login panel, not the default username/password one:
     if (!_browserIDController) {
-        _browserIDController = [[BrowserIDController alloc] init];
+        _browserIDController = [[PersonaController alloc] init];
         NSArray* replications = _syncButton.syncManager.replications;
         if (replications.count > 0)
-            _browserIDController.origin = [replications[0] browserIDOrigin];
+            _browserIDController.origin = [replications[0] personaOrigin];
         _browserIDController.delegate = self;
         [_browserIDController presentModalInController: self];
     }
@@ -312,23 +312,23 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 }
 
 
-- (void) browserIDControllerDidCancel: (BrowserIDController*) browserIDController {
+- (void) browserIDControllerDidCancel: (PersonaController*) browserIDController {
     [_browserIDController.viewController dismissViewControllerAnimated: YES completion: NULL];
     _browserIDController = nil;
 }
 
-- (void) browserIDController: (BrowserIDController*) browserIDController
+- (void) browserIDController: (PersonaController*) browserIDController
            didFailWithReason: (NSString*) reason
 {
     [self browserIDControllerDidCancel: browserIDController];
 }
 
-- (void) browserIDController: (BrowserIDController*) browserIDController
+- (void) browserIDController: (PersonaController*) browserIDController
      didSucceedWithAssertion: (NSString*) assertion
 {
     [self browserIDControllerDidCancel: browserIDController];
     for (CBLReplication* repl in _syncButton.syncManager.replications) {
-        [repl registerBrowserIDAssertion: assertion];
+        [repl registerPersonaAssertion: assertion];
     }
 }
 
@@ -337,7 +337,7 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
     if (_wikiStore.username == nil) {
         CBLReplication* repl = manager.replications[0];
         if (repl.mode >= kCBLReplicationIdle) {
-            NSString* email = repl.browserIDEmailAddress;
+            NSString* email = repl.personaEmailAddress;
             if (email)
                 _wikiStore.username = email;
         }

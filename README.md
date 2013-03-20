@@ -16,7 +16,7 @@ The schema is compatible with the HTML5 ([PhoneGap][TOUCHGAP]) wiki demo app, so
 
 ## Issues & Limitations
 
-* Currently the only form of authentication it supports is [BrowserID][BROWSERID] (aka Persona). That is, if the replication fails with a 401 status, the app will respond by popping up a BrowserID login panel. This should be user-configurable in the sync popup, so it can present a traditional username/password panel instead.
+* Currently the only form of authentication it supports is [Persona][PERSONA] (aka BrowserID). That is, if the replication fails with a 401 status, the app will respond by popping up a Persona login panel. This should be user-configurable in the sync popup, so it can present a traditional username/password panel instead.
 * The UI shows the owner and member status as part of a wiki page, when they're actually attributes of the wiki. It's not clear that changing the member list of a page actually changes it for all pages in that wiki!
 
 ## Document Schema
@@ -104,4 +104,4 @@ The rest of the app code is a hopefully-straightforward set of iOS UI controller
 [TOUCHGAP]: https://github.com/jchris/TouchGap
 [GATEWAY]: https://github.com/couchbaselabs/sync_gateway
 [PUBLICAPI]: https://github.com/couchbaselabs/CouchbaseLite-iOS/tree/public-api
-[BROWSERID]: https://developer.mozilla.org/en-US/docs/persona
+[PERSONA]: https://developer.mozilla.org/en-US/docs/persona

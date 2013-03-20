@@ -68,9 +68,9 @@
 		275A251316B9FED400561DF0 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 275A250B16B9F81600561DF0 /* CouchbaseLite.framework */; };
 		275A251516B9FF3E00561DF0 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 275A251416B9FF3E00561DF0 /* WebKit.framework */; };
 		275A251816BA01A800561DF0 /* DemoQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 275A251716BA01A800561DF0 /* DemoQuery.m */; };
-		2776A5A016A0E233006FF199 /* BrowserIDController+UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */; };
-		2776A5A116A0E233006FF199 /* BrowserIDController.js in Resources */ = {isa = PBXBuildFile; fileRef = 2776A59D16A0E233006FF199 /* BrowserIDController.js */; };
-		2776A5A216A0E233006FF199 /* BrowserIDController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2776A59E16A0E233006FF199 /* BrowserIDController.m */; };
+		2776A5A016A0E233006FF199 /* PersonaController+UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 2776A59B16A0E233006FF199 /* PersonaController+UIKit.m */; };
+		2776A5A116A0E233006FF199 /* PersonaController.js in Resources */ = {isa = PBXBuildFile; fileRef = 2776A59D16A0E233006FF199 /* PersonaController.js */; };
+		2776A5A216A0E233006FF199 /* PersonaController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2776A59E16A0E233006FF199 /* PersonaController.m */; };
 		27F1E46216962A9B00F0E50F /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F1E46116962A9B00F0E50F /* LoginController.m */; };
 /* End PBXBuildFile section */
 
@@ -166,8 +166,8 @@
 		274EF89B167BEC9800A66172 /* WikiPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikiPage.m; sourceTree = "<group>"; };
 		274EF8A6167C011E00A66172 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		274FB33E167FB72000D1DDA8 /* PageTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PageTemplate.html; sourceTree = "<group>"; };
-		275A24E316B9EE3400561DF0 /* BrowserIDController+AppKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BrowserIDController+AppKit.h"; sourceTree = "<group>"; };
-		275A24E416B9EE3400561DF0 /* BrowserIDController+AppKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BrowserIDController+AppKit.m"; sourceTree = "<group>"; };
+		275A24E316B9EE3400561DF0 /* PersonaController+AppKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PersonaController+AppKit.h"; sourceTree = "<group>"; };
+		275A24E416B9EE3400561DF0 /* PersonaController+AppKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PersonaController+AppKit.m"; sourceTree = "<group>"; };
 		275A24E516B9EF9200561DF0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = vendor/browserid/README.md; sourceTree = SOURCE_ROOT; };
 		275A24EB16B9F79500561DF0 /* TouchWiki-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TouchWiki-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		275A24EC16B9F79500561DF0 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
@@ -189,11 +189,11 @@
 		275A251416B9FF3E00561DF0 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		275A251616BA01A800561DF0 /* DemoQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoQuery.h; sourceTree = "<group>"; };
 		275A251716BA01A800561DF0 /* DemoQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoQuery.m; sourceTree = "<group>"; };
-		2776A59A16A0E233006FF199 /* BrowserIDController+UIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BrowserIDController+UIKit.h"; sourceTree = "<group>"; };
-		2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BrowserIDController+UIKit.m"; sourceTree = "<group>"; };
-		2776A59C16A0E233006FF199 /* BrowserIDController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserIDController.h; sourceTree = "<group>"; };
-		2776A59D16A0E233006FF199 /* BrowserIDController.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = BrowserIDController.js; sourceTree = "<group>"; };
-		2776A59E16A0E233006FF199 /* BrowserIDController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserIDController.m; sourceTree = "<group>"; };
+		2776A59A16A0E233006FF199 /* PersonaController+UIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PersonaController+UIKit.h"; sourceTree = "<group>"; };
+		2776A59B16A0E233006FF199 /* PersonaController+UIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PersonaController+UIKit.m"; sourceTree = "<group>"; };
+		2776A59C16A0E233006FF199 /* PersonaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonaController.h; sourceTree = "<group>"; };
+		2776A59D16A0E233006FF199 /* PersonaController.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = PersonaController.js; sourceTree = "<group>"; };
+		2776A59E16A0E233006FF199 /* PersonaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonaController.m; sourceTree = "<group>"; };
 		27F1E46016962A9B00F0E50F /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
 		27F1E46116962A9B00F0E50F /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -410,13 +410,13 @@
 		2776A59716A0E233006FF199 /* BrowserID */ = {
 			isa = PBXGroup;
 			children = (
-				2776A59C16A0E233006FF199 /* BrowserIDController.h */,
-				2776A59E16A0E233006FF199 /* BrowserIDController.m */,
-				2776A59A16A0E233006FF199 /* BrowserIDController+UIKit.h */,
-				2776A59B16A0E233006FF199 /* BrowserIDController+UIKit.m */,
-				275A24E316B9EE3400561DF0 /* BrowserIDController+AppKit.h */,
-				275A24E416B9EE3400561DF0 /* BrowserIDController+AppKit.m */,
-				2776A59D16A0E233006FF199 /* BrowserIDController.js */,
+				2776A59C16A0E233006FF199 /* PersonaController.h */,
+				2776A59E16A0E233006FF199 /* PersonaController.m */,
+				2776A59A16A0E233006FF199 /* PersonaController+UIKit.h */,
+				2776A59B16A0E233006FF199 /* PersonaController+UIKit.m */,
+				275A24E316B9EE3400561DF0 /* PersonaController+AppKit.h */,
+				275A24E416B9EE3400561DF0 /* PersonaController+AppKit.m */,
+				2776A59D16A0E233006FF199 /* PersonaController.js */,
 				275A24E516B9EF9200561DF0 /* README.md */,
 			);
 			name = BrowserID;
@@ -531,7 +531,7 @@
 				27306BB61684E99500F91F61 /* Triangle-Left.png in Resources */,
 				27306BB71684E99500F91F61 /* Triangle-Right.png in Resources */,
 				27306BC9168B9BFD00F91F61 /* Sync-error.png in Resources */,
-				2776A5A116A0E233006FF199 /* BrowserIDController.js in Resources */,
+				2776A5A116A0E233006FF199 /* PersonaController.js in Resources */,
 				2702BFB516B3079200AAFD77 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -568,8 +568,8 @@
 				270B93D81684085A005ED1CE /* SyncButton.m in Sources */,
 				27306BB31684E6EB00F91F61 /* Util.m in Sources */,
 				27F1E46216962A9B00F0E50F /* LoginController.m in Sources */,
-				2776A5A016A0E233006FF199 /* BrowserIDController+UIKit.m in Sources */,
-				2776A5A216A0E233006FF199 /* BrowserIDController.m in Sources */,
+				2776A5A016A0E233006FF199 /* PersonaController+UIKit.m in Sources */,
+				2776A5A216A0E233006FF199 /* PersonaController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
