@@ -17,6 +17,8 @@
 
 @property (readonly) Wiki* wiki;
 
+@property (readonly) NSString* updated_by;
+
 // A document with this flag set will not be pushed to the server. */
 @property bool draft;
 

@@ -53,6 +53,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     //FIX: This isn't good enough in landscape mode, where the view is always visible.
+    [super viewWillAppear: animated];
     [self updateCells];
 }
 

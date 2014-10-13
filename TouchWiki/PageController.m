@@ -49,7 +49,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     UIPopoverController *_masterPopoverController;
     NSString* _pendingTitle;
     NSURL* _pendingURL;
-    PersonaController* _browserIDController;
+    PersonaController* _personaController;
 }
 
 
@@ -98,6 +98,7 @@ static NSRegularExpression* sImplicitWikiWordRegex;
     SyncManager* syncMgr = [[SyncManager alloc] initWithDatabase: _wikiStore.database];
     _syncButton.syncManager = syncMgr;
     syncMgr.delegate = self;
+    [syncMgr useUserDefaults];
 
     self.navigationItem.rightBarButtonItem = _editButton;
     self.navigationItem.leftBarButtonItems = @[_syncButton, _backButton, _fwdButton];
@@ -290,18 +291,18 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 }
 
 
-#pragma mark - BROWSERID:
+#pragma mark - PERSONA:
 
 
 - (bool) syncManagerShouldPromptForLogin: (SyncManager*)manager {
     // Display Persona login panel, not the default username/password one:
-    if (!_browserIDController) {
-        _browserIDController = [[PersonaController alloc] init];
+    if (!_personaController) {
+        _personaController = [[PersonaController alloc] init];
         NSArray* replications = _syncButton.syncManager.replications;
         if (replications.count > 0)
-            _browserIDController.origin = [replications[0] personaOrigin];
-        _browserIDController.delegate = self;
-        [_browserIDController presentModalInController: self];
+            _personaController.origin = [replications[0] personaOrigin];
+        _personaController.delegate = self;
+        [_personaController presentModalInController: self];
     }
     return false;
 }
@@ -312,23 +313,23 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 }
 
 
-- (void) browserIDControllerDidCancel: (PersonaController*) browserIDController {
-    [_browserIDController.viewController dismissViewControllerAnimated: YES completion: NULL];
-    _browserIDController = nil;
+- (void) personaControllerDidCancel: (PersonaController*) personaController {
+    [_personaController.viewController dismissViewControllerAnimated: YES completion: NULL];
+    _personaController = nil;
 }
 
-- (void) browserIDController: (PersonaController*) browserIDController
+- (void) personaController: (PersonaController*) personaController
            didFailWithReason: (NSString*) reason
 {
-    [self browserIDControllerDidCancel: browserIDController];
+    [self personaControllerDidCancel: personaController];
 }
 
-- (void) browserIDController: (PersonaController*) browserIDController
+- (void) personaController: (PersonaController*) personaController
      didSucceedWithAssertion: (NSString*) assertion
 {
-    [self browserIDControllerDidCancel: browserIDController];
+    [self personaControllerDidCancel: personaController];
     for (CBLReplication* repl in _syncButton.syncManager.replications) {
-        [repl registerPersonaAssertion: assertion];
+        repl.authenticator = [CBLAuthenticator personaAuthenticatorWithAssertion: assertion];
     }
 }
 
@@ -336,8 +337,8 @@ static void replace(NSMutableString* str, NSString* pattern, NSString* replaceme
 - (void) syncManagerProgressChanged: (SyncManager*)manager {
     if (_wikiStore.username == nil) {
         CBLReplication* repl = manager.replications[0];
-        if (repl.mode >= kCBLReplicationIdle) {
-            NSString* email = repl.personaEmailAddress;
+        if (repl.status >= kCBLReplicationIdle) {
+            NSString* email = [(id)repl.authenticator valueForKey: @"personaEmailAddress"]; //HACK
             if (email)
                 _wikiStore.username = email;
         }

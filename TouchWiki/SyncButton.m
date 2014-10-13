@@ -143,6 +143,7 @@
 
 
 - (void) viewDidLoad {
+    [super viewDidLoad];
     _urlField.text = _syncManager.syncURL.absoluteString;
     _onOffSwitch.on = _syncManager.continuous;
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(urlChanged:)
@@ -161,7 +162,7 @@
     NSString* message;
     if (_syncManager.error) {
         message = _syncManager.error.localizedDescription;
-    } else switch (_syncManager.mode) {
+    } else switch (_syncManager.status) {
         case kCBLReplicationOffline:
             message = @"Offline (can’t reach server)";
             break;

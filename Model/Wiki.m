@@ -59,7 +59,7 @@
 
 - (CBLLiveQuery*) allPagesQuery {
     if (!_allPagesQuery) {
-        CBLQuery* query = [[self.database viewNamed: @"pagesByTitle"] query];
+        CBLQuery* query = [[self.database viewNamed: @"pagesByTitle"] createQuery];
         query.startKey = @[self.wikiID];
         query.endKey = @[self.wikiID, @{}];
         _allPagesQuery = [query asLiveQuery];

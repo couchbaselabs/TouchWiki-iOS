@@ -1,6 +1,6 @@
 //
 //  SyncManager.m
-//  TouchWiki
+//  CouchChat
 //
 //  Created by Jens Alfke on 12/19/12.
 //  Copyright (c) 2012 Couchbase. All rights reserved.
@@ -19,6 +19,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
     bool _showingSyncButton;
     __weak id<SyncManagerDelegate> _delegate;
     LoginController* _loginController;
+    BOOL _usingUserDefaults;
 }
 
 
@@ -34,7 +35,35 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 }
 
 
-@synthesize delegate=_delegate, replications=_replications;
+@synthesize delegate=_delegate, replications=_replications, status=_status;
+
+
+- (void) useUserDefaults {
+    if (_usingUserDefaults)
+        return;
+
+    NSDictionary* replState = [[NSUserDefaults standardUserDefaults] objectForKey: @"SyncManager"];
+    if (replState) {
+        self.syncURL = [NSURL URLWithString: replState[@"URL"]];
+        self.continuous = [replState[@"continuous"] boolValue];
+    }
+
+    _usingUserDefaults = YES;
+}
+
+- (void) saveUserDefaults {
+    if (!_usingUserDefaults)
+        return;
+    if (_syncURL) {
+        NSMutableDictionary* replState = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                          _syncURL.absoluteString, @"URL",
+                                          @(_continuous), @"continuous",
+                                          nil];
+        [[NSUserDefaults standardUserDefaults] setObject: replState forKey: @"SyncManager"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey: @"SyncManager"];
+    }
+}
 
 
 - (void) addReplication: (CBLReplication*)repl {
@@ -50,6 +79,8 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
             _continuous = true;
         if ([_delegate respondsToSelector: @selector(syncManager:addedReplication:)])
             [_delegate syncManager: self addedReplication: repl];
+        [repl start];
+        [self saveUserDefaults];
     }
 }
 
@@ -77,6 +108,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
     }
     _replications = [[NSMutableArray alloc] init];
     _syncURL = nil;
+    [self saveUserDefaults];
 }
 
 
@@ -85,12 +117,15 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
         return;
     [self forgetAll];
     if (url) {
-        for (CBLReplication* repl in [self.database replicateWithURL: url exclusively: YES]) {
-            repl.persistent = YES;
-            repl.continuous = _continuous;
-            [self addReplication: repl];
-        }
+        CBLReplication *pullReplication = [self.database createPullReplication:url];
+        [pullReplication setContinuous:YES];
+        [self addReplication: pullReplication];
+        
+        CBLReplication *pushReplication = [self.database createPushReplication:url];
+        [pushReplication setContinuous:YES];
+        [self addReplication: pushReplication];
     }
+    [self saveUserDefaults];
 }
 
 
@@ -98,6 +133,7 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
     _continuous = continuous;
     for (CBLReplication* repl in _replications)
         repl.continuous = continuous;
+    [self saveUserDefaults];
 }
 
 
@@ -128,16 +164,16 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
 - (void) replicationProgress: (NSNotificationCenter*)n {
     bool active = false;
     unsigned completed = 0, total = 0;
-    CBLReplicationMode mode = kCBLReplicationStopped;
+    CBLReplicationStatus status = kCBLReplicationStopped;
     NSError* error = nil;
     for (CBLReplication* repl in _replications) {
-        mode = MAX(mode, repl.mode);
+        status = MAX(status, repl.status);
         if (!error)
-            error = repl.error;
-        if (repl.mode == kCBLReplicationActive) {
+            error = repl.lastError;
+        if (repl.status == kCBLReplicationActive) {
             active = true;
-            _completed += repl.completed;
-            _total += repl.total;
+            completed += repl.completedChangesCount;
+            total += repl.changesCount;
         }
     }
 
@@ -156,16 +192,16 @@ NSString* const SyncManagerStateChangedNotification = @"SyncManagerStateChanged"
         }
     }
 
-    if (active != _active || completed != _completed || total != _total || mode != _mode
+    if (active != _active || completed != _completed || total != _total || status != _status
                           || error != _error) {
         _active = active;
         _completed = completed;
         _total = total;
         _progress = (completed / (float)MAX(total, 1u));
-        _mode = mode;
+        _status = status;
         _error = error;
-        NSLog(@"SYNCMGR: active=%d; mode=%d; %u/%u; %@",
-              active, mode, completed, total, error.localizedDescription); //FIX: temporary logging
+        NSLog(@"SYNCMGR: active=%d; status=%d; %u/%u; %@",
+              active, status, completed, total, error.localizedDescription); //FIX: temporary logging
         if ([_delegate respondsToSelector: @selector(syncManagerProgressChanged:)])
             [_delegate syncManagerProgressChanged: self];
         [[NSNotificationCenter defaultCenter]

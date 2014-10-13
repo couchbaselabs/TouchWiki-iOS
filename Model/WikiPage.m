@@ -11,10 +11,17 @@
 #import "WikiStore.h"
 
 
+@interface WikiPage ()
+@property (readwrite, copy) NSString* updated_by;
+@end
+
+
 @implementation WikiPage
 
 
-@dynamic draft;
+@dynamic draft, updated_by;
+
+@synthesize selectedRange=_selectedRange;
 
 
 - (id) initNewWithTitle: (NSString*)title inWiki: (Wiki*)wiki {
@@ -74,6 +81,15 @@
 
 - (bool) owned {
     return self.wiki.owned;
+}
+
+
+- (NSDictionary*) propertiesToSave {
+    if (self.needsSave) {
+        // Set updated_by when saving:
+        self.updated_by = self.wikiStore.username;
+    }
+    return [super propertiesToSave];
 }
 
 

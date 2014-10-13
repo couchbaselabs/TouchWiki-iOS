@@ -14,6 +14,8 @@
 
 - (id) initWithDatabase: (CBLDatabase*)database;
 
+- (void) useUserDefaults;
+
 @property (readonly) CBLDatabase* database;
 @property (nonatomic, weak) id<SyncManagerDelegate> delegate;
 
@@ -26,7 +28,7 @@
 @property (nonatomic, readonly) unsigned completed, total;
 @property (nonatomic, readonly) float progress;
 @property (nonatomic, readonly) bool active;
-@property (nonatomic, readonly) CBLReplicationMode mode;
+@property (nonatomic, readonly) CBLReplicationStatus status;
 @property (nonatomic, readonly) NSError* error;
 
 - (void) syncNow;

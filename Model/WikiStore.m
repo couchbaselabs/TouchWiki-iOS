@@ -39,7 +39,7 @@ static WikiStore* sInstance;
                     emit(title, nil);
             }
         }) reduceBlock: nil version: @"1"];
-        _allWikisQuery = [[view query] asLiveQuery];
+        _allWikisQuery = [[view createQuery] asLiveQuery];
 
         // Map function for finding pages by title
         [[_database viewNamed: @"pagesByTitle"] setMapBlock: MAPBLOCK({
@@ -53,7 +53,7 @@ static WikiStore* sInstance;
         }) reduceBlock: nil version: @"4"];
 
         // Filter for push replications, to avoid sending draft page revisions to the server.
-        [_database defineFilter: @"notDraft"
+        [_database setFilterNamed: @"notDraft"
                         asBlock: ^BOOL(CBLRevision *revision, NSDictionary *params) {
                             NSString* type = revision[@"type"];
                             if (!type)

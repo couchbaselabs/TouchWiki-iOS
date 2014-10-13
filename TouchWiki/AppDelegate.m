@@ -25,8 +25,8 @@
 
     // Initialize CouchbaseLite:
     NSError* error;
-    CBLDatabase* database = [[CBLManager sharedInstance] createDatabaseNamed: @"wiki2"
-                                                                       error: &error];
+    CBLDatabase* database = [[CBLManager sharedInstance] databaseNamed: @"wiki2"
+                                                                 error: &error];
     if (!database)
         [self showAlert: @"Couldn't open database" error: error fatal: YES];
 
