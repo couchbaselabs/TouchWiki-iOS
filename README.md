@@ -1,3 +1,5 @@
+⚠️ This repo is obsolete.  It was developed against a version of Couchbase Lite that reached end of life years ago.
+
 # TouchWiki For iOS
 
 This is a fairly large demo of [CouchbaseLite][TOUCHDB]. It's an iPad-only viewer and editor app for a wiki that lives in a database. The wiki functionality is pretty basic, but allows you to view and edit pages (in Markdown format) and link between them. It even supports multiple wiki namespaces.
